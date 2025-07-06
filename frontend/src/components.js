@@ -3100,6 +3100,7 @@ export const Components = {
   MobileApp,
   Footer,
   AuthModal,
+  PaymentModal,
   Dashboard,
   SwipeInterface,
   DocumentsManagement,
