@@ -1345,19 +1345,36 @@ const ProfileManagement = ({ user }) => {
                 readOnly={!isEditing}
               />
             </div>
-            <div className="md:col-span-2">
-              <label className="block text-gray-400 text-sm mb-2">Présentation</label>
-              <textarea
-                value={profileData.bio}
-                onChange={(e) => setProfileData(prev => ({...prev, bio: e.target.value}))}
-                rows={4}
-                className={`w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white ${
-                  isEditing ? 'focus:outline-none focus:ring-2 focus:ring-emerald-500' : 'cursor-not-allowed'
-                }`}
-                placeholder="Décrivez-vous, vos compétences, votre expérience..."
-                readOnly={!isEditing}
-              />
-            </div>
+            {user.type === 'particulier' && (
+              <div className="md:col-span-2">
+                <label className="block text-gray-400 text-sm mb-2">Présentation</label>
+                <textarea
+                  value={profileData.bio}
+                  onChange={(e) => setProfileData(prev => ({...prev, bio: e.target.value}))}
+                  rows={4}
+                  className={`w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white ${
+                    isEditing ? 'focus:outline-none focus:ring-2 focus:ring-emerald-500' : 'cursor-not-allowed'
+                  }`}
+                  placeholder="Parlez-nous de vos projets, vos préférences, ce que vous recherchez..."
+                  readOnly={!isEditing}
+                />
+              </div>
+            )}
+            {user.type === 'professionnel' && (
+              <div className="md:col-span-2">
+                <label className="block text-gray-400 text-sm mb-2">Présentation professionnelle</label>
+                <textarea
+                  value={profileData.bio}
+                  onChange={(e) => setProfileData(prev => ({...prev, bio: e.target.value}))}
+                  rows={4}
+                  className={`w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white ${
+                    isEditing ? 'focus:outline-none focus:ring-2 focus:ring-emerald-500' : 'cursor-not-allowed'
+                  }`}
+                  placeholder="Décrivez vos compétences, votre expérience, vos spécialités, vos réalisations..."
+                  readOnly={!isEditing}
+                />
+              </div>
+            )}
           </div>
           
           {isEditing && (
