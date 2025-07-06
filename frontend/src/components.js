@@ -666,6 +666,29 @@ const Dashboard = ({ user, onLogout }) => {
           {/* Sidebar */}
           <div className="w-64 mr-8">
             <nav className="space-y-2">
+              {/* Navigation rapide */}
+              {!isAdmin && (
+                <div className="mb-6 p-4 bg-slate-800 rounded-lg border border-slate-700">
+                  <h4 className="text-white font-medium mb-3">Navigation rapide</h4>
+                  <div className="space-y-2">
+                    <button
+                      onClick={() => setActiveTab('swipe')}
+                      className="w-full bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center"
+                    >
+                      <Heart className="w-4 h-4 mr-2" />
+                      Aller Swiper
+                    </button>
+                    <button
+                      onClick={() => window.location.reload()}
+                      className="w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center"
+                    >
+                      <ArrowRight className="w-4 h-4 mr-2" />
+                      Retour Accueil
+                    </button>
+                  </div>
+                </div>
+              )}
+              
               {tabs.map((tab) => {
                 const Icon = tab.icon;
                 return (
