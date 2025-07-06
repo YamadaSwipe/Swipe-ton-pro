@@ -361,61 +361,81 @@ const ProfessionalCategories = () => {
 const PricingPlans = () => {
   const plans = [
     {
-      name: "Particulier",
+      name: "Particuliers",
       subtitle: "GRATUIT",
-      price: "0€",
-      period: "/mois",
+      price: "",
+      period: "",
+      badge: "100% Free! 🎁",
       features: [
-        "Création de profil",
-        "Recherche de professionnels",
-        "5 demandes de devis/mois",
-        "Support par email"
+        "Swipe illimité",
+        "Chat avec artisans",
+        "Demandes de devis",
+        "Support client"
       ],
       buttonText: "Commencer gratuitement",
-      buttonColor: "bg-emerald-500 hover:bg-emerald-600"
+      buttonColor: "bg-emerald-500 hover:bg-emerald-600",
+      borderColor: "border-emerald-500",
+      icon: "🎁"
     },
     {
       name: "Pro Starter",
-      subtitle: "Pour débuter",
-      price: "29€",
+      subtitle: "49€/mois",
+      price: "49€",
       period: "/mois",
+      badge: "30 demandes incluses",
       features: [
-        "Profil professionnel vérifié",
-        "10 réponses à des projets/mois",
-        "Outils de devis intégrés",
-        "Support prioritaire"
+        "Profil vérifié",
+        "30 demandes/mois",
+        "Facturation devis 30€",
+        "Analytics basiques",
+        "Support email"
       ],
       buttonText: "Essayer gratuitement",
-      buttonColor: "bg-purple-500 hover:bg-purple-600"
+      buttonColor: "bg-purple-500 hover:bg-purple-600",
+      borderColor: "border-purple-500",
+      icon: "🔨"
     },
     {
       name: "Pro Business",
-      subtitle: "Le plus populaire",
-      price: "59€",
+      subtitle: "99€/mois",
+      price: "99€",
       period: "/mois",
+      badge: "100 demandes incluses",
+      topBadge: "Business",
       features: [
-        "Profil premium mis en avant",
-        "Réponses illimitées",
-        "Statistiques avancées",
-        "Support téléphonique"
+        "Profil premium",
+        "100 demandes/mois",
+        "Facturation devis 80€",
+        "Analytics avancées",
+        "Support chat",
+        "Badge \"Pro Business\""
       ],
       buttonText: "Commencer l'essai",
       buttonColor: "bg-blue-500 hover:bg-blue-600",
-      popular: true
+      borderColor: "border-blue-500",
+      popular: true,
+      icon: "📈"
     },
     {
       name: "Pro Premium",
-      subtitle: "Pour les experts",
-      price: "99€",
+      subtitle: "149€/mois",
+      price: "149€",
       period: "/mois",
+      badge: "250 demandes incluses",
+      topBadge: "Premium",
       features: [
-        "Visibilité maximum",
-        "Outils marketing avancés",
-        "Intégration CRM",
-        "Account manager dédié"
+        "Profil premium+",
+        "250 demandes/mois",
+        "Facturation devis 80€",
+        "Projets complexes",
+        "Support chat",
+        "Option \"être rappelé\"",
+        "Badge \"Expert\""
       ],
       buttonText: "Contactez-nous",
-      buttonColor: "bg-yellow-500 hover:bg-yellow-600"
+      buttonColor: "bg-yellow-500 hover:bg-yellow-600",
+      borderColor: "border-yellow-500",
+      icon: "👑"
     }
   ];
 
@@ -423,9 +443,12 @@ const PricingPlans = () => {
     <section className="py-20 bg-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-white mb-4">Nos formules artisans</h2>
+          <h2 className="text-4xl font-bold text-white mb-4 flex items-center justify-center">
+            Nos formules artisans 
+            <span className="ml-2 text-blue-400">💎</span>
+          </h2>
           <p className="text-xl text-gray-300">
-            Choisissez le plan qui correspond à vos besoins
+            Pour tous les besoins et tous les budgets
           </p>
         </div>
 
@@ -437,26 +460,42 @@ const PricingPlans = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
               viewport={{ once: true }}
-              className={`relative bg-slate-800 p-6 rounded-2xl border ${
-                plan.popular 
-                  ? 'border-emerald-500 ring-2 ring-emerald-500/20' 
-                  : 'border-slate-700 hover:border-emerald-500'
-              } transition-all duration-300`}
+              className={`relative bg-slate-800 p-6 rounded-2xl border-2 ${
+                plan.borderColor
+              } transition-all duration-300 hover:shadow-xl hover:shadow-${plan.borderColor.split('-')[1]}-500/20`}
             >
-              {plan.popular && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-emerald-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                    Le plus populaire
+              {plan.topBadge && (
+                <div className="absolute -top-3 right-4">
+                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                    plan.topBadge === 'Business' ? 'bg-blue-500 text-white' : 'bg-yellow-500 text-white'
+                  }`}>
+                    {plan.topBadge}
                   </span>
                 </div>
               )}
               
               <div className="text-center mb-6">
+                <div className="text-4xl mb-4">{plan.icon}</div>
                 <h3 className="text-xl font-semibold text-white mb-2">{plan.name}</h3>
-                <p className="text-gray-400 text-sm mb-4">{plan.subtitle}</p>
-                <div className="flex items-baseline justify-center">
-                  <span className="text-4xl font-bold text-white">{plan.price}</span>
-                  <span className="text-gray-400 ml-1">{plan.period}</span>
+                {plan.price && (
+                  <div className="mb-4">
+                    <div className="flex items-baseline justify-center">
+                      <span className="text-4xl font-bold text-white">{plan.price}</span>
+                      <span className="text-gray-400 ml-1">{plan.period}</span>
+                    </div>
+                  </div>
+                )}
+                {plan.name === "Particuliers" && (
+                  <div className="text-3xl font-bold text-emerald-400 mb-2">GRATUIT</div>
+                )}
+                
+                <div className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
+                  plan.name === "Particuliers" ? 'bg-emerald-500/20 text-emerald-400' :
+                  plan.name === "Pro Starter" ? 'bg-purple-500/20 text-purple-400' :
+                  plan.name === "Pro Business" ? 'bg-blue-500/20 text-blue-400' :
+                  'bg-yellow-500/20 text-yellow-400'
+                }`}>
+                  {plan.badge}
                 </div>
               </div>
 
