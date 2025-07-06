@@ -724,6 +724,9 @@ const Dashboard = ({ user, onLogout }) => {
             {activeTab === 'profile' && (
               <ProfileManagement user={user} />
             )}
+            {activeTab === 'documents' && isProfessional && (
+              <DocumentsManagement user={user} />
+            )}
             {activeTab === 'projects' && (
               <ProjectsManagement user={user} isProfessional={isProfessional} />
             )}
