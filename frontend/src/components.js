@@ -1769,60 +1769,91 @@ const ProfileManagement = ({ user }) => {
                 readOnly={!isEditing}
               />
             </div>
-              {user.type === 'professionnel' && (
-                <div className="md:col-span-2">
-                  <label className="block text-gray-400 text-sm mb-2">Compétences et spécialités</label>
-                  <textarea
-                    value={profileData.skills || ''}
-                    onChange={(e) => setProfileData(prev => ({...prev, skills: e.target.value}))}
-                    rows={3}
-                    className={`w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white ${
-                      isEditing ? 'focus:outline-none focus:ring-2 focus:ring-emerald-500' : 'cursor-not-allowed'
-                    }`}
-                    placeholder="Listez vos compétences principales, certifications, outils maîtrisés..."
-                    readOnly={!isEditing}
-                  />
-                </div>
-              )}
-              
-              {user.type === 'professionnel' && (
-                <div className="md:col-span-2">
-                  <label className="block text-gray-400 text-sm mb-2">Disponibilités</label>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-gray-400 text-xs mb-1">Zone d'intervention</label>
-                      <input
-                        type="text"
-                        value={profileData.serviceArea || ''}
-                        onChange={(e) => setProfileData(prev => ({...prev, serviceArea: e.target.value}))}
-                        className={`w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm ${
-                          isEditing ? 'focus:outline-none focus:ring-2 focus:ring-emerald-500' : 'cursor-not-allowed'
-                        }`}
-                        placeholder="Ex: Paris et banlieue"
-                        readOnly={!isEditing}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-gray-400 text-xs mb-1">Délai d'intervention</label>
-                      <select
-                        value={profileData.availability || ''}
-                        onChange={(e) => setProfileData(prev => ({...prev, availability: e.target.value}))}
-                        className={`w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm ${
-                          isEditing ? 'focus:outline-none focus:ring-2 focus:ring-emerald-500' : 'cursor-not-allowed'
-                        }`}
-                        disabled={!isEditing}
-                      >
-                        <option value="">Sélectionner</option>
-                        <option value="immediate">Immédiat</option>
-                        <option value="24h">Sous 24h</option>
-                        <option value="48h">Sous 48h</option>
-                        <option value="week">Dans la semaine</option>
-                        <option value="month">Dans le mois</option>
-                      </select>
-                    </div>
+            {user.type === 'particulier' && (
+              <div className="md:col-span-2">
+                <label className="block text-gray-400 text-sm mb-2">Présentation</label>
+                <textarea
+                  value={profileData.bio}
+                  onChange={(e) => setProfileData(prev => ({...prev, bio: e.target.value}))}
+                  rows={4}
+                  className={`w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white ${
+                    isEditing ? 'focus:outline-none focus:ring-2 focus:ring-emerald-500' : 'cursor-not-allowed'
+                  }`}
+                  placeholder="Parlez-nous de vos projets, vos préférences, ce que vous recherchez..."
+                  readOnly={!isEditing}
+                />
+              </div>
+            )}
+            {user.type === 'professionnel' && (
+              <div className="md:col-span-2">
+                <label className="block text-gray-400 text-sm mb-2">Présentation professionnelle</label>
+                <textarea
+                  value={profileData.bio}
+                  onChange={(e) => setProfileData(prev => ({...prev, bio: e.target.value}))}
+                  rows={4}
+                  className={`w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white ${
+                    isEditing ? 'focus:outline-none focus:ring-2 focus:ring-emerald-500' : 'cursor-not-allowed'
+                  }`}
+                  placeholder="Décrivez vos compétences, votre expérience, vos spécialités, vos réalisations..."
+                  readOnly={!isEditing}
+                />
+              </div>
+            )}
+            
+            {user.type === 'professionnel' && (
+              <div className="md:col-span-2">
+                <label className="block text-gray-400 text-sm mb-2">Compétences et spécialités</label>
+                <textarea
+                  value={profileData.skills || ''}
+                  onChange={(e) => setProfileData(prev => ({...prev, skills: e.target.value}))}
+                  rows={3}
+                  className={`w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white ${
+                    isEditing ? 'focus:outline-none focus:ring-2 focus:ring-emerald-500' : 'cursor-not-allowed'
+                  }`}
+                  placeholder="Listez vos compétences principales, certifications, outils maîtrisés..."
+                  readOnly={!isEditing}
+                />
+              </div>
+            )}
+            
+            {user.type === 'professionnel' && (
+              <div className="md:col-span-2">
+                <label className="block text-gray-400 text-sm mb-2">Disponibilités</label>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-gray-400 text-xs mb-1">Zone d'intervention</label>
+                    <input
+                      type="text"
+                      value={profileData.serviceArea || ''}
+                      onChange={(e) => setProfileData(prev => ({...prev, serviceArea: e.target.value}))}
+                      className={`w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm ${
+                        isEditing ? 'focus:outline-none focus:ring-2 focus:ring-emerald-500' : 'cursor-not-allowed'
+                      }`}
+                      placeholder="Ex: Paris et banlieue"
+                      readOnly={!isEditing}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-400 text-xs mb-1">Délai d'intervention</label>
+                    <select
+                      value={profileData.availability || ''}
+                      onChange={(e) => setProfileData(prev => ({...prev, availability: e.target.value}))}
+                      className={`w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm ${
+                        isEditing ? 'focus:outline-none focus:ring-2 focus:ring-emerald-500' : 'cursor-not-allowed'
+                      }`}
+                      disabled={!isEditing}
+                    >
+                      <option value="">Sélectionner</option>
+                      <option value="immediate">Immédiat</option>
+                      <option value="24h">Sous 24h</option>
+                      <option value="48h">Sous 48h</option>
+                      <option value="week">Dans la semaine</option>
+                      <option value="month">Dans le mois</option>
+                    </select>
                   </div>
                 </div>
-              )}
+              </div>
+            )}
           </div>
           
           {isEditing && (
