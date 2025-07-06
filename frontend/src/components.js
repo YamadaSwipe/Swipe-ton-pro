@@ -507,17 +507,30 @@ const Dashboard = ({ user, onLogout }) => {
   const [activeTab, setActiveTab] = useState('overview');
 
   const isProfessional = user.type === 'professionnel';
+  const isAdmin = user.type === 'admin';
   const isPending = user.status === 'pending';
   const isGhost = isPending;
 
-  const tabs = isProfessional ? [
+  // Admin tabs
+  const adminTabs = [
+    { id: 'overview', label: 'Dashboard Admin', icon: TrendingUp },
+    { id: 'users', label: 'Gestion Utilisateurs', icon: Users },
+    { id: 'pending', label: 'Validations', icon: AlertCircle },
+    { id: 'projects', label: 'Tous les Projets', icon: FileText },
+    { id: 'analytics', label: 'Analytics', icon: TrendingUp },
+    { id: 'settings', label: 'Paramètres Site', icon: Settings }
+  ];
+
+  const professionalTabs = [
     { id: 'overview', label: 'Tableau de bord', icon: TrendingUp },
     { id: 'profile', label: 'Mon profil', icon: Users },
     { id: 'projects', label: 'Projets', icon: FileText },
     { id: 'messages', label: 'Messages', icon: MessageCircle },
     { id: 'swipe', label: 'Swiper', icon: Heart },
     { id: 'settings', label: 'Paramètres', icon: Settings }
-  ] : [
+  ];
+
+  const particularTabs = [
     { id: 'overview', label: 'Tableau de bord', icon: TrendingUp },
     { id: 'projects', label: 'Mes projets', icon: FileText },
     { id: 'swipe', label: 'Swiper', icon: Heart },
@@ -525,7 +538,9 @@ const Dashboard = ({ user, onLogout }) => {
     { id: 'settings', label: 'Paramètres', icon: Settings }
   ];
 
-  if (activeTab === 'swipe') {
+  const tabs = isAdmin ? adminTabs : (isProfessional ? professionalTabs : particularTabs);
+
+  if (activeTab === 'swipe' && !isAdmin) {
     return <SwipeInterface user={user} onBack={() => setActiveTab('overview')} />;
   }
 
@@ -540,10 +555,15 @@ const Dashboard = ({ user, onLogout }) => {
                 <Heart className="w-5 h-5 text-white" />
               </div>
               <span className="ml-2 text-lg font-bold text-white">Swipe Ton Pro</span>
+              {isAdmin && (
+                <span className="ml-3 bg-red-500 text-white px-2 py-1 rounded text-xs font-semibold">
+                  ADMIN
+                </span>
+              )}
             </div>
             
             <div className="flex items-center space-x-4">
-              {isPending && (
+              {isPending && !isAdmin && (
                 <div className="flex items-center bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full">
                   <AlertCircle className="w-4 h-4 mr-2" />
                   <span className="text-sm">Mode fantôme</span>
@@ -554,7 +574,7 @@ const Dashboard = ({ user, onLogout }) => {
                 <div className="text-right">
                   <p className="text-white text-sm font-medium">{user.firstName} {user.lastName}</p>
                   <p className="text-gray-400 text-xs">
-                    {isProfessional ? user.specialty || 'Professionnel' : 'Particulier'}
+                    {isAdmin ? 'Administrateur' : (isProfessional ? user.specialty || 'Professionnel' : 'Particulier')}
                   </p>
                 </div>
                 <button
@@ -582,7 +602,7 @@ const Dashboard = ({ user, onLogout }) => {
                     onClick={() => setActiveTab(tab.id)}
                     className={`w-full flex items-center px-4 py-3 rounded-lg transition-colors ${
                       activeTab === tab.id
-                        ? 'bg-emerald-500 text-white'
+                        ? (isAdmin ? 'bg-red-500 text-white' : 'bg-emerald-500 text-white')
                         : 'text-gray-300 hover:bg-slate-800'
                     }`}
                   >
@@ -596,7 +616,12 @@ const Dashboard = ({ user, onLogout }) => {
 
           {/* Main Content */}
           <div className="flex-1">
-            {activeTab === 'overview' && (
+            {isAdmin && activeTab === 'overview' && <AdminOverview />}
+            {isAdmin && activeTab === 'users' && <UserManagement />}
+            {isAdmin && activeTab === 'pending' && <PendingValidations />}
+            {isAdmin && activeTab === 'analytics' && <AdminAnalytics />}
+            
+            {!isAdmin && activeTab === 'overview' && (
               <DashboardOverview user={user} isPending={isPending} />
             )}
             {activeTab === 'profile' && (
