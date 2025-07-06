@@ -2018,21 +2018,56 @@ const AdminOverview = () => {
   );
 };
 
+// User Management Component
 const UserManagement = () => {
-  const [users] = useState([
-    { id: 1, name: 'Marie Dupont', email: 'marie@example.com', type: 'Particulier', status: 'Actif', date: '2024-01-15' },
-    { id: 2, name: 'Jean Martin', email: 'jean@example.com', type: 'Électricien', status: 'En attente', date: '2024-01-14' },
-    { id: 3, name: 'Sophie Leroy', email: 'sophie@example.com', type: 'Plombier', status: 'Actif', date: '2024-01-13' },
-    { id: 4, name: 'Pierre Durand', email: 'pierre@example.com', type: 'Particulier', status: 'Suspendu', date: '2024-01-12' }
-  ]);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    // Charger les utilisateurs depuis localStorage
+    const allUsers = JSON.parse(localStorage.getItem('swipe_ton_pro_all_users') || '[]');
+    setUsers(allUsers);
+  }, []);
+
+  const handleStatusChange = (userId, newStatus) => {
+    const updatedUsers = users.map(user => 
+      user.id === userId ? { ...user, status: newStatus } : user
+    );
+    setUsers(updatedUsers);
+    localStorage.setItem('swipe_ton_pro_all_users', JSON.stringify(updatedUsers));
+  };
+
+  const handleDeleteUser = (userId) => {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
+      const updatedUsers = users.filter(user => user.id !== userId);
+      setUsers(updatedUsers);
+      localStorage.setItem('swipe_ton_pro_all_users', JSON.stringify(updatedUsers));
+    }
+  };
 
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold text-white">Gestion des Utilisateurs</h1>
-        <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg">
-          Exporter CSV
-        </button>
+        <div className="flex space-x-4">
+          <span className="text-gray-400">Total: {users.length} utilisateurs</span>
+          <button 
+            onClick={() => {
+              const csvContent = "data:text/csv;charset=utf-8," 
+                + "Nom,Email,Type,Statut,Date\n"
+                + users.map(u => `${u.firstName} ${u.lastName},${u.email},${u.type},${u.status},${u.createdAt?.split('T')[0] || 'N/A'}`).join("\n");
+              const encodedUri = encodeURI(csvContent);
+              const link = document.createElement("a");
+              link.setAttribute("href", encodedUri);
+              link.setAttribute("download", "utilisateurs_swipetonpro.csv");
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            }}
+            className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg"
+          >
+            Exporter CSV
+          </button>
+        </div>
       </div>
 
       <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
@@ -2040,6 +2075,7 @@ const UserManagement = () => {
           <table className="w-full">
             <thead className="bg-slate-700">
               <tr>
+                <th className="px-6 py-4 text-left text-white font-semibold">Photo</th>
                 <th className="px-6 py-4 text-left text-white font-semibold">Nom</th>
                 <th className="px-6 py-4 text-left text-white font-semibold">Email</th>
                 <th className="px-6 py-4 text-left text-white font-semibold">Type</th>
@@ -2050,25 +2086,66 @@ const UserManagement = () => {
             </thead>
             <tbody>
               {users.map((user) => (
-                <tr key={user.id} className="border-t border-slate-700">
-                  <td className="px-6 py-4 text-white">{user.name}</td>
-                  <td className="px-6 py-4 text-gray-300">{user.email}</td>
-                  <td className="px-6 py-4 text-gray-300">{user.type}</td>
+                <tr key={user.id} className="border-t border-slate-700 hover:bg-slate-700/50">
                   <td className="px-6 py-4">
-                    <span className={`px-2 py-1 rounded text-xs font-semibold ${
-                      user.status === 'Actif' ? 'bg-emerald-500/20 text-emerald-400' :
-                      user.status === 'En attente' ? 'bg-yellow-500/20 text-yellow-400' :
-                      'bg-red-500/20 text-red-400'
-                    }`}>
-                      {user.status}
-                    </span>
+                    <div className="w-10 h-10 rounded-full overflow-hidden bg-slate-600 flex items-center justify-center">
+                      {user.profileImage ? (
+                        <img src={user.profileImage} alt="Profile" className="w-full h-full object-cover" />
+                      ) : (
+                        <Users className="w-5 h-5 text-gray-400" />
+                      )}
+                    </div>
                   </td>
-                  <td className="px-6 py-4 text-gray-300">{user.date}</td>
+                  <td className="px-6 py-4 text-white">{user.firstName} {user.lastName}</td>
+                  <td className="px-6 py-4 text-gray-300">{user.email}</td>
+                  <td className="px-6 py-4 text-gray-300 capitalize">
+                    {user.type === 'professionnel' ? (user.specialty || 'Professionnel') : user.type}
+                  </td>
+                  <td className="px-6 py-4">
+                    <select
+                      value={user.status}
+                      onChange={(e) => handleStatusChange(user.id, e.target.value)}
+                      className={`px-3 py-1 rounded text-xs font-semibold bg-slate-600 border border-slate-500 ${
+                        user.status === 'active' ? 'text-emerald-400' :
+                        user.status === 'pending' ? 'text-yellow-400' :
+                        'text-red-400'
+                      }`}
+                    >
+                      <option value="active">Actif</option>
+                      <option value="pending">En attente</option>
+                      <option value="suspended">Suspendu</option>
+                    </select>
+                  </td>
+                  <td className="px-6 py-4 text-gray-300">
+                    {user.createdAt ? new Date(user.createdAt).toLocaleDateString('fr-FR') : 'N/A'}
+                  </td>
                   <td className="px-6 py-4">
                     <div className="flex space-x-2">
-                      <button className="text-blue-400 hover:text-blue-300">Voir</button>
-                      <button className="text-emerald-400 hover:text-emerald-300">Modifier</button>
-                      <button className="text-red-400 hover:text-red-300">Suspendre</button>
+                      <button 
+                        onClick={() => {
+                          const userDetails = `
+Nom: ${user.firstName} ${user.lastName}
+Email: ${user.email}
+Type: ${user.type}
+Spécialité: ${user.specialty || 'N/A'}
+Entreprise: ${user.company || 'N/A'}
+Téléphone: ${user.phone || 'N/A'}
+Localisation: ${user.location || 'N/A'}
+Statut: ${user.status}
+Inscription: ${user.createdAt ? new Date(user.createdAt).toLocaleDateString('fr-FR') : 'N/A'}
+                          `;
+                          alert(userDetails);
+                        }}
+                        className="text-blue-400 hover:text-blue-300 text-sm"
+                      >
+                        Voir
+                      </button>
+                      <button 
+                        onClick={() => handleDeleteUser(user.id)}
+                        className="text-red-400 hover:text-red-300 text-sm"
+                      >
+                        Supprimer
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -2076,6 +2153,12 @@ const UserManagement = () => {
             </tbody>
           </table>
         </div>
+        
+        {users.length === 0 && (
+          <div className="text-center py-8 text-gray-400">
+            Aucun utilisateur enregistré pour le moment.
+          </div>
+        )}
       </div>
     </div>
   );
