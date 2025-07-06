@@ -227,7 +227,22 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
     e.preventDefault();
     
     if (isLogin) {
-      // Simulate login
+      // Check for admin login
+      if (formData.email === 'admin@swipetonpro.fr' && formData.password === 'admin123') {
+        const adminData = {
+          id: 'admin',
+          email: 'admin@swipetonpro.fr',
+          type: 'admin',
+          firstName: 'Admin',
+          lastName: 'SwipeTonPro',
+          status: 'active',
+          role: 'administrator'
+        };
+        onAuth(adminData);
+        return;
+      }
+      
+      // Simulate login for regular users
       const userData = {
         id: Date.now(),
         email: formData.email,
