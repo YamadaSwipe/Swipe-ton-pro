@@ -995,6 +995,21 @@ const SwipeInterface = ({ user, onBack }) => {
                   <span className="text-sm">Mode fantôme</span>
                 </div>
               )}
+              
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 rounded-full overflow-hidden bg-slate-700 flex items-center justify-center">
+                  {user.profileImage ? (
+                    <img 
+                      src={user.profileImage} 
+                      alt="Profile" 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <Users className="w-4 h-4 text-gray-400" />
+                  )}
+                </div>
+                <span className="text-white text-sm">{user.firstName}</span>
+              </div>
             </div>
           </div>
         </div>
