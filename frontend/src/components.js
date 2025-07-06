@@ -226,7 +226,7 @@ const WhyChooseUs = () => {
     {
       icon: <Shield className="w-12 h-12 text-yellow-500" />,
       title: "Sécurité garantie",
-      description: "Tous nos professionnels sont vérifiés et assurés pour votre tranquillité d'esprit."
+      description: "Tous les échanges et devis transitent par notre plateforme sécurisée. En cas de litige, nous protégeons les deux parties grâce à notre système de médiation intégré."
     },
     {
       icon: <Clock className="w-12 h-12 text-purple-500" />,
