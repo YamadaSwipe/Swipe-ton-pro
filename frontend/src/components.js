@@ -326,6 +326,33 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Photo de profil */}
+          {!isLogin && (
+            <div className="text-center mb-6">
+              <div className="relative inline-block">
+                <div className="w-24 h-24 rounded-full overflow-hidden bg-slate-700 mx-auto mb-4 flex items-center justify-center cursor-pointer border-2 border-dashed border-slate-600 hover:border-emerald-500 transition-colors"
+                     onClick={() => imageInputRef.current?.click()}>
+                  {profileImage ? (
+                    <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="text-center">
+                      <Camera className="w-8 h-8 text-gray-400 mx-auto mb-1" />
+                      <p className="text-xs text-gray-400">Photo</p>
+                    </div>
+                  )}
+                </div>
+                <input
+                  ref={imageInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+              </div>
+              <p className="text-gray-400 text-sm">Cliquez pour ajouter une photo de profil</p>
+            </div>
+          )}
+
           {!isLogin && (
             <>
               <div className="grid grid-cols-2 gap-4">
