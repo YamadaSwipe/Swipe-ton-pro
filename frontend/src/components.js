@@ -565,6 +565,7 @@ const Dashboard = ({ user, onLogout }) => {
   const professionalTabs = [
     { id: 'overview', label: 'Tableau de bord', icon: TrendingUp },
     { id: 'profile', label: 'Mon profil', icon: Users },
+    { id: 'documents', label: 'Mes documents', icon: FileText },
     { id: 'projects', label: 'Projets', icon: FileText },
     { id: 'messages', label: 'Messages', icon: MessageCircle },
     { id: 'swipe', label: 'Swiper', icon: Heart },
