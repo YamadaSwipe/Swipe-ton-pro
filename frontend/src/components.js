@@ -221,9 +221,57 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
   });
   const [documents, setDocuments] = useState([]);
   const [profileImage, setProfileImage] = useState(null);
+  const [selectedPack, setSelectedPack] = useState(null);
+  const [showPayment, setShowPayment] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
+
+  const packs = [
+    {
+      id: 'starter',
+      name: 'Pro Starter',
+      price: 49,
+      period: '/mois',
+      features: [
+        'Profil vérifié',
+        '30 demandes/mois',
+        'Facturation devis 30€',
+        'Analytics basiques',
+        'Support email'
+      ]
+    },
+    {
+      id: 'business',
+      name: 'Pro Business',
+      price: 99,
+      period: '/mois',
+      popular: true,
+      features: [
+        'Profil premium',
+        '100 demandes/mois',
+        'Facturation devis 80€',
+        'Analytics avancées',
+        'Support chat',
+        'Badge "Pro Business"'
+      ]
+    },
+    {
+      id: 'premium',
+      name: 'Pro Premium',
+      price: 149,
+      period: '/mois',
+      features: [
+        'Profil premium+',
+        '250 demandes/mois',
+        'Facturation devis 80€',
+        'Projets complexes',
+        'Support chat',
+        'Option "être rappelé"',
+        'Badge "Expert"'
+      ]
+    }
+  ];
 
   const handleSubmit = (e) => {
     e.preventDefault();
