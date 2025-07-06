@@ -1533,9 +1533,23 @@ const Footer = () => {
           
           <div>
             <h4 className="text-white font-semibold mb-4">Contact</h4>
-            <p className="text-gray-400 text-sm">
-              Une question ? Contactez-nous !
-            </p>
+            <ul className="space-y-2">
+              <li className="flex items-center text-gray-400">
+                <Mail className="w-4 h-4 mr-2" />
+                <a href="mailto:contact@swipetonpro.fr" className="hover:text-white transition-colors">
+                  contact@swipetonpro.fr
+                </a>
+              </li>
+              <li className="flex items-center text-gray-400">
+                <Mail className="w-4 h-4 mr-2" />
+                <a href="mailto:support@swipetonpro.fr" className="hover:text-white transition-colors">
+                  support@swipetonpro.fr
+                </a>
+              </li>
+              <li className="text-gray-400 text-sm mt-4">
+                Une question ? Contactez-nous !
+              </li>
+            </ul>
           </div>
         </div>
         
