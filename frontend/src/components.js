@@ -275,12 +275,12 @@ const ProfessionalCategories = () => {
   const categories = [
     {
       name: "Électricien",
-      image: "https://images.pexels.com/photos/257736/pexels-photo-257736.jpeg",
+      image: "https://images.pexels.com/photos/8853472/pexels-photo-8853472.jpeg",
       count: "250+ pros"
     },
     {
       name: "Plombier",
-      image: "https://images.pexels.com/photos/5691536/pexels-photo-5691536.jpeg",
+      image: "https://images.pexels.com/photos/31633689/pexels-photo-31633689.jpeg",
       count: "180+ pros"
     },
     {
@@ -290,12 +290,12 @@ const ProfessionalCategories = () => {
     },
     {
       name: "Peintre",
-      image: "https://images.pexels.com/photos/6474300/pexels-photo-6474300.jpeg",
+      image: "https://images.pexels.com/photos/5493653/pexels-photo-5493653.jpeg",
       count: "300+ pros"
     },
     {
       name: "Carreleur",
-      image: "https://images.pexels.com/photos/29181494/pexels-photo-29181494.jpeg",
+      image: "https://images.pexels.com/photos/11806477/pexels-photo-11806477.jpeg",
       count: "90+ pros"
     },
     {
@@ -305,7 +305,7 @@ const ProfessionalCategories = () => {
     },
     {
       name: "Maçon",
-      image: "https://images.unsplash.com/photo-1673865641469-34498379d8af",
+      image: "https://images.pexels.com/photos/10383580/pexels-photo-10383580.jpeg",
       count: "200+ pros"
     },
     {
