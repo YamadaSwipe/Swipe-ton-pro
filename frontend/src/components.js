@@ -202,6 +202,256 @@ const Hero = ({ onShowAuth, setAuthType }) => {
   );
 };
 
+// Payment Modal Component
+const PaymentModal = ({ pack, user, onPayment, onCancel }) => {
+  const [paymentData, setPaymentData] = useState({
+    cardNumber: '',
+    expiryDate: '',
+    cvv: '',
+    cardName: '',
+    billingAddress: '',
+    billingCity: '',
+    billingZip: ''
+  });
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (!paymentData.cardNumber || !paymentData.expiryDate || !paymentData.cvv || !paymentData.cardName) {
+      alert('Veuillez remplir toutes les informations de carte');
+      return;
+    }
+    
+    setIsProcessing(true);
+    
+    // Simulate payment processing
+    setTimeout(() => {
+      onPayment({
+        ...paymentData,
+        amount: pack.price,
+        packId: pack.id,
+        paymentDate: new Date().toISOString(),
+        status: 'paid'
+      });
+    }, 3000);
+  };
+
+  const formatCardNumber = (value) => {
+    const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+    const matches = v.match(/\d{4,16}/g);
+    const match = matches && matches[0] || '';
+    const parts = [];
+    for (let i = 0, len = match.length; i < len; i += 4) {
+      parts.push(match.substring(i, i + 4));
+    }
+    if (parts.length) {
+      return parts.join(' ');
+    } else {
+      return v;
+    }
+  };
+
+  const formatExpiryDate = (value) => {
+    const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+    if (v.length >= 2) {
+      return v.substring(0, 2) + '/' + v.substring(2, 4);
+    }
+    return v;
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-slate-800 rounded-2xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-white">Finaliser votre inscription</h2>
+          <button onClick={onCancel} className="text-gray-400 hover:text-white">
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+
+        {/* Pack Summary */}
+        <div className="bg-slate-700 rounded-lg p-4 mb-6">
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="text-lg font-semibold text-white">{pack.name}</h3>
+            <div className="text-right">
+              <span className="text-2xl font-bold text-white">{pack.price}€</span>
+              <span className="text-gray-400">{pack.period}</span>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            {pack.features.map((feature, idx) => (
+              <div key={idx} className="flex items-center text-gray-300 text-sm">
+                <CheckCircle className="w-4 h-4 text-emerald-500 mr-2" />
+                {feature}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* User Info */}
+        <div className="bg-slate-700 rounded-lg p-4 mb-6">
+          <h4 className="text-white font-medium mb-2">Informations du compte</h4>
+          <p className="text-gray-300 text-sm">{user.firstName} {user.lastName}</p>
+          <p className="text-gray-300 text-sm">{user.email}</p>
+          <p className="text-gray-300 text-sm">{user.company} - {user.specialty}</p>
+        </div>
+
+        {/* Payment Form */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <h4 className="text-white font-medium">Informations de paiement</h4>
+          
+          <div>
+            <label className="block text-gray-400 text-sm mb-2">Numéro de carte</label>
+            <input
+              type="text"
+              placeholder="1234 5678 9012 3456"
+              value={paymentData.cardNumber}
+              onChange={(e) => setPaymentData({...paymentData, cardNumber: formatCardNumber(e.target.value)})}
+              className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              maxLength="19"
+              required
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-gray-400 text-sm mb-2">Date d'expiration</label>
+              <input
+                type="text"
+                placeholder="MM/AA"
+                value={paymentData.expiryDate}
+                onChange={(e) => setPaymentData({...paymentData, expiryDate: formatExpiryDate(e.target.value)})}
+                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                maxLength="5"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-gray-400 text-sm mb-2">CVV</label>
+              <input
+                type="text"
+                placeholder="123"
+                value={paymentData.cvv}
+                onChange={(e) => setPaymentData({...paymentData, cvv: e.target.value.replace(/\D/g, '')})}
+                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                maxLength="4"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-gray-400 text-sm mb-2">Nom sur la carte</label>
+            <input
+              type="text"
+              placeholder="Jean Dupont"
+              value={paymentData.cardName}
+              onChange={(e) => setPaymentData({...paymentData, cardName: e.target.value})}
+              className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-400 text-sm mb-2">Adresse de facturation</label>
+            <input
+              type="text"
+              placeholder="123 Rue de la Paix"
+              value={paymentData.billingAddress}
+              onChange={(e) => setPaymentData({...paymentData, billingAddress: e.target.value})}
+              className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              required
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-gray-400 text-sm mb-2">Ville</label>
+              <input
+                type="text"
+                placeholder="Paris"
+                value={paymentData.billingCity}
+                onChange={(e) => setPaymentData({...paymentData, billingCity: e.target.value})}
+                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-gray-400 text-sm mb-2">Code postal</label>
+              <input
+                type="text"
+                placeholder="75001"
+                value={paymentData.billingZip}
+                onChange={(e) => setPaymentData({...paymentData, billingZip: e.target.value.replace(/\D/g, '')})}
+                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                maxLength="5"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Total */}
+          <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-4">
+            <div className="flex justify-between items-center">
+              <span className="text-white font-medium">Total à payer</span>
+              <span className="text-2xl font-bold text-emerald-400">{pack.price}€</span>
+            </div>
+            <p className="text-emerald-300 text-sm mt-1">
+              Facturation mensuelle - Résiliable à tout moment
+            </p>
+          </div>
+
+          <div className="flex space-x-4 mt-8">
+            <button
+              type="submit"
+              disabled={isProcessing}
+              className={`flex-1 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center ${
+                isProcessing
+                  ? 'bg-gray-500 cursor-not-allowed'
+                  : 'bg-emerald-500 hover:bg-emerald-600'
+              } text-white`}
+            >
+              {isProcessing ? (
+                <>
+                  <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                  Traitement en cours...
+                </>
+              ) : (
+                <>
+                  <Shield className="w-5 h-5 mr-2" />
+                  Payer {pack.price}€ et finaliser
+                </>
+              )}
+            </button>
+            <button
+              type="button"
+              onClick={onCancel}
+              disabled={isProcessing}
+              className="px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-semibold transition-colors"
+            >
+              Annuler
+            </button>
+          </div>
+        </form>
+
+        {/* Security Notice */}
+        <div className="mt-6 bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+          <div className="flex items-start">
+            <Shield className="w-5 h-5 text-blue-400 mr-3 mt-0.5" />
+            <div>
+              <p className="text-blue-400 text-sm font-medium">Paiement sécurisé</p>
+              <p className="text-blue-300 text-xs mt-1">
+                Vos informations sont protégées par un cryptage SSL. Nous ne stockons aucune information de carte bancaire.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Auth Modal Component
 const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
   const [currentAuthType, setCurrentAuthType] = useState(authType);
