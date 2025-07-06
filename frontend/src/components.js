@@ -845,7 +845,302 @@ const DashboardOverview = ({ user, isPending }) => {
   );
 };
 
-// Profile Management Component
+// Documents Management Component (for professionals)
+const DocumentsManagement = ({ user }) => {
+  const [documents, setDocuments] = useState(user.documents || []);
+  const [newDocuments, setNewDocuments] = useState([]);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef(null);
+
+  const handleFileUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const documentsToAdd = files.map(file => ({
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      id: Date.now() + Math.random(),
+      uploadDate: new Date().toISOString(),
+      status: 'pending'
+    }));
+    
+    setNewDocuments(prev => [...prev, ...documentsToAdd]);
+  };
+
+  const handleSaveDocuments = () => {
+    setIsUploading(true);
+    
+    // Simuler l'upload
+    setTimeout(() => {
+      const allDocuments = [...documents, ...newDocuments];
+      setDocuments(allDocuments);
+      
+      // Mettre à jour les données utilisateur
+      const updatedUser = { ...user, documents: allDocuments };
+      localStorage.setItem('swipe_ton_pro_user', JSON.stringify(updatedUser));
+      
+      // Mettre à jour dans la liste globale
+      const allUsers = JSON.parse(localStorage.getItem('swipe_ton_pro_all_users') || '[]');
+      const userIndex = allUsers.findIndex(u => u.id === user.id);
+      if (userIndex !== -1) {
+        allUsers[userIndex] = updatedUser;
+        localStorage.setItem('swipe_ton_pro_all_users', JSON.stringify(allUsers));
+      }
+      
+      setNewDocuments([]);
+      setIsUploading(false);
+    }, 2000);
+  };
+
+  const handleRemoveDocument = (docId, isNew = false) => {
+    if (isNew) {
+      setNewDocuments(prev => prev.filter(doc => doc.id !== docId));
+    } else {
+      if (window.confirm('Êtes-vous sûr de vouloir supprimer ce document ?')) {
+        const updatedDocuments = documents.filter(doc => doc.id !== docId);
+        setDocuments(updatedDocuments);
+        
+        // Mettre à jour les données utilisateur
+        const updatedUser = { ...user, documents: updatedDocuments };
+        localStorage.setItem('swipe_ton_pro_user', JSON.stringify(updatedUser));
+        
+        // Mettre à jour dans la liste globale
+        const allUsers = JSON.parse(localStorage.getItem('swipe_ton_pro_all_users') || '[]');
+        const userIndex = allUsers.findIndex(u => u.id === user.id);
+        if (userIndex !== -1) {
+          allUsers[userIndex] = updatedUser;
+          localStorage.setItem('swipe_ton_pro_all_users', JSON.stringify(allUsers));
+        }
+      }
+    }
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'approved': return 'bg-emerald-500/20 text-emerald-400';
+      case 'rejected': return 'bg-red-500/20 text-red-400';
+      case 'pending': return 'bg-yellow-500/20 text-yellow-400';
+      default: return 'bg-gray-500/20 text-gray-400';
+    }
+  };
+
+  const getStatusText = (status) => {
+    switch (status) {
+      case 'approved': return 'Validé';
+      case 'rejected': return 'Rejeté';
+      case 'pending': return 'En attente';
+      default: return 'Inconnu';
+    }
+  };
+
+  return (
+    <div className="space-y-8">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold text-white">Mes documents</h1>
+        <div className="flex items-center space-x-4">
+          <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+            user.status === 'active' ? 'bg-emerald-500/20 text-emerald-400' :
+            user.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
+            'bg-red-500/20 text-red-400'
+          }`}>
+            Profil: {user.status === 'active' ? 'Validé' : user.status === 'pending' ? 'En attente' : 'Rejeté'}
+          </span>
+        </div>
+      </div>
+
+      {/* Status Message */}
+      <div className={`p-6 rounded-lg border ${
+        user.status === 'pending' ? 'bg-yellow-500/10 border-yellow-500/30' :
+        user.status === 'active' ? 'bg-emerald-500/10 border-emerald-500/30' :
+        'bg-red-500/10 border-red-500/30'
+      }`}>
+        <div className="flex items-start">
+          {user.status === 'pending' && <AlertCircle className="w-6 h-6 text-yellow-400 mr-4 mt-1" />}
+          {user.status === 'active' && <CheckCircle className="w-6 h-6 text-emerald-400 mr-4 mt-1" />}
+          {user.status === 'rejected' && <X className="w-6 h-6 text-red-400 mr-4 mt-1" />}
+          <div>
+            <h3 className={`font-semibold mb-2 ${
+              user.status === 'pending' ? 'text-yellow-400' :
+              user.status === 'active' ? 'text-emerald-400' :
+              'text-red-400'
+            }`}>
+              {user.status === 'pending' && 'Validation en cours'}
+              {user.status === 'active' && 'Profil validé'}
+              {user.status === 'rejected' && 'Profil rejeté'}
+            </h3>
+            <p className={`${
+              user.status === 'pending' ? 'text-yellow-300' :
+              user.status === 'active' ? 'text-emerald-300' :
+              'text-red-300'
+            }`}>
+              {user.status === 'pending' && 'Vos documents sont en cours de vérification. Vous pouvez swiper en mode fantôme en attendant.'}
+              {user.status === 'active' && 'Votre profil est validé ! Vous avez accès à toutes les fonctionnalités.'}
+              {user.status === 'rejected' && 'Votre profil a été rejeté. Veuillez nous contacter ou télécharger de nouveaux documents.'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Documents Required */}
+      <div className="bg-slate-800 rounded-lg border border-slate-700 p-6">
+        <h3 className="text-xl font-semibold text-white mb-4">Documents requis</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="bg-slate-700 p-4 rounded-lg">
+            <FileText className="w-8 h-8 text-emerald-400 mb-2" />
+            <h4 className="text-white font-medium">Kbis</h4>
+            <p className="text-gray-400 text-sm">Extrait Kbis de moins de 3 mois</p>
+          </div>
+          <div className="bg-slate-700 p-4 rounded-lg">
+            <Shield className="w-8 h-8 text-blue-400 mb-2" />
+            <h4 className="text-white font-medium">Assurance</h4>
+            <p className="text-gray-400 text-sm">Attestation d'assurance responsabilité civile</p>
+          </div>
+          <div className="bg-slate-700 p-4 rounded-lg">
+            <Award className="w-8 h-8 text-purple-400 mb-2" />
+            <h4 className="text-white font-medium">Certifications</h4>
+            <p className="text-gray-400 text-sm">Certificats professionnels ou qualifications</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Current Documents */}
+      <div className="bg-slate-800 rounded-lg border border-slate-700 p-6">
+        <h3 className="text-xl font-semibold text-white mb-4">Documents actuels</h3>
+        {documents.length > 0 ? (
+          <div className="space-y-4">
+            {documents.map((doc) => (
+              <div key={doc.id} className="flex items-center justify-between bg-slate-700 p-4 rounded-lg">
+                <div className="flex items-center">
+                  <FileText className="w-6 h-6 text-emerald-400 mr-4" />
+                  <div>
+                    <p className="text-white font-medium">{doc.name}</p>
+                    <p className="text-gray-400 text-sm">
+                      Téléchargé le {new Date(doc.uploadDate || Date.now()).toLocaleDateString('fr-FR')}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(doc.status || 'pending')}`}>
+                    {getStatusText(doc.status || 'pending')}
+                  </span>
+                  <button
+                    onClick={() => handleRemoveDocument(doc.id)}
+                    className="text-red-400 hover:text-red-300 p-2"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-400">Aucun document téléchargé.</p>
+        )}
+      </div>
+
+      {/* Upload New Documents */}
+      <div className="bg-slate-800 rounded-lg border border-slate-700 p-6">
+        <h3 className="text-xl font-semibold text-white mb-4">Ajouter des documents</h3>
+        
+        <div
+          onClick={() => fileInputRef.current?.click()}
+          className="border-2 border-dashed border-slate-600 rounded-lg p-8 text-center cursor-pointer hover:border-emerald-500 transition-colors mb-6"
+        >
+          <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+          <p className="text-white mb-2">Cliquez pour sélectionner des fichiers</p>
+          <p className="text-gray-400 text-sm">PDF, JPG, PNG (max 5MB par fichier)</p>
+        </div>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          multiple
+          accept=".pdf,.jpg,.jpeg,.png"
+          onChange={handleFileUpload}
+          className="hidden"
+        />
+
+        {/* New Documents Preview */}
+        {newDocuments.length > 0 && (
+          <div className="space-y-4 mb-6">
+            <h4 className="text-white font-medium">Nouveaux documents à télécharger :</h4>
+            {newDocuments.map((doc) => (
+              <div key={doc.id} className="flex items-center justify-between bg-slate-700 p-4 rounded-lg border border-emerald-500/30">
+                <div className="flex items-center">
+                  <FileText className="w-6 h-6 text-emerald-400 mr-4" />
+                  <div>
+                    <p className="text-white font-medium">{doc.name}</p>
+                    <p className="text-gray-400 text-sm">
+                      {(doc.size / 1024 / 1024).toFixed(2)} MB
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => handleRemoveDocument(doc.id, true)}
+                  className="text-red-400 hover:text-red-300 p-2"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            ))}
+            
+            <div className="flex space-x-4">
+              <button
+                onClick={handleSaveDocuments}
+                disabled={isUploading}
+                className={`px-6 py-3 rounded-lg font-semibold transition-colors flex items-center ${
+                  isUploading
+                    ? 'bg-gray-500 cursor-not-allowed'
+                    : 'bg-emerald-500 hover:bg-emerald-600'
+                } text-white`}
+              >
+                {isUploading ? (
+                  <>
+                    <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                    Téléchargement...
+                  </>
+                ) : (
+                  <>
+                    <Upload className="w-5 h-5 mr-2" />
+                    Télécharger les documents
+                  </>
+                )}
+              </button>
+              <button
+                onClick={() => setNewDocuments([])}
+                className="px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-semibold transition-colors"
+              >
+                Annuler
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Help Section */}
+      <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-6">
+        <h3 className="text-blue-400 font-semibold mb-2">Besoin d'aide ?</h3>
+        <p className="text-blue-300 text-sm mb-4">
+          Si vous avez des questions sur les documents requis ou si votre profil a été rejeté, 
+          n'hésitez pas à nous contacter.
+        </p>
+        <div className="flex space-x-4">
+          <a 
+            href="mailto:support@swipetonpro.fr"
+            className="text-blue-400 hover:text-blue-300 text-sm font-medium"
+          >
+            support@swipetonpro.fr
+          </a>
+          <a 
+            href="mailto:contact@swipetonpro.fr"
+            className="text-blue-400 hover:text-blue-300 text-sm font-medium"
+          >
+            contact@swipetonpro.fr
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+};
 const ProfileManagement = ({ user }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
