@@ -977,9 +977,10 @@ const SwipeInterface = ({ user, onBack }) => {
             <div className="flex items-center">
               <button
                 onClick={onBack}
-                className="text-gray-400 hover:text-white mr-4"
+                className="text-gray-400 hover:text-white mr-4 flex items-center"
               >
-                ←
+                <ArrowRight className="w-5 h-5 mr-2 rotate-180" />
+                Retour Dashboard
               </button>
               <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center">
                 <Heart className="w-5 h-5 text-white" />
