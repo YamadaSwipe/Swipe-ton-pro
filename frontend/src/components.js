@@ -46,7 +46,7 @@ const Header = () => {
             <button className="text-gray-300 hover:text-white transition-colors">
               Se connecter
             </button>
-            <button className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">
+            <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition-colors">
               Inscription
             </button>
           </div>
