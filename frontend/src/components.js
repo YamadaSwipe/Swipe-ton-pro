@@ -275,42 +275,42 @@ const ProfessionalCategories = () => {
   const categories = [
     {
       name: "Électricien",
-      image: "https://images.pexels.com/photos/8532850/pexels-photo-8532850.jpeg",
+      image: "https://images.pexels.com/photos/257736/pexels-photo-257736.jpeg",
       count: "250+ pros"
     },
     {
       name: "Plombier",
-      image: "https://images.pexels.com/photos/8986147/pexels-photo-8986147.jpeg",
+      image: "https://images.pexels.com/photos/5691536/pexels-photo-5691536.jpeg",
       count: "180+ pros"
     },
     {
       name: "Menuisier",
-      image: "https://images.unsplash.com/photo-1711856714985-c2b10006dc18",
+      image: "https://images.pexels.com/photos/1094767/pexels-photo-1094767.jpeg",
       count: "120+ pros"
     },
     {
       name: "Peintre",
-      image: "https://images.unsplash.com/photo-1583031537966-8d186811d75c",
+      image: "https://images.pexels.com/photos/6474300/pexels-photo-6474300.jpeg",
       count: "300+ pros"
     },
     {
       name: "Carreleur",
-      image: "https://images.pexels.com/photos/7562027/pexels-photo-7562027.jpeg",
+      image: "https://images.pexels.com/photos/29181494/pexels-photo-29181494.jpeg",
       count: "90+ pros"
     },
     {
       name: "Chauffagiste",
-      image: "https://images.pexels.com/photos/8147704/pexels-photo-8147704.jpeg",
+      image: "https://images.pexels.com/photos/7347538/pexels-photo-7347538.jpeg",
       count: "150+ pros"
     },
     {
       name: "Maçon",
-      image: "https://images.unsplash.com/photo-1709200303909-d3814d11d274",
+      image: "https://images.unsplash.com/photo-1673865641469-34498379d8af",
       count: "200+ pros"
     },
     {
       name: "Jardinier",
-      image: "https://images.unsplash.com/photo-1652339961527-e6baae619661",
+      image: "https://images.pexels.com/photos/7728706/pexels-photo-7728706.jpeg",
       count: "160+ pros"
     }
   ];
