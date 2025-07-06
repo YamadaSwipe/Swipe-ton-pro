@@ -661,10 +661,6 @@ const MobileApp = () => {
                   <CheckCircle className="w-5 h-5 text-emerald-500 mr-3" />
                   Chat intégré pour échanger
                 </li>
-                <li className="flex items-center text-gray-300">
-                  <CheckCircle className="w-5 h-5 text-emerald-500 mr-3" />
-                  Géolocalisation précise
-                </li>
               </ul>
               <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
                 Swiper gratuitement
