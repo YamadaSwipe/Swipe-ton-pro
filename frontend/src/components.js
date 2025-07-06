@@ -262,6 +262,7 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
         type: currentAuthType,
         status: currentAuthType === 'professionnel' ? 'pending' : 'active',
         documents: documents,
+        profileImage: profileImage,
         createdAt: new Date().toISOString()
       };
       onAuth(userData);
