@@ -1606,6 +1606,243 @@ const Footer = () => {
   );
 };
 
+// Admin Components
+const AdminOverview = () => {
+  const stats = [
+    { label: 'Utilisateurs totaux', value: '1,247', icon: Users, color: 'text-blue-400' },
+    { label: 'Pros en attente', value: '23', icon: AlertCircle, color: 'text-yellow-400' },
+    { label: 'Projets actifs', value: '156', icon: FileText, color: 'text-emerald-400' },
+    { label: 'Revenue mensuel', value: '€12,450', icon: DollarSign, color: 'text-green-400' }
+  ];
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-3xl font-bold text-white mb-2">Dashboard Administrateur</h1>
+        <p className="text-gray-400">Vue d'ensemble de la plateforme SwipeTonPro</p>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        {stats.map((stat, index) => {
+          const Icon = stat.icon;
+          return (
+            <div key={index} className="bg-slate-800 p-6 rounded-lg border border-slate-700">
+              <div className="flex items-center justify-between mb-4">
+                <Icon className={`w-8 h-8 ${stat.color}`} />
+                <span className={`text-2xl font-bold text-white`}>{stat.value}</span>
+              </div>
+              <p className="text-gray-400 text-sm">{stat.label}</p>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Recent Activity */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="bg-slate-800 rounded-lg border border-slate-700 p-6">
+          <h3 className="text-xl font-semibold text-white mb-4">Dernières inscriptions</h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-white">Marie Dupont (Particulier)</p>
+                <p className="text-gray-400 text-sm">Il y a 2 heures</p>
+              </div>
+              <span className="bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded text-xs">Actif</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-white">Jean Martin (Électricien)</p>
+                <p className="text-gray-400 text-sm">Il y a 4 heures</p>
+              </div>
+              <span className="bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded text-xs">En attente</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-slate-800 rounded-lg border border-slate-700 p-6">
+          <h3 className="text-xl font-semibold text-white mb-4">Actions requises</h3>
+          <div className="space-y-4">
+            <div className="flex items-center space-x-3">
+              <AlertCircle className="w-5 h-5 text-yellow-400" />
+              <span className="text-white">23 professionnels à valider</span>
+            </div>
+            <div className="flex items-center space-x-3">
+              <MessageCircle className="w-5 h-5 text-blue-400" />
+              <span className="text-white">5 messages support</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const UserManagement = () => {
+  const [users] = useState([
+    { id: 1, name: 'Marie Dupont', email: 'marie@example.com', type: 'Particulier', status: 'Actif', date: '2024-01-15' },
+    { id: 2, name: 'Jean Martin', email: 'jean@example.com', type: 'Électricien', status: 'En attente', date: '2024-01-14' },
+    { id: 3, name: 'Sophie Leroy', email: 'sophie@example.com', type: 'Plombier', status: 'Actif', date: '2024-01-13' },
+    { id: 4, name: 'Pierre Durand', email: 'pierre@example.com', type: 'Particulier', status: 'Suspendu', date: '2024-01-12' }
+  ]);
+
+  return (
+    <div className="space-y-8">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold text-white">Gestion des Utilisateurs</h1>
+        <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg">
+          Exporter CSV
+        </button>
+      </div>
+
+      <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-slate-700">
+              <tr>
+                <th className="px-6 py-4 text-left text-white font-semibold">Nom</th>
+                <th className="px-6 py-4 text-left text-white font-semibold">Email</th>
+                <th className="px-6 py-4 text-left text-white font-semibold">Type</th>
+                <th className="px-6 py-4 text-left text-white font-semibold">Statut</th>
+                <th className="px-6 py-4 text-left text-white font-semibold">Inscription</th>
+                <th className="px-6 py-4 text-left text-white font-semibold">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user.id} className="border-t border-slate-700">
+                  <td className="px-6 py-4 text-white">{user.name}</td>
+                  <td className="px-6 py-4 text-gray-300">{user.email}</td>
+                  <td className="px-6 py-4 text-gray-300">{user.type}</td>
+                  <td className="px-6 py-4">
+                    <span className={`px-2 py-1 rounded text-xs font-semibold ${
+                      user.status === 'Actif' ? 'bg-emerald-500/20 text-emerald-400' :
+                      user.status === 'En attente' ? 'bg-yellow-500/20 text-yellow-400' :
+                      'bg-red-500/20 text-red-400'
+                    }`}>
+                      {user.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-gray-300">{user.date}</td>
+                  <td className="px-6 py-4">
+                    <div className="flex space-x-2">
+                      <button className="text-blue-400 hover:text-blue-300">Voir</button>
+                      <button className="text-emerald-400 hover:text-emerald-300">Modifier</button>
+                      <button className="text-red-400 hover:text-red-300">Suspendre</button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const PendingValidations = () => {
+  const [pendingUsers] = useState([
+    { 
+      id: 1, 
+      name: 'Jean Martin', 
+      email: 'jean@example.com', 
+      specialty: 'Électricien',
+      company: 'Martin Électricité',
+      siret: '12345678901234',
+      documents: ['kbis.pdf', 'assurance.pdf', 'certification.pdf'],
+      date: '2024-01-14'
+    },
+    { 
+      id: 2, 
+      name: 'Thomas Leroy', 
+      email: 'thomas@example.com', 
+      specialty: 'Plombier',
+      company: 'Leroy Plomberie',
+      siret: '56789012345678',
+      documents: ['kbis.pdf', 'assurance.pdf'],
+      date: '2024-01-13'
+    }
+  ]);
+
+  const handleValidation = (userId, action) => {
+    console.log(`${action} user ${userId}`);
+    // Ici vous ajouteriez la logique de validation
+  };
+
+  return (
+    <div className="space-y-8">
+      <h1 className="text-3xl font-bold text-white">Validations en attente</h1>
+
+      <div className="space-y-6">
+        {pendingUsers.map((user) => (
+          <div key={user.id} className="bg-slate-800 rounded-lg border border-slate-700 p-6">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <h3 className="text-xl font-semibold text-white">{user.name}</h3>
+                <p className="text-gray-400">{user.specialty} - {user.company}</p>
+                <p className="text-gray-400 text-sm">SIRET: {user.siret}</p>
+                <p className="text-gray-400 text-sm">Demande du {user.date}</p>
+              </div>
+              <div className="flex space-x-4">
+                <button 
+                  onClick={() => handleValidation(user.id, 'approve')}
+                  className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg flex items-center"
+                >
+                  <CheckCircle className="w-4 h-4 mr-2" />
+                  Valider
+                </button>
+                <button 
+                  onClick={() => handleValidation(user.id, 'reject')}
+                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center"
+                >
+                  <X className="w-4 h-4 mr-2" />
+                  Refuser
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-white font-medium mb-2">Documents fournis :</h4>
+              <div className="flex space-x-3">
+                {user.documents.map((doc, index) => (
+                  <div key={index} className="flex items-center bg-slate-700 px-3 py-2 rounded">
+                    <FileText className="w-4 h-4 text-emerald-400 mr-2" />
+                    <span className="text-gray-300 text-sm">{doc}</span>
+                    <button className="ml-2 text-blue-400 hover:text-blue-300">
+                      <Eye className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const AdminAnalytics = () => {
+  return (
+    <div className="space-y-8">
+      <h1 className="text-3xl font-bold text-white">Analytics & Statistiques</h1>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="bg-slate-800 rounded-lg border border-slate-700 p-6">
+          <h3 className="text-xl font-semibold text-white mb-4">Inscriptions par mois</h3>
+          <div className="text-gray-400">Graphique en développement...</div>
+        </div>
+        
+        <div className="bg-slate-800 rounded-lg border border-slate-700 p-6">
+          <h3 className="text-xl font-semibold text-white mb-4">Revenue par catégorie</h3>
+          <div className="text-gray-400">Graphique en développement...</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Export all components
 export const Components = {
   Header,
@@ -1620,5 +1857,9 @@ export const Components = {
   Footer,
   AuthModal,
   Dashboard,
-  SwipeInterface
+  SwipeInterface,
+  AdminOverview,
+  UserManagement,
+  PendingValidations,
+  AdminAnalytics
 };
