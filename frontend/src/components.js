@@ -385,7 +385,39 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
     }
   };
 
-  if (!isOpen) return null;
+  const handlePayment = (paymentData) => {
+    // Simulate payment processing
+    setTimeout(() => {
+      const userData = {
+        id: Date.now(),
+        ...formData,
+        type: currentAuthType,
+        status: 'pending', // Professional needs validation
+        documents: documents,
+        profileImage: profileImage,
+        selectedPack: selectedPack,
+        paymentData: paymentData,
+        createdAt: new Date().toISOString()
+      };
+      
+      // Save user
+      const allUsers = JSON.parse(localStorage.getItem('swipe_ton_pro_all_users') || '[]');
+      const updatedUsers = [...allUsers, userData];
+      localStorage.setItem('swipe_ton_pro_all_users', JSON.stringify(updatedUsers));
+      
+      setShowPayment(false);
+      onAuth(userData);
+    }, 2000);
+  };
+
+  if (showPayment) {
+    return <PaymentModal 
+      pack={selectedPack} 
+      user={formData}
+      onPayment={handlePayment}
+      onCancel={() => setShowPayment(false)}
+    />;
+  }
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
