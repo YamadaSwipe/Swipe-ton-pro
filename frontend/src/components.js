@@ -696,7 +696,9 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
                 : 'bg-yellow-500 hover:bg-yellow-600'
             } text-white`}
           >
-            {isLogin ? 'Se connecter' : 'Créer mon compte'}
+            {isLogin ? 'Se connecter' : (
+              currentAuthType === 'professionnel' ? 'Choisir le pack et payer' : 'Créer mon compte'
+            )}
           </button>
         </form>
 
