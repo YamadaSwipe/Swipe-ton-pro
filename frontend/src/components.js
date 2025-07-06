@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { 
   Star, 
@@ -11,11 +11,29 @@ import {
   Heart,
   X,
   Menu,
-  ChevronDown
+  ChevronDown,
+  Upload,
+  Eye,
+  EyeOff,
+  FileText,
+  Camera,
+  Settings,
+  LogOut,
+  MessageCircle,
+  TrendingUp,
+  Award,
+  AlertCircle,
+  ThumbsUp,
+  ThumbsDown,
+  MapPin,
+  Phone,
+  Mail,
+  Calendar,
+  DollarSign
 } from "lucide-react";
 
 // Header Component
-const Header = () => {
+const Header = ({ onShowAuth, setAuthType }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -43,10 +61,22 @@ const Header = () => {
           </nav>
 
           <div className="hidden md:flex items-center space-x-4">
-            <button className="text-gray-300 hover:text-white transition-colors">
+            <button 
+              onClick={() => {
+                setAuthType('login');
+                onShowAuth(true);
+              }}
+              className="text-gray-300 hover:text-white transition-colors"
+            >
               Se connecter
             </button>
-            <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition-colors">
+            <button 
+              onClick={() => {
+                setAuthType('particulier');
+                onShowAuth(true);
+              }}
+              className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition-colors"
+            >
               Inscription
             </button>
           </div>
@@ -66,9 +96,7 @@ const Header = () => {
 };
 
 // Hero Component
-const Hero = () => {
-  const [email, setEmail] = useState("");
-
+const Hero = ({ onShowAuth, setAuthType }) => {
   return (
     <section className="pt-20 pb-32 bg-slate-900 relative overflow-hidden">
       {/* Background Pattern */}
@@ -117,12 +145,24 @@ const Hero = () => {
             transition={{ delay: 0.6 }}
             className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-12"
           >
-            <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors flex items-center">
+            <button 
+              onClick={() => {
+                setAuthType('particulier');
+                onShowAuth(true);
+              }}
+              className="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors flex items-center"
+            >
               Commencer gratuitement
               <span className="ml-2 text-sm font-normal">(Particuliers)</span>
               <ArrowRight className="w-5 h-5 ml-2" />
             </button>
-            <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-4 rounded-lg transition-colors flex items-center">
+            <button 
+              onClick={() => {
+                setAuthType('professionnel');
+                onShowAuth(true);
+              }}
+              className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-4 rounded-lg transition-colors flex items-center"
+            >
               <Search className="w-5 h-5 mr-2" />
               Je suis un professionnel
             </button>
@@ -162,7 +202,759 @@ const Hero = () => {
   );
 };
 
-// How It Works Component
+// Auth Modal Component
+const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
+  const [currentAuthType, setCurrentAuthType] = useState(authType);
+  const [isLogin, setIsLogin] = useState(authType === 'login');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    firstName: '',
+    lastName: '',
+    phone: '',
+    company: '',
+    siret: '',
+    specialty: '',
+    experience: '',
+    location: ''
+  });
+  const [documents, setDocuments] = useState([]);
+  const [showPassword, setShowPassword] = useState(false);
+  const fileInputRef = useRef(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (isLogin) {
+      // Simulate login
+      const userData = {
+        id: Date.now(),
+        email: formData.email,
+        type: 'particulier',
+        firstName: 'John',
+        lastName: 'Doe',
+        status: 'active'
+      };
+      onAuth(userData);
+    } else {
+      // Create new user
+      const userData = {
+        id: Date.now(),
+        ...formData,
+        type: currentAuthType,
+        status: currentAuthType === 'professionnel' ? 'pending' : 'active',
+        documents: documents,
+        createdAt: new Date().toISOString()
+      };
+      onAuth(userData);
+    }
+  };
+
+  const handleFileUpload = (e) => {
+    const files = Array.from(e.target.files);
+    setDocuments(prev => [...prev, ...files.map(file => ({
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      id: Date.now() + Math.random()
+    }))]);
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-slate-800 rounded-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-white">
+            {isLogin ? 'Connexion' : `Inscription ${currentAuthType === 'particulier' ? 'Particulier' : 'Professionnel'}`}
+          </h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-white">
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+
+        {!isLogin && (
+          <div className="flex mb-6 bg-slate-700 rounded-lg p-1">
+            <button
+              onClick={() => setCurrentAuthType('particulier')}
+              className={`flex-1 py-2 px-4 rounded-md transition-colors ${
+                currentAuthType === 'particulier' ? 'bg-yellow-500 text-white' : 'text-gray-300'
+              }`}
+            >
+              Particulier
+            </button>
+            <button
+              onClick={() => setCurrentAuthType('professionnel')}
+              className={`flex-1 py-2 px-4 rounded-md transition-colors ${
+                currentAuthType === 'professionnel' ? 'bg-emerald-500 text-white' : 'text-gray-300'
+              }`}
+            >
+              Professionnel
+            </button>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {!isLogin && (
+            <>
+              <div className="grid grid-cols-2 gap-4">
+                <input
+                  type="text"
+                  placeholder="Prénom"
+                  value={formData.firstName}
+                  onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Nom"
+                  value={formData.lastName}
+                  onChange={(e) => setFormData({...formData, lastName: e.target.value})}
+                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  required
+                />
+              </div>
+            </>
+          )}
+
+          <input
+            type="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={(e) => setFormData({...formData, email: e.target.value})}
+            className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            required
+          />
+
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Mot de passe"
+              value={formData.password}
+              onChange={(e) => setFormData({...formData, password: e.target.value})}
+              className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            >
+              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            </button>
+          </div>
+
+          {!isLogin && currentAuthType === 'professionnel' && (
+            <>
+              <input
+                type="text"
+                placeholder="Téléphone"
+                value={formData.phone}
+                onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                required
+              />
+              
+              <input
+                type="text"
+                placeholder="Entreprise"
+                value={formData.company}
+                onChange={(e) => setFormData({...formData, company: e.target.value})}
+                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                required
+              />
+
+              <input
+                type="text"
+                placeholder="SIRET"
+                value={formData.siret}
+                onChange={(e) => setFormData({...formData, siret: e.target.value})}
+                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                required
+              />
+
+              <select
+                value={formData.specialty}
+                onChange={(e) => setFormData({...formData, specialty: e.target.value})}
+                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                required
+              >
+                <option value="">Sélectionner votre spécialité</option>
+                <option value="electricien">Électricien</option>
+                <option value="plombier">Plombier</option>
+                <option value="menuisier">Menuisier</option>
+                <option value="peintre">Peintre</option>
+                <option value="macon">Maçon</option>
+                <option value="chauffagiste">Chauffagiste</option>
+                <option value="carreleur">Carreleur</option>
+              </select>
+
+              <input
+                type="text"
+                placeholder="Localisation"
+                value={formData.location}
+                onChange={(e) => setFormData({...formData, location: e.target.value})}
+                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                required
+              />
+
+              <div className="space-y-4">
+                <label className="block text-white text-sm font-medium">
+                  Documents requis (Kbis, assurance, certifications)
+                </label>
+                
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className="border-2 border-dashed border-slate-600 rounded-lg p-6 text-center cursor-pointer hover:border-emerald-500 transition-colors"
+                >
+                  <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                  <p className="text-gray-400">Cliquez pour ajouter des documents</p>
+                  <p className="text-xs text-gray-500 mt-1">PDF, JPG, PNG (max 5MB)</p>
+                </div>
+
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  multiple
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+
+                {documents.length > 0 && (
+                  <div className="space-y-2">
+                    {documents.map((doc) => (
+                      <div key={doc.id} className="flex items-center justify-between bg-slate-700 p-3 rounded-lg">
+                        <div className="flex items-center">
+                          <FileText className="w-5 h-5 text-emerald-500 mr-3" />
+                          <span className="text-white text-sm">{doc.name}</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setDocuments(docs => docs.filter(d => d.id !== doc.id))}
+                          className="text-red-400 hover:text-red-300"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {currentAuthType === 'professionnel' && (
+                  <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-4">
+                    <div className="flex items-start">
+                      <AlertCircle className="w-5 h-5 text-yellow-400 mr-3 mt-0.5" />
+                      <div className="text-sm">
+                        <p className="text-yellow-400 font-medium">Validation en cours</p>
+                        <p className="text-yellow-300 mt-1">
+                          Votre profil sera activé sous 24-48h après vérification des documents. 
+                          En attendant, vous pourrez swiper en mode fantôme.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+
+          <button
+            type="submit"
+            className={`w-full py-3 rounded-lg font-semibold transition-colors ${
+              currentAuthType === 'professionnel' 
+                ? 'bg-emerald-500 hover:bg-emerald-600' 
+                : 'bg-yellow-500 hover:bg-yellow-600'
+            } text-white`}
+          >
+            {isLogin ? 'Se connecter' : 'Créer mon compte'}
+          </button>
+        </form>
+
+        <div className="mt-6 text-center">
+          <button
+            onClick={() => setIsLogin(!isLogin)}
+            className="text-emerald-400 hover:text-emerald-300 text-sm"
+          >
+            {isLogin ? "Pas encore de compte ? S'inscrire" : "Déjà un compte ? Se connecter"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Dashboard Component
+const Dashboard = ({ user, onLogout }) => {
+  const [activeTab, setActiveTab] = useState('overview');
+
+  const isProfessional = user.type === 'professionnel';
+  const isPending = user.status === 'pending';
+  const isGhost = isPending;
+
+  const tabs = isProfessional ? [
+    { id: 'overview', label: 'Tableau de bord', icon: TrendingUp },
+    { id: 'profile', label: 'Mon profil', icon: Users },
+    { id: 'projects', label: 'Projets', icon: FileText },
+    { id: 'messages', label: 'Messages', icon: MessageCircle },
+    { id: 'swipe', label: 'Swiper', icon: Heart },
+    { id: 'settings', label: 'Paramètres', icon: Settings }
+  ] : [
+    { id: 'overview', label: 'Tableau de bord', icon: TrendingUp },
+    { id: 'projects', label: 'Mes projets', icon: FileText },
+    { id: 'swipe', label: 'Swiper', icon: Heart },
+    { id: 'messages', label: 'Messages', icon: MessageCircle },
+    { id: 'settings', label: 'Paramètres', icon: Settings }
+  ];
+
+  if (activeTab === 'swipe') {
+    return <SwipeInterface user={user} onBack={() => setActiveTab('overview')} />;
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-900">
+      {/* Header */}
+      <div className="bg-slate-800 border-b border-slate-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center">
+              <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center">
+                <Heart className="w-5 h-5 text-white" />
+              </div>
+              <span className="ml-2 text-lg font-bold text-white">Swipe Ton Pro</span>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              {isPending && (
+                <div className="flex items-center bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full">
+                  <AlertCircle className="w-4 h-4 mr-2" />
+                  <span className="text-sm">Mode fantôme</span>
+                </div>
+              )}
+              
+              <div className="flex items-center space-x-3">
+                <div className="text-right">
+                  <p className="text-white text-sm font-medium">{user.firstName} {user.lastName}</p>
+                  <p className="text-gray-400 text-xs">
+                    {isProfessional ? user.specialty || 'Professionnel' : 'Particulier'}
+                  </p>
+                </div>
+                <button
+                  onClick={onLogout}
+                  className="text-gray-400 hover:text-white p-2"
+                >
+                  <LogOut className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex">
+          {/* Sidebar */}
+          <div className="w-64 mr-8">
+            <nav className="space-y-2">
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`w-full flex items-center px-4 py-3 rounded-lg transition-colors ${
+                      activeTab === tab.id
+                        ? 'bg-emerald-500 text-white'
+                        : 'text-gray-300 hover:bg-slate-800'
+                    }`}
+                  >
+                    <Icon className="w-5 h-5 mr-3" />
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </nav>
+          </div>
+
+          {/* Main Content */}
+          <div className="flex-1">
+            {activeTab === 'overview' && (
+              <DashboardOverview user={user} isPending={isPending} />
+            )}
+            {activeTab === 'profile' && (
+              <ProfileManagement user={user} />
+            )}
+            {activeTab === 'projects' && (
+              <ProjectsManagement user={user} isProfessional={isProfessional} />
+            )}
+            {activeTab === 'messages' && (
+              <MessagesManagement user={user} />
+            )}
+            {activeTab === 'settings' && (
+              <SettingsManagement user={user} />
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Dashboard Overview Component
+const DashboardOverview = ({ user, isPending }) => {
+  const isProfessional = user.type === 'professionnel';
+
+  const stats = isProfessional ? [
+    { label: 'Projets vus', value: isPending ? '12 (fantôme)' : '45', icon: Eye },
+    { label: 'Matches', value: isPending ? '0' : '8', icon: Heart },
+    { label: 'Devis envoyés', value: isPending ? '0' : '23', icon: FileText },
+    { label: 'Taux de réponse', value: isPending ? '0%' : '67%', icon: TrendingUp }
+  ] : [
+    { label: 'Projets créés', value: '3', icon: FileText },
+    { label: 'Pros contactés', value: '12', icon: Users },
+    { label: 'Devis reçus', value: '8', icon: MessageCircle },
+    { label: 'Projets terminés', value: '1', icon: CheckCircle }
+  ];
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-3xl font-bold text-white mb-2">
+          Bonjour {user.firstName} !
+        </h1>
+        <p className="text-gray-400">
+          {isPending ? 
+            'Votre profil est en cours de validation. Vous pouvez swiper en mode fantôme.' :
+            'Voici un aperçu de votre activité.'
+          }
+        </p>
+      </div>
+
+      {isPending && (
+        <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-6">
+          <div className="flex items-start">
+            <AlertCircle className="w-6 h-6 text-yellow-400 mr-4 mt-1" />
+            <div>
+              <h3 className="text-yellow-400 font-semibold mb-2">Validation en cours</h3>
+              <p className="text-yellow-300 mb-4">
+                Nous vérifions vos documents. Votre profil sera activé sous 24-48h.
+              </p>
+              <div className="space-y-2">
+                <p className="text-sm text-yellow-200">En mode fantôme, vous pouvez :</p>
+                <ul className="text-sm text-yellow-200 ml-4 space-y-1">
+                  <li>• Voir les projets disponibles</li>
+                  <li>• Swiper les projets (sans être visible)</li>
+                  <li>• Préparer votre profil</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        {stats.map((stat, index) => {
+          const Icon = stat.icon;
+          return (
+            <div key={index} className="bg-slate-800 p-6 rounded-lg border border-slate-700">
+              <div className="flex items-center justify-between mb-4">
+                <Icon className="w-8 h-8 text-emerald-400" />
+                <span className="text-2xl font-bold text-white">{stat.value}</span>
+              </div>
+              <p className="text-gray-400 text-sm">{stat.label}</p>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Recent Activity */}
+      <div className="bg-slate-800 rounded-lg border border-slate-700 p-6">
+        <h3 className="text-xl font-semibold text-white mb-4">Activité récente</h3>
+        <div className="space-y-4">
+          {isPending ? (
+            <p className="text-gray-400">Aucune activité en mode fantôme.</p>
+          ) : (
+            <>
+              <div className="flex items-center space-x-4">
+                <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
+                  <Heart className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <p className="text-white">Nouveau match avec Marie L.</p>
+                  <p className="text-gray-400 text-sm">Il y a 2 heures</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-4">
+                <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <p className="text-white">Devis envoyé pour "Rénovation cuisine"</p>
+                  <p className="text-gray-400 text-sm">Il y a 5 heures</p>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Profile Management Component
+const ProfileManagement = ({ user }) => {
+  return (
+    <div className="space-y-8">
+      <h1 className="text-3xl font-bold text-white">Mon profil</h1>
+      
+      <div className="bg-slate-800 rounded-lg border border-slate-700 p-6">
+        <h3 className="text-xl font-semibold text-white mb-4">Informations personnelles</h3>
+        <div className="grid grid-cols-2 gap-6">
+          <div>
+            <label className="block text-gray-400 text-sm mb-2">Prénom</label>
+            <input
+              type="text"
+              value={user.firstName}
+              className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white"
+              readOnly
+            />
+          </div>
+          <div>
+            <label className="block text-gray-400 text-sm mb-2">Nom</label>
+            <input
+              type="text"
+              value={user.lastName}
+              className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white"
+              readOnly
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Projects Management Component
+const ProjectsManagement = ({ user, isProfessional }) => {
+  return (
+    <div className="space-y-8">
+      <h1 className="text-3xl font-bold text-white">
+        {isProfessional ? 'Projets' : 'Mes projets'}
+      </h1>
+      
+      <div className="text-gray-400">
+        <p>Gestion des projets en cours de développement...</p>
+      </div>
+    </div>
+  );
+};
+
+// Messages Management Component
+const MessagesManagement = ({ user }) => {
+  return (
+    <div className="space-y-8">
+      <h1 className="text-3xl font-bold text-white">Messages</h1>
+      
+      <div className="text-gray-400">
+        <p>Système de messagerie en cours de développement...</p>
+      </div>
+    </div>
+  );
+};
+
+// Settings Management Component
+const SettingsManagement = ({ user }) => {
+  return (
+    <div className="space-y-8">
+      <h1 className="text-3xl font-bold text-white">Paramètres</h1>
+      
+      <div className="text-gray-400">
+        <p>Paramètres de compte en cours de développement...</p>
+      </div>
+    </div>
+  );
+};
+
+// Swipe Interface Component
+const SwipeInterface = ({ user, onBack }) => {
+  const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
+  const [projects] = useState([
+    {
+      id: 1,
+      title: "Rénovation salle de bain",
+      description: "Recherche plombier pour rénover entièrement une salle de bain de 8m²",
+      budget: "3000-5000€",
+      location: "Paris 15ème",
+      client: "Marie L.",
+      images: ["https://images.unsplash.com/photo-1584622650111-993a426fbf0a"],
+      category: "Plomberie",
+      urgent: false
+    },
+    {
+      id: 2,
+      title: "Installation électrique",
+      description: "Mise aux normes électriques maison 120m²",
+      budget: "2000-3000€",
+      location: "Lyon 3ème",
+      client: "Jean P.",
+      images: ["https://images.unsplash.com/photo-1621905251189-08b45d6a269e"],
+      category: "Électricité",
+      urgent: true
+    },
+    {
+      id: 3,
+      title: "Création cuisine sur mesure",
+      description: "Conception et installation d'une cuisine moderne",
+      budget: "8000-12000€",
+      location: "Marseille 8ème",
+      client: "Sophie R.",
+      images: ["https://images.unsplash.com/photo-1556909114-f6e7ad7d3136"],
+      category: "Menuiserie",
+      urgent: false
+    }
+  ]);
+
+  const isPending = user.status === 'pending';
+  const currentProject = projects[currentProjectIndex];
+
+  const handleSwipe = (direction) => {
+    if (direction === 'right' && !isPending) {
+      // Like - only allowed for validated profiles
+      console.log('Liked project:', currentProject.title);
+    }
+    
+    // Move to next project
+    setCurrentProjectIndex((prev) => 
+      prev < projects.length - 1 ? prev + 1 : 0
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-900">
+      {/* Header */}
+      <div className="bg-slate-800 border-b border-slate-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center">
+              <button
+                onClick={onBack}
+                className="text-gray-400 hover:text-white mr-4"
+              >
+                ←
+              </button>
+              <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center">
+                <Heart className="w-5 h-5 text-white" />
+              </div>
+              <span className="ml-2 text-lg font-bold text-white">Swipe Ton Pro</span>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              {isPending && (
+                <div className="flex items-center bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full">
+                  <Eye className="w-4 h-4 mr-2" />
+                  <span className="text-sm">Mode fantôme</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Swipe Interface */}
+      <div className="flex items-center justify-center min-h-[calc(100vh-64px)] p-4">
+        <div className="w-full max-w-md">
+          {currentProject ? (
+            <div className="bg-slate-800 rounded-3xl overflow-hidden border border-slate-700 shadow-2xl">
+              {/* Project Image */}
+              <div className="relative h-64">
+                <img
+                  src={currentProject.images[0]}
+                  alt={currentProject.title}
+                  className="w-full h-full object-cover"
+                />
+                {currentProject.urgent && (
+                  <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                    Urgent
+                  </div>
+                )}
+                <div className="absolute bottom-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+                  {currentProject.category}
+                </div>
+              </div>
+
+              {/* Project Info */}
+              <div className="p-6 space-y-4">
+                <div>
+                  <h3 className="text-xl font-bold text-white mb-2">{currentProject.title}</h3>
+                  <p className="text-gray-300 text-sm">{currentProject.description}</p>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center text-gray-400">
+                    <MapPin className="w-4 h-4 mr-1" />
+                    <span className="text-sm">{currentProject.location}</span>
+                  </div>
+                  <div className="flex items-center text-emerald-400">
+                    <DollarSign className="w-4 h-4 mr-1" />
+                    <span className="text-sm font-semibold">{currentProject.budget}</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center text-gray-400">
+                  <Users className="w-4 h-4 mr-2" />
+                  <span className="text-sm">Client: {currentProject.client}</span>
+                </div>
+
+                {isPending && (
+                  <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-3">
+                    <p className="text-yellow-400 text-sm text-center">
+                      Mode fantôme - Vous pouvez voir mais pas être vu
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="p-6 pt-0">
+                <div className="flex space-x-4">
+                  <button
+                    onClick={() => handleSwipe('left')}
+                    className="flex-1 bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg font-semibold transition-colors flex items-center justify-center"
+                  >
+                    <X className="w-5 h-5 mr-2" />
+                    Passer
+                  </button>
+                  <button
+                    onClick={() => handleSwipe('right')}
+                    disabled={isPending}
+                    className={`flex-1 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center ${
+                      isPending 
+                        ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                        : 'bg-emerald-500 hover:bg-emerald-600 text-white'
+                    }`}
+                  >
+                    <Heart className="w-5 h-5 mr-2" />
+                    {isPending ? 'Fantôme' : 'Intéressé'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="text-center text-gray-400">
+              <p>Plus de projets disponibles pour le moment.</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Keep existing components (HowItWorks, WhyChooseUs, etc.)
 const HowItWorks = () => {
   const steps = [
     {
@@ -681,7 +1473,7 @@ const MobileApp = () => {
               </div>
               {/* Decorative elements */}
               <div className="absolute -top-4 -right-4 w-8 h-8 bg-emerald-500 rounded-full animate-pulse"></div>
-              <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-orange-500 rounded-full animate-pulse"></div>
+              <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-yellow-500 rounded-full animate-pulse"></div>
             </div>
           </div>
         </div>
@@ -771,5 +1563,8 @@ export const Components = {
   OnSwipeForYou,
   Testimonials,
   MobileApp,
-  Footer
+  Footer,
+  AuthModal,
+  Dashboard,
+  SwipeInterface
 };
