@@ -117,23 +117,15 @@ const Hero = () => {
             transition={{ delay: 0.6 }}
             className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-12"
           >
-            <button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors flex items-center">
+            <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors flex items-center">
               Commencer gratuitement
+              <span className="ml-2 text-sm font-normal">(Particuliers)</span>
               <ArrowRight className="w-5 h-5 ml-2" />
             </button>
-            <div className="flex items-center space-x-4">
-              <input
-                type="email"
-                placeholder="Votre adresse email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              />
-              <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg transition-colors flex items-center">
-                <Search className="w-5 h-5 mr-2" />
-                Je suis un pro
-              </button>
-            </div>
+            <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-4 rounded-lg transition-colors flex items-center">
+              <Search className="w-5 h-5 mr-2" />
+              Je suis un professionnel
+            </button>
           </motion.div>
 
           {/* Professional Card Preview */}
