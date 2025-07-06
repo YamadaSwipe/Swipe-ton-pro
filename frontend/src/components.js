@@ -1946,13 +1946,33 @@ const Footer = () => {
   );
 };
 
-// Admin Components
 const AdminOverview = () => {
-  const stats = [
-    { label: 'Utilisateurs totaux', value: '1,247', icon: Users, color: 'text-blue-400' },
-    { label: 'Pros en attente', value: '23', icon: AlertCircle, color: 'text-yellow-400' },
-    { label: 'Projets actifs', value: '156', icon: FileText, color: 'text-emerald-400' },
-    { label: 'Revenue mensuel', value: '€12,450', icon: DollarSign, color: 'text-green-400' }
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    pendingPros: 0,
+    activeProjects: 0,
+    monthlyRevenue: 0
+  });
+
+  useEffect(() => {
+    // Calculer les statistiques depuis localStorage
+    const allUsers = JSON.parse(localStorage.getItem('swipe_ton_pro_all_users') || '[]');
+    const totalUsers = allUsers.length;
+    const pendingPros = allUsers.filter(user => user.status === 'pending' && user.type === 'professionnel').length;
+    
+    setStats({
+      totalUsers,
+      pendingPros,
+      activeProjects: Math.floor(totalUsers * 0.3), // Simulation
+      monthlyRevenue: totalUsers * 47 // Simulation basée sur les abonnements
+    });
+  }, []);
+
+  const statsDisplay = [
+    { label: 'Utilisateurs totaux', value: stats.totalUsers.toString(), icon: Users, color: 'text-blue-400' },
+    { label: 'Pros en attente', value: stats.pendingPros.toString(), icon: AlertCircle, color: 'text-yellow-400' },
+    { label: 'Projets actifs', value: stats.activeProjects.toString(), icon: FileText, color: 'text-emerald-400' },
+    { label: 'Revenue mensuel', value: `€${stats.monthlyRevenue}`, icon: DollarSign, color: 'text-green-400' }
   ];
 
   return (
@@ -1964,7 +1984,7 @@ const AdminOverview = () => {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, index) => {
+        {statsDisplay.map((stat, index) => {
           const Icon = stat.icon;
           return (
             <div key={index} className="bg-slate-800 p-6 rounded-lg border border-slate-700">
@@ -1983,20 +2003,36 @@ const AdminOverview = () => {
         <div className="bg-slate-800 rounded-lg border border-slate-700 p-6">
           <h3 className="text-xl font-semibold text-white mb-4">Dernières inscriptions</h3>
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-white">Marie Dupont (Particulier)</p>
-                <p className="text-gray-400 text-sm">Il y a 2 heures</p>
-              </div>
-              <span className="bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded text-xs">Actif</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-white">Jean Martin (Électricien)</p>
-                <p className="text-gray-400 text-sm">Il y a 4 heures</p>
-              </div>
-              <span className="bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded text-xs">En attente</span>
-            </div>
+            {JSON.parse(localStorage.getItem('swipe_ton_pro_all_users') || '[]')
+              .slice(-3)
+              .reverse()
+              .map((user, index) => (
+                <div key={index} className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 rounded-full overflow-hidden bg-slate-700 flex items-center justify-center">
+                      {user.profileImage ? (
+                        <img src={user.profileImage} alt="Profile" className="w-full h-full object-cover" />
+                      ) : (
+                        <Users className="w-5 h-5 text-gray-400" />
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-white">{user.firstName} {user.lastName}</p>
+                      <p className="text-gray-400 text-sm">
+                        {user.type === 'professionnel' ? user.specialty || 'Professionnel' : 'Particulier'}
+                      </p>
+                    </div>
+                  </div>
+                  <span className={`px-2 py-1 rounded text-xs font-semibold ${
+                    user.status === 'active' ? 'bg-emerald-500/20 text-emerald-400' :
+                    user.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
+                    'bg-red-500/20 text-red-400'
+                  }`}>
+                    {user.status === 'active' ? 'Actif' : 
+                     user.status === 'pending' ? 'En attente' : 'Rejeté'}
+                  </span>
+                </div>
+              ))}
           </div>
         </div>
 
@@ -2005,11 +2041,15 @@ const AdminOverview = () => {
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
               <AlertCircle className="w-5 h-5 text-yellow-400" />
-              <span className="text-white">23 professionnels à valider</span>
+              <span className="text-white">{stats.pendingPros} professionnel(s) à valider</span>
             </div>
             <div className="flex items-center space-x-3">
               <MessageCircle className="w-5 h-5 text-blue-400" />
-              <span className="text-white">5 messages support</span>
+              <span className="text-white">0 message(s) support</span>
+            </div>
+            <div className="flex items-center space-x-3">
+              <TrendingUp className="w-5 h-5 text-emerald-400" />
+              <span className="text-white">Plateforme opérationnelle</span>
             </div>
           </div>
         </div>
