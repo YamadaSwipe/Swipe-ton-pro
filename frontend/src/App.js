@@ -35,6 +35,20 @@ const Home = () => {
   const handleAuth = (userData) => {
     setUser(userData);
     localStorage.setItem('swipe_ton_pro_user', JSON.stringify(userData));
+    
+    // Enregistrer dans la liste de tous les utilisateurs
+    const allUsers = JSON.parse(localStorage.getItem('swipe_ton_pro_all_users') || '[]');
+    const existingUserIndex = allUsers.findIndex(u => u.email === userData.email);
+    
+    if (existingUserIndex !== -1) {
+      // Mettre à jour l'utilisateur existant
+      allUsers[existingUserIndex] = userData;
+    } else {
+      // Ajouter un nouvel utilisateur
+      allUsers.push(userData);
+    }
+    
+    localStorage.setItem('swipe_ton_pro_all_users', JSON.stringify(allUsers));
     setShowAuthModal(false);
   };
 
