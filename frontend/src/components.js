@@ -2165,83 +2165,123 @@ Inscription: ${user.createdAt ? new Date(user.createdAt).toLocaleDateString('fr-
 };
 
 const PendingValidations = () => {
-  const [pendingUsers] = useState([
-    { 
-      id: 1, 
-      name: 'Jean Martin', 
-      email: 'jean@example.com', 
-      specialty: 'Électricien',
-      company: 'Martin Électricité',
-      siret: '12345678901234',
-      documents: ['kbis.pdf', 'assurance.pdf', 'certification.pdf'],
-      date: '2024-01-14'
-    },
-    { 
-      id: 2, 
-      name: 'Thomas Leroy', 
-      email: 'thomas@example.com', 
-      specialty: 'Plombier',
-      company: 'Leroy Plomberie',
-      siret: '56789012345678',
-      documents: ['kbis.pdf', 'assurance.pdf'],
-      date: '2024-01-13'
-    }
-  ]);
+  const [pendingUsers, setPendingUsers] = useState([]);
+
+  useEffect(() => {
+    // Charger les utilisateurs en attente depuis localStorage
+    const allUsers = JSON.parse(localStorage.getItem('swipe_ton_pro_all_users') || '[]');
+    const pending = allUsers.filter(user => user.status === 'pending' && user.type === 'professionnel');
+    setPendingUsers(pending);
+  }, []);
 
   const handleValidation = (userId, action) => {
-    console.log(`${action} user ${userId}`);
-    // Ici vous ajouteriez la logique de validation
+    const allUsers = JSON.parse(localStorage.getItem('swipe_ton_pro_all_users') || '[]');
+    const updatedUsers = allUsers.map(user => {
+      if (user.id === userId) {
+        return { ...user, status: action === 'approve' ? 'active' : 'rejected' };
+      }
+      return user;
+    });
+    
+    localStorage.setItem('swipe_ton_pro_all_users', JSON.stringify(updatedUsers));
+    
+    // Mettre à jour l'état local
+    const updatedPending = pendingUsers.filter(user => user.id !== userId);
+    setPendingUsers(updatedPending);
+    
+    // Si l'utilisateur actuel est celui qui vient d'être validé, mettre à jour sa session
+    const currentUser = JSON.parse(localStorage.getItem('swipe_ton_pro_user') || '{}');
+    if (currentUser.id === userId) {
+      const updatedCurrentUser = { ...currentUser, status: action === 'approve' ? 'active' : 'rejected' };
+      localStorage.setItem('swipe_ton_pro_user', JSON.stringify(updatedCurrentUser));
+    }
   };
 
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-bold text-white">Validations en attente</h1>
-
-      <div className="space-y-6">
-        {pendingUsers.map((user) => (
-          <div key={user.id} className="bg-slate-800 rounded-lg border border-slate-700 p-6">
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <h3 className="text-xl font-semibold text-white">{user.name}</h3>
-                <p className="text-gray-400">{user.specialty} - {user.company}</p>
-                <p className="text-gray-400 text-sm">SIRET: {user.siret}</p>
-                <p className="text-gray-400 text-sm">Demande du {user.date}</p>
-              </div>
-              <div className="flex space-x-4">
-                <button 
-                  onClick={() => handleValidation(user.id, 'approve')}
-                  className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg flex items-center"
-                >
-                  <CheckCircle className="w-4 h-4 mr-2" />
-                  Valider
-                </button>
-                <button 
-                  onClick={() => handleValidation(user.id, 'reject')}
-                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center"
-                >
-                  <X className="w-4 h-4 mr-2" />
-                  Refuser
-                </button>
-              </div>
-            </div>
-
-            <div>
-              <h4 className="text-white font-medium mb-2">Documents fournis :</h4>
-              <div className="flex space-x-3">
-                {user.documents.map((doc, index) => (
-                  <div key={index} className="flex items-center bg-slate-700 px-3 py-2 rounded">
-                    <FileText className="w-4 h-4 text-emerald-400 mr-2" />
-                    <span className="text-gray-300 text-sm">{doc}</span>
-                    <button className="ml-2 text-blue-400 hover:text-blue-300">
-                      <Eye className="w-4 h-4" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        ))}
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold text-white">Validations en attente</h1>
+        <span className="text-gray-400">{pendingUsers.length} professionnel(s) en attente</span>
       </div>
+
+      {pendingUsers.length === 0 ? (
+        <div className="bg-slate-800 rounded-lg border border-slate-700 p-8 text-center">
+          <CheckCircle className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
+          <h3 className="text-xl font-semibold text-white mb-2">Aucune validation en attente</h3>
+          <p className="text-gray-400">Tous les professionnels ont été traités.</p>
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {pendingUsers.map((user) => (
+            <div key={user.id} className="bg-slate-800 rounded-lg border border-slate-700 p-6">
+              <div className="flex justify-between items-start mb-4">
+                <div className="flex items-start space-x-4">
+                  <div className="w-16 h-16 rounded-full overflow-hidden bg-slate-700 flex items-center justify-center">
+                    {user.profileImage ? (
+                      <img src={user.profileImage} alt="Profile" className="w-full h-full object-cover" />
+                    ) : (
+                      <Users className="w-8 h-8 text-gray-400" />
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-white">{user.firstName} {user.lastName}</h3>
+                    <p className="text-gray-400">{user.specialty} - {user.company}</p>
+                    <p className="text-gray-400 text-sm">Email: {user.email}</p>
+                    <p className="text-gray-400 text-sm">Téléphone: {user.phone || 'Non renseigné'}</p>
+                    <p className="text-gray-400 text-sm">SIRET: {user.siret || 'Non renseigné'}</p>
+                    <p className="text-gray-400 text-sm">Localisation: {user.location || 'Non renseignée'}</p>
+                    <p className="text-gray-400 text-sm">
+                      Demande du {user.createdAt ? new Date(user.createdAt).toLocaleDateString('fr-FR') : 'N/A'}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex space-x-4">
+                  <button 
+                    onClick={() => handleValidation(user.id, 'approve')}
+                    className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg flex items-center font-semibold transition-colors"
+                  >
+                    <CheckCircle className="w-5 h-5 mr-2" />
+                    Valider
+                  </button>
+                  <button 
+                    onClick={() => handleValidation(user.id, 'reject')}
+                    className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg flex items-center font-semibold transition-colors"
+                  >
+                    <X className="w-5 h-5 mr-2" />
+                    Refuser
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-white font-medium mb-3">Documents fournis :</h4>
+                {user.documents && user.documents.length > 0 ? (
+                  <div className="flex flex-wrap gap-3">
+                    {user.documents.map((doc, index) => (
+                      <div key={index} className="flex items-center bg-slate-700 px-4 py-2 rounded-lg">
+                        <FileText className="w-5 h-5 text-emerald-400 mr-3" />
+                        <span className="text-gray-300 text-sm">{doc.name}</span>
+                        <button className="ml-3 text-blue-400 hover:text-blue-300">
+                          <Eye className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-gray-400 text-sm">Aucun document fourni</p>
+                )}
+              </div>
+
+              {user.bio && (
+                <div className="mt-4">
+                  <h4 className="text-white font-medium mb-2">Présentation :</h4>
+                  <p className="text-gray-300 text-sm bg-slate-700 p-3 rounded">{user.bio}</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
