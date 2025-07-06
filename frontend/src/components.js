@@ -2270,57 +2270,66 @@ const SettingsManagement = ({ user }) => {
 
 // Swipe Interface Component
 const SwipeInterface = ({ user, onBack }) => {
-  const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
-  const [projects] = useState([
-    {
-      id: 1,
-      title: "Rénovation salle de bain",
-      description: "Recherche plombier pour rénover entièrement une salle de bain de 8m²",
-      budget: "3000-5000€",
-      location: "Paris 15ème",
-      client: "Marie L.",
-      images: ["https://images.unsplash.com/photo-1584622650111-993a426fbf0a"],
-      category: "Plomberie",
-      urgent: false
-    },
-    {
-      id: 2,
-      title: "Installation électrique",
-      description: "Mise aux normes électriques maison 120m²",
-      budget: "2000-3000€",
-      location: "Lyon 3ème",
-      client: "Jean P.",
-      images: ["https://images.unsplash.com/photo-1621905251189-08b45d6a269e"],
-      category: "Électricité",
-      urgent: true
-    },
-    {
-      id: 3,
-      title: "Création cuisine sur mesure",
-      description: "Conception et installation d'une cuisine moderne",
-      budget: "8000-12000€",
-      location: "Marseille 8ème",
-      client: "Sophie R.",
-      images: ["https://images.unsplash.com/photo-1556909114-f6e7ad7d3136"],
-      category: "Menuiserie",
-      urgent: false
-    }
-  ]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [profiles, setProfiles] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  const isProfessional = user.type === 'professionnel';
   const isPending = user.status === 'pending';
-  const currentProject = projects[currentProjectIndex];
+
+  useEffect(() => {
+    // Charger les profils selon le type d'utilisateur
+    const allUsers = JSON.parse(localStorage.getItem('swipe_ton_pro_all_users') || '[]');
+    const allProjects = JSON.parse(localStorage.getItem('swipe_ton_pro_projects') || '[]');
+    
+    let profilesToShow = [];
+    
+    if (isProfessional) {
+      // Les pros voient les projets des particuliers
+      profilesToShow = allProjects.filter(project => project.status === 'open').map(project => ({
+        type: 'project',
+        ...project
+      }));
+    } else {
+      // Les particuliers voient les profils des professionnels actifs
+      profilesToShow = allUsers.filter(u => 
+        u.type === 'professionnel' && 
+        u.status === 'active' && 
+        u.id !== user.id
+      ).map(pro => ({
+        type: 'professional',
+        ...pro
+      }));
+    }
+    
+    setProfiles(profilesToShow);
+    setLoading(false);
+  }, [user.id, isProfessional]);
+
+  const currentProfile = profiles[currentIndex];
 
   const handleSwipe = (direction) => {
     if (direction === 'right' && !isPending) {
       // Like - only allowed for validated profiles
-      console.log('Liked project:', currentProject.title);
+      console.log('Liked:', currentProfile?.title || currentProfile?.firstName);
     }
     
-    // Move to next project
-    setCurrentProjectIndex((prev) => 
-      prev < projects.length - 1 ? prev + 1 : 0
+    // Move to next profile
+    setCurrentIndex((prev) => 
+      prev < profiles.length - 1 ? prev + 1 : 0
     );
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p className="text-white">Chargement des profils...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-900">
@@ -2372,90 +2381,232 @@ const SwipeInterface = ({ user, onBack }) => {
       {/* Swipe Interface */}
       <div className="flex items-center justify-center min-h-[calc(100vh-64px)] p-4">
         <div className="w-full max-w-md">
-          {currentProject ? (
+          {currentProfile ? (
             <div className="bg-slate-800 rounded-3xl overflow-hidden border border-slate-700 shadow-2xl">
-              {/* Project Image */}
-              <div className="relative h-64">
-                <img
-                  src={currentProject.images[0]}
-                  alt={currentProject.title}
-                  className="w-full h-full object-cover"
+              {currentProfile.type === 'project' ? (
+                // Project Card for Professionals
+                <ProjectCard 
+                  project={currentProfile} 
+                  onSwipe={handleSwipe} 
+                  isPending={isPending}
                 />
-                {currentProject.urgent && (
-                  <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                    Urgent
-                  </div>
-                )}
-                <div className="absolute bottom-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
-                  {currentProject.category}
-                </div>
-              </div>
-
-              {/* Project Info */}
-              <div className="p-6 space-y-4">
-                <div>
-                  <h3 className="text-xl font-bold text-white mb-2">{currentProject.title}</h3>
-                  <p className="text-gray-300 text-sm">{currentProject.description}</p>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center text-gray-400">
-                    <MapPin className="w-4 h-4 mr-1" />
-                    <span className="text-sm">{currentProject.location}</span>
-                  </div>
-                  <div className="flex items-center text-emerald-400">
-                    <DollarSign className="w-4 h-4 mr-1" />
-                    <span className="text-sm font-semibold">{currentProject.budget}</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center text-gray-400">
-                  <Users className="w-4 h-4 mr-2" />
-                  <span className="text-sm">Client: {currentProject.client}</span>
-                </div>
-
-                {isPending && (
-                  <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-3">
-                    <p className="text-yellow-400 text-sm text-center">
-                      Mode fantôme - Vous pouvez voir mais pas être vu
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              {/* Action Buttons */}
-              <div className="p-6 pt-0">
-                <div className="flex space-x-4">
-                  <button
-                    onClick={() => handleSwipe('left')}
-                    className="flex-1 bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg font-semibold transition-colors flex items-center justify-center"
-                  >
-                    <X className="w-5 h-5 mr-2" />
-                    Passer
-                  </button>
-                  <button
-                    onClick={() => handleSwipe('right')}
-                    disabled={isPending}
-                    className={`flex-1 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center ${
-                      isPending 
-                        ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                        : 'bg-emerald-500 hover:bg-emerald-600 text-white'
-                    }`}
-                  >
-                    <Heart className="w-5 h-5 mr-2" />
-                    {isPending ? 'Fantôme' : 'Intéressé'}
-                  </button>
-                </div>
-              </div>
+              ) : (
+                // Professional Card for Individuals  
+                <ProfessionalCard 
+                  professional={currentProfile} 
+                  onSwipe={handleSwipe}
+                />
+              )}
             </div>
           ) : (
             <div className="text-center text-gray-400">
-              <p>Plus de projets disponibles pour le moment.</p>
+              <p className="text-xl mb-4">
+                {isProfessional ? 'Plus de projets disponibles' : 'Plus de professionnels disponibles'}
+              </p>
+              <p className="text-sm">
+                {isProfessional ? 'De nouveaux projets apparaîtront bientôt !' : 'De nouveaux professionnels rejoignent régulièrement !'}
+              </p>
             </div>
           )}
         </div>
       </div>
     </div>
+  );
+};
+
+// Project Card Component
+const ProjectCard = ({ project, onSwipe, isPending }) => {
+  const getUrgencyColor = (urgency) => {
+    switch (urgency) {
+      case 'very_high': return 'bg-red-500 text-white';
+      case 'high': return 'bg-orange-500 text-white';
+      case 'normal': return 'bg-blue-500 text-white';
+      case 'low': return 'bg-gray-500 text-white';
+      default: return 'bg-blue-500 text-white';
+    }
+  };
+
+  const getUrgencyText = (urgency) => {
+    switch (urgency) {
+      case 'very_high': return 'Très urgent';
+      case 'high': return 'Urgent';
+      case 'normal': return 'Normal';
+      case 'low': return 'Pas urgent';
+      default: return 'Normal';
+    }
+  };
+
+  return (
+    <>
+      {/* Project Image */}
+      <div className="relative h-64 bg-gradient-to-br from-emerald-500 to-blue-600 flex items-center justify-center">
+        <div className="text-center text-white">
+          <FileText className="w-16 h-16 mx-auto mb-2" />
+          <h3 className="text-xl font-bold">{project.category}</h3>
+        </div>
+        {project.urgency && project.urgency !== 'normal' && (
+          <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-sm font-semibold ${getUrgencyColor(project.urgency)}`}>
+            {getUrgencyText(project.urgency)}
+          </div>
+        )}
+        <div className="absolute bottom-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+          {project.category}
+        </div>
+      </div>
+
+      {/* Project Info */}
+      <div className="p-6 space-y-4">
+        <div>
+          <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
+          <p className="text-gray-300 text-sm">{project.description}</p>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div className="flex items-center text-gray-400">
+            <MapPin className="w-4 h-4 mr-1" />
+            <span className="text-sm">{project.location}</span>
+          </div>
+          <div className="flex items-center text-emerald-400">
+            <DollarSign className="w-4 h-4 mr-1" />
+            <span className="text-sm font-semibold">{project.budget}</span>
+          </div>
+        </div>
+
+        <div className="flex items-center text-gray-400">
+          <Users className="w-4 h-4 mr-2" />
+          <span className="text-sm">Client: {project.clientName}</span>
+        </div>
+
+        {project.requirements && (
+          <div className="bg-slate-700 p-3 rounded-lg">
+            <p className="text-gray-300 text-sm">
+              <strong>Exigences :</strong> {project.requirements}
+            </p>
+          </div>
+        )}
+
+        {isPending && (
+          <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-3">
+            <p className="text-yellow-400 text-sm text-center">
+              Mode fantôme - Vous pouvez voir mais pas être contacté
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Action Buttons */}
+      <div className="p-6 pt-0">
+        <div className="flex space-x-4">
+          <button
+            onClick={() => onSwipe('left')}
+            className="flex-1 bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg font-semibold transition-colors flex items-center justify-center"
+          >
+            <X className="w-5 h-5 mr-2" />
+            Passer
+          </button>
+          <button
+            onClick={() => onSwipe('right')}
+            disabled={isPending}
+            className={`flex-1 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center ${
+              isPending 
+                ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                : 'bg-emerald-500 hover:bg-emerald-600 text-white'
+            }`}
+          >
+            <Heart className="w-5 h-5 mr-2" />
+            {isPending ? 'Fantôme' : 'Postuler'}
+          </button>
+        </div>
+      </div>
+    </>
+  );
+};
+
+// Professional Card Component
+const ProfessionalCard = ({ professional, onSwipe }) => {
+  return (
+    <>
+      {/* Professional Image */}
+      <div className="relative h-64">
+        {professional.profileImage ? (
+          <img
+            src={professional.profileImage}
+            alt={professional.firstName}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-emerald-500 to-blue-600 flex items-center justify-center">
+            <div className="text-center text-white">
+              <Users className="w-16 h-16 mx-auto mb-2" />
+              <h3 className="text-xl font-bold">{professional.specialty}</h3>
+            </div>
+          </div>
+        )}
+        <div className="absolute bottom-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+          {professional.specialty}
+        </div>
+        {professional.status === 'active' && (
+          <div className="absolute top-4 right-4 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white"></div>
+        )}
+      </div>
+
+      {/* Professional Info */}
+      <div className="p-6 space-y-4">
+        <div>
+          <h3 className="text-xl font-bold text-white mb-1">
+            {professional.firstName} {professional.lastName}
+          </h3>
+          <p className="text-emerald-400 mb-2">{professional.specialty}</p>
+          {professional.company && (
+            <p className="text-gray-400 text-sm">{professional.company}</p>
+          )}
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div className="flex items-center text-gray-400">
+            <MapPin className="w-4 h-4 mr-1" />
+            <span className="text-sm">{professional.location || 'France'}</span>
+          </div>
+          <div className="flex items-center text-yellow-400">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="w-4 h-4 fill-current" />
+            ))}
+            <span className="text-gray-400 ml-2 text-sm">5.0</span>
+          </div>
+        </div>
+
+        {professional.bio && (
+          <div className="bg-slate-700 p-3 rounded-lg">
+            <p className="text-gray-300 text-sm">{professional.bio}</p>
+          </div>
+        )}
+
+        <div className="flex items-center space-x-4 text-sm text-gray-400">
+          <span>✅ Profil vérifié</span>
+          <span>📞 Disponible</span>
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="p-6 pt-0">
+        <div className="flex space-x-4">
+          <button
+            onClick={() => onSwipe('left')}
+            className="flex-1 bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg font-semibold transition-colors flex items-center justify-center"
+          >
+            <X className="w-5 h-5 mr-2" />
+            Passer
+          </button>
+          <button
+            onClick={() => onSwipe('right')}
+            className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-lg font-semibold transition-colors flex items-center justify-center"
+          >
+            <Heart className="w-5 h-5 mr-2" />
+            Contacter
+          </button>
+        </div>
+      </div>
+    </>
   );
 };
 
