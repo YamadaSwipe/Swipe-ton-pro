@@ -1845,14 +1845,398 @@ const ProfileManagement = ({ user }) => {
 
 // Projects Management Component
 const ProjectsManagement = ({ user, isProfessional }) => {
+  const [projects, setProjects] = useState([]);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [editingProject, setEditingProject] = useState(null);
+
+  useEffect(() => {
+    // Charger les projets de l'utilisateur
+    const allProjects = JSON.parse(localStorage.getItem('swipe_ton_pro_projects') || '[]');
+    if (isProfessional) {
+      // Pour les pros, afficher tous les projets
+      setProjects(allProjects);
+    } else {
+      // Pour les particuliers, afficher seulement leurs projets
+      const userProjects = allProjects.filter(p => p.userId === user.id);
+      setProjects(userProjects);
+    }
+  }, [user.id, isProfessional]);
+
+  const handleCreateProject = (projectData) => {
+    const newProject = {
+      id: Date.now(),
+      userId: user.id,
+      ...projectData,
+      status: 'open',
+      createdAt: new Date().toISOString(),
+      applications: []
+    };
+    
+    const allProjects = JSON.parse(localStorage.getItem('swipe_ton_pro_projects') || '[]');
+    const updatedProjects = [...allProjects, newProject];
+    localStorage.setItem('swipe_ton_pro_projects', JSON.stringify(updatedProjects));
+    
+    if (!isProfessional) {
+      setProjects(prev => [...prev, newProject]);
+    }
+    setShowCreateModal(false);
+  };
+
+  const handleUpdateProject = (projectId, projectData) => {
+    const allProjects = JSON.parse(localStorage.getItem('swipe_ton_pro_projects') || '[]');
+    const updatedProjects = allProjects.map(p => 
+      p.id === projectId ? { ...p, ...projectData } : p
+    );
+    localStorage.setItem('swipe_ton_pro_projects', JSON.stringify(updatedProjects));
+    
+    setProjects(prev => prev.map(p => 
+      p.id === projectId ? { ...p, ...projectData } : p
+    ));
+    setEditingProject(null);
+  };
+
+  const handleDeleteProject = (projectId) => {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')) {
+      const allProjects = JSON.parse(localStorage.getItem('swipe_ton_pro_projects') || '[]');
+      const updatedProjects = allProjects.filter(p => p.id !== projectId);
+      localStorage.setItem('swipe_ton_pro_projects', JSON.stringify(updatedProjects));
+      
+      setProjects(prev => prev.filter(p => p.id !== projectId));
+    }
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'open': return 'bg-emerald-500/20 text-emerald-400';
+      case 'in_progress': return 'bg-blue-500/20 text-blue-400';
+      case 'completed': return 'bg-gray-500/20 text-gray-400';
+      case 'cancelled': return 'bg-red-500/20 text-red-400';
+      default: return 'bg-gray-500/20 text-gray-400';
+    }
+  };
+
+  const getStatusText = (status) => {
+    switch (status) {
+      case 'open': return 'Ouvert';
+      case 'in_progress': return 'En cours';
+      case 'completed': return 'Terminé';
+      case 'cancelled': return 'Annulé';
+      default: return 'Inconnu';
+    }
+  };
+
+  if (isProfessional) {
+    return (
+      <div className="space-y-8">
+        <h1 className="text-3xl font-bold text-white">Projets disponibles</h1>
+        
+        <div className="grid gap-6">
+          {projects.length === 0 ? (
+            <div className="bg-slate-800 rounded-lg border border-slate-700 p-8 text-center">
+              <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-white mb-2">Aucun projet disponible</h3>
+              <p className="text-gray-400">Les nouveaux projets apparaîtront ici.</p>
+            </div>
+          ) : (
+            projects.map((project) => (
+              <div key={project.id} className="bg-slate-800 rounded-lg border border-slate-700 p-6">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h3 className="text-xl font-semibold text-white mb-2">{project.title}</h3>
+                    <p className="text-gray-300 mb-4">{project.description}</p>
+                    <div className="flex items-center space-x-4 text-sm text-gray-400">
+                      <span>📍 {project.location}</span>
+                      <span>💰 {project.budget}</span>
+                      <span>📅 {new Date(project.createdAt).toLocaleDateString('fr-FR')}</span>
+                    </div>
+                  </div>
+                  <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(project.status)}`}>
+                    {getStatusText(project.status)}
+                  </span>
+                </div>
+                
+                {project.category && (
+                  <div className="mb-4">
+                    <span className="bg-blue-500/20 text-blue-400 px-2 py-1 rounded text-sm">
+                      {project.category}
+                    </span>
+                  </div>
+                )}
+                
+                <div className="flex justify-between items-center">
+                  <p className="text-gray-400 text-sm">
+                    Créé par: {project.clientName || 'Client anonyme'}
+                  </p>
+                  <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg transition-colors">
+                    Postuler
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-bold text-white">
-        {isProfessional ? 'Projets' : 'Mes projets'}
-      </h1>
-      
-      <div className="text-gray-400">
-        <p>Gestion des projets en cours de développement...</p>
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold text-white">Mes projets</h1>
+        <button
+          onClick={() => setShowCreateModal(true)}
+          className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center"
+        >
+          <FileText className="w-5 h-5 mr-2" />
+          Nouveau projet
+        </button>
+      </div>
+
+      <div className="grid gap-6">
+        {projects.length === 0 ? (
+          <div className="bg-slate-800 rounded-lg border border-slate-700 p-8 text-center">
+            <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-white mb-2">Aucun projet créé</h3>
+            <p className="text-gray-400 mb-4">Créez votre premier projet pour trouver des professionnels.</p>
+            <button
+              onClick={() => setShowCreateModal(true)}
+              className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+            >
+              Créer un projet
+            </button>
+          </div>
+        ) : (
+          projects.map((project) => (
+            <div key={project.id} className="bg-slate-800 rounded-lg border border-slate-700 p-6">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3 className="text-xl font-semibold text-white mb-2">{project.title}</h3>
+                  <p className="text-gray-300 mb-4">{project.description}</p>
+                  <div className="flex items-center space-x-4 text-sm text-gray-400">
+                    <span>📍 {project.location}</span>
+                    <span>💰 {project.budget}</span>
+                    <span>📅 {new Date(project.createdAt).toLocaleDateString('fr-FR')}</span>
+                  </div>
+                </div>
+                <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(project.status)}`}>
+                  {getStatusText(project.status)}
+                </span>
+              </div>
+              
+              {project.category && (
+                <div className="mb-4">
+                  <span className="bg-blue-500/20 text-blue-400 px-2 py-1 rounded text-sm">
+                    {project.category}
+                  </span>
+                </div>
+              )}
+              
+              <div className="flex justify-between items-center">
+                <div className="flex items-center space-x-4">
+                  <span className="text-gray-400 text-sm">
+                    {project.applications?.length || 0} candidature(s)
+                  </span>
+                </div>
+                <div className="flex space-x-2">
+                  {project.status === 'open' && (
+                    <button
+                      onClick={() => setEditingProject(project)}
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors"
+                    >
+                      Modifier
+                    </button>
+                  )}
+                  {project.status !== 'completed' && (
+                    <button
+                      onClick={() => handleDeleteProject(project.id)}
+                      className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors"
+                    >
+                      Supprimer
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Create/Edit Project Modal */}
+      {(showCreateModal || editingProject) && (
+        <ProjectModal
+          project={editingProject}
+          onSave={editingProject ? 
+            (data) => handleUpdateProject(editingProject.id, data) :
+            handleCreateProject
+          }
+          onCancel={() => {
+            setShowCreateModal(false);
+            setEditingProject(null);
+          }}
+        />
+      )}
+    </div>
+  );
+};
+
+// Project Modal Component
+const ProjectModal = ({ project, onSave, onCancel }) => {
+  const [formData, setFormData] = useState({
+    title: project?.title || '',
+    description: project?.description || '',
+    category: project?.category || '',
+    budget: project?.budget || '',
+    location: project?.location || '',
+    urgency: project?.urgency || 'normal',
+    requirements: project?.requirements || ''
+  });
+
+  const categories = [
+    'Électricité',
+    'Plomberie', 
+    'Menuiserie',
+    'Peinture',
+    'Maçonnerie',
+    'Chauffage',
+    'Carrelage',
+    'Jardinage',
+    'Rénovation',
+    'Autre'
+  ];
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (!formData.title || !formData.description || !formData.category || !formData.budget || !formData.location) {
+      alert('Veuillez remplir tous les champs obligatoires');
+      return;
+    }
+    
+    onSave({
+      ...formData,
+      clientName: JSON.parse(localStorage.getItem('swipe_ton_pro_user')).firstName + ' ' + JSON.parse(localStorage.getItem('swipe_ton_pro_user')).lastName
+    });
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-slate-800 rounded-2xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-white">
+            {project ? 'Modifier le projet' : 'Nouveau projet'}
+          </h2>
+          <button onClick={onCancel} className="text-gray-400 hover:text-white">
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-gray-400 text-sm mb-2">Titre du projet *</label>
+            <input
+              type="text"
+              value={formData.title}
+              onChange={(e) => setFormData({...formData, title: e.target.value})}
+              className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              placeholder="Ex: Rénovation salle de bain"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-400 text-sm mb-2">Description détaillée *</label>
+            <textarea
+              value={formData.description}
+              onChange={(e) => setFormData({...formData, description: e.target.value})}
+              rows={4}
+              className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              placeholder="Décrivez votre projet en détail..."
+              required
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-gray-400 text-sm mb-2">Catégorie *</label>
+              <select
+                value={formData.category}
+                onChange={(e) => setFormData({...formData, category: e.target.value})}
+                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                required
+              >
+                <option value="">Sélectionner une catégorie</option>
+                {categories.map(cat => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-gray-400 text-sm mb-2">Budget *</label>
+              <input
+                type="text"
+                value={formData.budget}
+                onChange={(e) => setFormData({...formData, budget: e.target.value})}
+                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                placeholder="Ex: 2000-3000€"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-gray-400 text-sm mb-2">Localisation *</label>
+              <input
+                type="text"
+                value={formData.location}
+                onChange={(e) => setFormData({...formData, location: e.target.value})}
+                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                placeholder="Ex: Paris 15ème"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-gray-400 text-sm mb-2">Urgence</label>
+              <select
+                value={formData.urgency}
+                onChange={(e) => setFormData({...formData, urgency: e.target.value})}
+                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              >
+                <option value="low">Pas urgent</option>
+                <option value="normal">Normal</option>
+                <option value="high">Urgent</option>
+                <option value="very_high">Très urgent</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-gray-400 text-sm mb-2">Exigences particulières</label>
+            <textarea
+              value={formData.requirements}
+              onChange={(e) => setFormData({...formData, requirements: e.target.value})}
+              rows={3}
+              className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              placeholder="Certifications requises, contraintes de timing, matériaux spécifiques..."
+            />
+          </div>
+
+          <div className="flex space-x-4">
+            <button
+              type="submit"
+              className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-lg font-semibold transition-colors"
+            >
+              {project ? 'Modifier le projet' : 'Créer le projet'}
+            </button>
+            <button
+              type="button"
+              onClick={onCancel}
+              className="px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-semibold transition-colors"
+            >
+              Annuler
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
