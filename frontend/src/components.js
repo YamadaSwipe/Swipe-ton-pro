@@ -842,31 +842,260 @@ const DashboardOverview = ({ user, isPending }) => {
 
 // Profile Management Component
 const ProfileManagement = ({ user }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [profileData, setProfileData] = useState({
+    firstName: user.firstName || '',
+    lastName: user.lastName || '',
+    email: user.email || '',
+    phone: user.phone || '',
+    company: user.company || '',
+    specialty: user.specialty || '',
+    location: user.location || '',
+    bio: user.bio || '',
+    profileImage: user.profileImage || null
+  });
+  const [profileImage, setProfileImage] = useState(user.profileImage || null);
+  const imageInputRef = useRef(null);
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const imageUrl = event.target.result;
+        setProfileImage(imageUrl);
+        setProfileData(prev => ({...prev, profileImage: imageUrl}));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSave = () => {
+    // Mettre à jour les données utilisateur dans localStorage
+    const updatedUser = { ...user, ...profileData, profileImage };
+    localStorage.setItem('swipe_ton_pro_user', JSON.stringify(updatedUser));
+    
+    // Mettre à jour aussi dans la liste des utilisateurs
+    const allUsers = JSON.parse(localStorage.getItem('swipe_ton_pro_all_users') || '[]');
+    const userIndex = allUsers.findIndex(u => u.id === user.id);
+    if (userIndex !== -1) {
+      allUsers[userIndex] = updatedUser;
+    } else {
+      allUsers.push(updatedUser);
+    }
+    localStorage.setItem('swipe_ton_pro_all_users', JSON.stringify(allUsers));
+    
+    setIsEditing(false);
+    
+    // Recharger la page pour refléter les changements
+    window.location.reload();
+  };
+
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-bold text-white">Mon profil</h1>
-      
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold text-white">Mon profil</h1>
+        <button
+          onClick={() => isEditing ? handleSave() : setIsEditing(true)}
+          className={`px-6 py-2 rounded-lg font-semibold transition-colors ${
+            isEditing 
+              ? 'bg-emerald-500 hover:bg-emerald-600 text-white' 
+              : 'bg-blue-500 hover:bg-blue-600 text-white'
+          }`}
+        >
+          {isEditing ? 'Sauvegarder' : 'Modifier le profil'}
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Photo de profil */}
+        <div className="bg-slate-800 rounded-lg border border-slate-700 p-6">
+          <h3 className="text-xl font-semibold text-white mb-4">Photo de profil</h3>
+          <div className="text-center">
+            <div 
+              className="w-32 h-32 rounded-full overflow-hidden bg-slate-700 mx-auto mb-4 flex items-center justify-center cursor-pointer border-2 border-dashed border-slate-600 hover:border-emerald-500 transition-colors"
+              onClick={() => isEditing && imageInputRef.current?.click()}
+            >
+              {profileImage ? (
+                <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
+              ) : (
+                <div className="text-center">
+                  <Camera className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+                  <p className="text-xs text-gray-400">Ajouter une photo</p>
+                </div>
+              )}
+            </div>
+            {isEditing && (
+              <>
+                <input
+                  ref={imageInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+                <button
+                  onClick={() => imageInputRef.current?.click()}
+                  className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm"
+                >
+                  Changer la photo
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Informations personnelles */}
+        <div className="lg:col-span-2 bg-slate-800 rounded-lg border border-slate-700 p-6">
+          <h3 className="text-xl font-semibold text-white mb-6">Informations personnelles</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-gray-400 text-sm mb-2">Prénom</label>
+              <input
+                type="text"
+                value={profileData.firstName}
+                onChange={(e) => setProfileData(prev => ({...prev, firstName: e.target.value}))}
+                className={`w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white ${
+                  isEditing ? 'focus:outline-none focus:ring-2 focus:ring-emerald-500' : 'cursor-not-allowed'
+                }`}
+                readOnly={!isEditing}
+              />
+            </div>
+            <div>
+              <label className="block text-gray-400 text-sm mb-2">Nom</label>
+              <input
+                type="text"
+                value={profileData.lastName}
+                onChange={(e) => setProfileData(prev => ({...prev, lastName: e.target.value}))}
+                className={`w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white ${
+                  isEditing ? 'focus:outline-none focus:ring-2 focus:ring-emerald-500' : 'cursor-not-allowed'
+                }`}
+                readOnly={!isEditing}
+              />
+            </div>
+            <div>
+              <label className="block text-gray-400 text-sm mb-2">Email</label>
+              <input
+                type="email"
+                value={profileData.email}
+                onChange={(e) => setProfileData(prev => ({...prev, email: e.target.value}))}
+                className={`w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white ${
+                  isEditing ? 'focus:outline-none focus:ring-2 focus:ring-emerald-500' : 'cursor-not-allowed'
+                }`}
+                readOnly={!isEditing}
+              />
+            </div>
+            <div>
+              <label className="block text-gray-400 text-sm mb-2">Téléphone</label>
+              <input
+                type="text"
+                value={profileData.phone}
+                onChange={(e) => setProfileData(prev => ({...prev, phone: e.target.value}))}
+                className={`w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white ${
+                  isEditing ? 'focus:outline-none focus:ring-2 focus:ring-emerald-500' : 'cursor-not-allowed'
+                }`}
+                readOnly={!isEditing}
+              />
+            </div>
+            {user.type === 'professionnel' && (
+              <>
+                <div>
+                  <label className="block text-gray-400 text-sm mb-2">Entreprise</label>
+                  <input
+                    type="text"
+                    value={profileData.company}
+                    onChange={(e) => setProfileData(prev => ({...prev, company: e.target.value}))}
+                    className={`w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white ${
+                      isEditing ? 'focus:outline-none focus:ring-2 focus:ring-emerald-500' : 'cursor-not-allowed'
+                    }`}
+                    readOnly={!isEditing}
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-400 text-sm mb-2">Spécialité</label>
+                  <select
+                    value={profileData.specialty}
+                    onChange={(e) => setProfileData(prev => ({...prev, specialty: e.target.value}))}
+                    className={`w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white ${
+                      isEditing ? 'focus:outline-none focus:ring-2 focus:ring-emerald-500' : 'cursor-not-allowed'
+                    }`}
+                    disabled={!isEditing}
+                  >
+                    <option value="">Sélectionner une spécialité</option>
+                    <option value="electricien">Électricien</option>
+                    <option value="plombier">Plombier</option>
+                    <option value="menuisier">Menuisier</option>
+                    <option value="peintre">Peintre</option>
+                    <option value="macon">Maçon</option>
+                    <option value="chauffagiste">Chauffagiste</option>
+                    <option value="carreleur">Carreleur</option>
+                  </select>
+                </div>
+              </>
+            )}
+            <div className="md:col-span-2">
+              <label className="block text-gray-400 text-sm mb-2">Localisation</label>
+              <input
+                type="text"
+                value={profileData.location}
+                onChange={(e) => setProfileData(prev => ({...prev, location: e.target.value}))}
+                className={`w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white ${
+                  isEditing ? 'focus:outline-none focus:ring-2 focus:ring-emerald-500' : 'cursor-not-allowed'
+                }`}
+                readOnly={!isEditing}
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-gray-400 text-sm mb-2">Présentation</label>
+              <textarea
+                value={profileData.bio}
+                onChange={(e) => setProfileData(prev => ({...prev, bio: e.target.value}))}
+                rows={4}
+                className={`w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white ${
+                  isEditing ? 'focus:outline-none focus:ring-2 focus:ring-emerald-500' : 'cursor-not-allowed'
+                }`}
+                placeholder="Décrivez-vous, vos compétences, votre expérience..."
+                readOnly={!isEditing}
+              />
+            </div>
+          </div>
+          
+          {isEditing && (
+            <div className="mt-6 flex space-x-4">
+              <button
+                onClick={handleSave}
+                className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+              >
+                Sauvegarder les modifications
+              </button>
+              <button
+                onClick={() => setIsEditing(false)}
+                className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+              >
+                Annuler
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Statut du profil */}
       <div className="bg-slate-800 rounded-lg border border-slate-700 p-6">
-        <h3 className="text-xl font-semibold text-white mb-4">Informations personnelles</h3>
-        <div className="grid grid-cols-2 gap-6">
-          <div>
-            <label className="block text-gray-400 text-sm mb-2">Prénom</label>
-            <input
-              type="text"
-              value={user.firstName}
-              className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white"
-              readOnly
-            />
-          </div>
-          <div>
-            <label className="block text-gray-400 text-sm mb-2">Nom</label>
-            <input
-              type="text"
-              value={user.lastName}
-              className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white"
-              readOnly
-            />
-          </div>
+        <h3 className="text-xl font-semibold text-white mb-4">Statut du profil</h3>
+        <div className="flex items-center space-x-4">
+          <div className={`w-4 h-4 rounded-full ${
+            user.status === 'active' ? 'bg-emerald-500' : 
+            user.status === 'pending' ? 'bg-yellow-500' : 'bg-red-500'
+          }`}></div>
+          <span className="text-white">
+            {user.status === 'active' ? 'Profil actif' : 
+             user.status === 'pending' ? 'En cours de validation' : 'Profil suspendu'}
+          </span>
+          {user.status === 'pending' && (
+            <span className="text-yellow-400 text-sm">
+              (Validation sous 24-48h)
+            </span>
+          )}
         </div>
       </div>
     </div>
