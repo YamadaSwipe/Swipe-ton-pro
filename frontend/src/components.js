@@ -584,6 +584,49 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
                 required
               />
 
+              {/* Pack Selection */}
+              <div className="space-y-4">
+                <label className="block text-white text-sm font-medium">
+                  Choisissez votre pack *
+                </label>
+                <div className="grid gap-4">
+                  {packs.map((pack) => (
+                    <div
+                      key={pack.id}
+                      onClick={() => setSelectedPack(pack)}
+                      className={`p-4 rounded-lg border-2 cursor-pointer transition-colors ${
+                        selectedPack?.id === pack.id
+                          ? 'border-emerald-500 bg-emerald-500/10'
+                          : 'border-slate-600 hover:border-slate-500'
+                      }`}
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <h4 className="text-white font-semibold">{pack.name}</h4>
+                        <div className="text-right">
+                          <span className="text-xl font-bold text-white">{pack.price}€</span>
+                          <span className="text-gray-400 text-sm">{pack.period}</span>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        {pack.features.slice(0, 4).map((feature, idx) => (
+                          <div key={idx} className="flex items-center text-gray-300 text-sm">
+                            <CheckCircle className="w-3 h-3 text-emerald-500 mr-2 flex-shrink-0" />
+                            {feature}
+                          </div>
+                        ))}
+                      </div>
+                      {pack.popular && (
+                        <div className="mt-2">
+                          <span className="bg-emerald-500 text-white px-2 py-1 rounded text-xs font-semibold">
+                            Le plus populaire
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               <div className="space-y-4">
                 <label className="block text-white text-sm font-medium">
                   Documents requis (Kbis, assurance, certifications)
