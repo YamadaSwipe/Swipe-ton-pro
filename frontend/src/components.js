@@ -220,8 +220,10 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
     location: ''
   });
   const [documents, setDocuments] = useState([]);
+  const [profileImage, setProfileImage] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const fileInputRef = useRef(null);
+  const imageInputRef = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
