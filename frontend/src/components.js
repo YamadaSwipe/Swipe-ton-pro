@@ -2678,7 +2678,7 @@ export const Components = {
   AuthModal,
   Dashboard,
   SwipeInterface,
-  AdminOverview,
+  DocumentsManagement,
   UserManagement,
   PendingValidations,
   AdminAnalytics
