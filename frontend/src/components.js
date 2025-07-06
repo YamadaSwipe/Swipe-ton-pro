@@ -573,6 +573,7 @@ const Dashboard = ({ user, onLogout }) => {
 
   const particularTabs = [
     { id: 'overview', label: 'Tableau de bord', icon: TrendingUp },
+    { id: 'profile', label: 'Mon profil', icon: Users },
     { id: 'projects', label: 'Mes projets', icon: FileText },
     { id: 'swipe', label: 'Swiper', icon: Heart },
     { id: 'messages', label: 'Messages', icon: MessageCircle },
