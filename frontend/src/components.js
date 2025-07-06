@@ -415,7 +415,7 @@ const PricingPlans = () => {
         "Account manager dédié"
       ],
       buttonText: "Contactez-nous",
-      buttonColor: "bg-orange-500 hover:bg-orange-600"
+      buttonColor: "bg-yellow-500 hover:bg-yellow-600"
     }
   ];
 
