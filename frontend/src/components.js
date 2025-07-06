@@ -628,7 +628,7 @@ const MobileApp = () => {
                 </li>
               </ul>
               <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
-                Swiper jusqu'à gratuitement
+                Swiper gratuitement
               </button>
             </div>
           </div>
