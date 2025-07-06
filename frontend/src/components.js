@@ -244,17 +244,58 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
         return;
       }
       
-      // Simulate login for regular users
-      const userData = {
-        id: Date.now(),
-        email: formData.email,
-        type: 'particulier',
-        firstName: 'John',
-        lastName: 'Doe',
-        status: 'active'
-      };
-      onAuth(userData);
+      // Check existing users
+      const allUsers = JSON.parse(localStorage.getItem('swipe_ton_pro_all_users') || '[]');
+      const existingUser = allUsers.find(u => u.email === formData.email);
+      
+      if (existingUser) {
+        // Verify password (simple check for demo)
+        if (existingUser.password === formData.password) {
+          onAuth(existingUser);
+        } else {
+          alert('Mot de passe incorrect');
+        }
+      } else {
+        alert('Utilisateur non trouvé. Veuillez vous inscrire.');
+      }
     } else {
+      // Validation des champs
+      if (!formData.firstName || !formData.lastName || !formData.email || !formData.password) {
+        alert('Veuillez remplir tous les champs obligatoires');
+        return;
+      }
+      
+      if (formData.password.length < 6) {
+        alert('Le mot de passe doit contenir au moins 6 caractères');
+        return;
+      }
+      
+      // Check if email already exists
+      const allUsers = JSON.parse(localStorage.getItem('swipe_ton_pro_all_users') || '[]');
+      const emailExists = allUsers.find(u => u.email === formData.email);
+      
+      if (emailExists) {
+        alert('Cette adresse email est déjà utilisée');
+        return;
+      }
+      
+      // For professionals, require pack selection and payment
+      if (currentAuthType === 'professionnel') {
+        if (!selectedPack) {
+          alert('Veuillez sélectionner un pack');
+          return;
+        }
+        
+        if (!formData.company || !formData.siret || !formData.specialty) {
+          alert('Veuillez remplir toutes les informations professionnelles');
+          return;
+        }
+        
+        // Show payment modal
+        setShowPayment(true);
+        return;
+      }
+      
       // Create new user
       const userData = {
         id: Date.now(),
@@ -263,8 +304,14 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
         status: currentAuthType === 'professionnel' ? 'pending' : 'active',
         documents: documents,
         profileImage: profileImage,
+        selectedPack: selectedPack,
         createdAt: new Date().toISOString()
       };
+      
+      // Save user
+      const updatedUsers = [...allUsers, userData];
+      localStorage.setItem('swipe_ton_pro_all_users', JSON.stringify(updatedUsers));
+      
       onAuth(userData);
     }
   };
