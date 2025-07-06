@@ -224,7 +224,7 @@ const WhyChooseUs = () => {
       description: "Accédez à un réseau de professionnels vérifiés et qualifiés dans tous les domaines."
     },
     {
-      icon: <Shield className="w-12 h-12 text-orange-500" />,
+      icon: <Shield className="w-12 h-12 text-yellow-500" />,
       title: "Sécurité garantie",
       description: "Tous nos professionnels sont vérifiés et assurés pour votre tranquillité d'esprit."
     },
