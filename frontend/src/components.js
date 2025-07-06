@@ -570,7 +570,37 @@ const Dashboard = ({ user, onLogout }) => {
                 </div>
               )}
               
+              {!isAdmin && (
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => setActiveTab('swipe')}
+                    className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center"
+                  >
+                    <Heart className="w-4 h-4 mr-2" />
+                    Swiper
+                  </button>
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center"
+                  >
+                    <ArrowRight className="w-4 h-4 mr-2" />
+                    Accueil
+                  </button>
+                </div>
+              )}
+              
               <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-full overflow-hidden bg-slate-700 flex items-center justify-center">
+                  {user.profileImage ? (
+                    <img 
+                      src={user.profileImage} 
+                      alt="Profile" 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <Users className="w-5 h-5 text-gray-400" />
+                  )}
+                </div>
                 <div className="text-right">
                   <p className="text-white text-sm font-medium">{user.firstName} {user.lastName}</p>
                   <p className="text-gray-400 text-xs">
@@ -580,6 +610,7 @@ const Dashboard = ({ user, onLogout }) => {
                 <button
                   onClick={onLogout}
                   className="text-gray-400 hover:text-white p-2"
+                  title="Déconnexion"
                 >
                   <LogOut className="w-5 h-5" />
                 </button>
