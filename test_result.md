@@ -182,3 +182,5 @@
     - message: "Début de l'implémentation du système de matching Career Tinder avec swipe haut/bas et matching mutuel"
     - agent: "testing"
     - message: "Tests du backend effectués. Les modèles de données fonctionnent correctement. Les APIs de base (création d'utilisateurs et profils) fonctionnent bien. Le système de swipe et la détection de match fonctionnent correctement. Cependant, il y a un problème de sérialisation avec MongoDB ObjectId dans les endpoints de récupération des matches potentiels et des matches existants. Ces endpoints retournent une erreur 500."
+    - agent: "main"
+    - message: "Corrections apportées aux problèmes de sérialisation MongoDB ObjectId. Les endpoints de matching ont été améliorés avec suppression des _id MongoDB et meilleure gestion des erreurs. Test utilisateur en console réussi : API accessible et création d'utilisateur fonctionnelle. Prêt pour tests complets du backend."
