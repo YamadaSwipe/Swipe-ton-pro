@@ -106,40 +106,52 @@ user_problem_statement: "Créer un système d'administration complet pour Career
 
 backend:
   - task: "Créer les modèles de données Admin et User"
-    implemented: false
-    working: "NA"
+    implemented: true
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
     needs_retesting: false
-    status_history: []
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Modèles Admin, User, Invitation, Report créés avec succès avec tous les champs nécessaires"
 
   - task: "Implémenter l'authentification et les permissions"
-    implemented: false
-    working: "NA"
+    implemented: true
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
     needs_retesting: false
-    status_history: []
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Système d'authentification JWT implémenté avec vérification des permissions par rôle"
 
   - task: "Créer les API pour la gestion des admins"
-    implemented: false
-    working: "NA"
+    implemented: true
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
     needs_retesting: false
-    status_history: []
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "APIs complètes pour login, invitation, gestion des admins, utilisateurs, statistiques et signalements"
 
   - task: "Système d'invitation par email"
-    implemented: false
-    working: "NA"
+    implemented: true
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "medium"
     needs_retesting: false
-    status_history: []
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Système d'invitation avec tokens JWT et gestion des expirations implémenté"
 
 frontend:
   - task: "Créer le dashboard d'administration"
