@@ -216,10 +216,13 @@
 
 ## test_plan:
   current_focus:
-    - "Modèles User, Profile, Swipe, Match"
-    - "APIs de matching (profils, swipes, matches)"
+    - "Interface de swipe tactile"
+    - "Affichage des profils avec défilement"
+    - "Statistiques et compteurs"
+    - "Notification de match"
+    - "Écran de fin de profils"
   stuck_tasks: []
-  test_all: false
+  test_all: true
   test_priority: "high_first"
 
 ## agent_communication:
