@@ -107,15 +107,18 @@ user_problem_statement: "Développer une plateforme de matching professionnel 'S
 backend:
   - task: "Modèles MongoDB (Users, Profiles, Swipes, Matches, Messages, Documents)"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Créé tous les modèles Pydantic avec enums (UserType, CompanyStatus, DocumentType, etc.) et structures de données complètes"
+      - working: true
+        agent: "testing"
+        comment: "Les modèles MongoDB fonctionnent correctement. Tous les modèles Pydantic (UserBase, ProfileBase, DocumentBase, SwipeBase, etc.) sont bien définis et les opérations CRUD fonctionnent comme prévu."
 
   - task: "API Authentication JWT"
     implemented: true
