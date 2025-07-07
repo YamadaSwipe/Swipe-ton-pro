@@ -462,7 +462,7 @@ async def list_invitations(current_admin: Admin = Depends(get_current_admin)):
     ]
 
 # User Management Routes
-@api_router.get("/admin/users")
+@admin_router.get("/users")
 async def list_users(
     page: int = 1,
     limit: int = 20,
