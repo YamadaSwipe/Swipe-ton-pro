@@ -211,6 +211,141 @@ const RequestModal = ({ matchedProfile, currentUser, onClose, onRequest }) => {
   );
 };
 
+// Notifications Management Component
+const NotificationsManagement = ({ user }) => {
+  const [requests, setRequests] = useState([]);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState(null);
+
+  useEffect(() => {
+    // Charger les demandes adressées à ce professionnel
+    const allRequests = JSON.parse(localStorage.getItem('swipe_ton_pro_requests') || '[]');
+    const userRequests = allRequests.filter(req => req.toUserId === user.id);
+    setRequests(userRequests);
+  }, [user.id]);
+
+  const handlePaymentClick = (request) => {
+    setSelectedRequest(request);
+    setShowPaymentModal(true);
+  };
+
+  const handlePaymentSuccess = () => {
+    // Marquer la demande comme payée et débloquée
+    const updatedRequests = requests.map(req => 
+      req.id === selectedRequest.id 
+        ? { ...req, status: 'paid', messageUnlocked: true }
+        : req
+    );
+    setRequests(updatedRequests);
+    localStorage.setItem('swipe_ton_pro_requests', JSON.stringify(
+      JSON.parse(localStorage.getItem('swipe_ton_pro_requests') || '[]').map(req => 
+        req.id === selectedRequest.id 
+          ? { ...req, status: 'paid', messageUnlocked: true }
+          : req
+      )
+    ));
+    setShowPaymentModal(false);
+    setSelectedRequest(null);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold text-white">Notifications</h1>
+        <div className="text-sm text-gray-400">
+          {requests.filter(r => r.status === 'pending_payment').length} demandes en attente
+        </div>
+      </div>
+
+      {requests.length === 0 ? (
+        <div className="text-center py-12">
+          <MessageCircle className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+          <h3 className="text-xl font-semibold text-gray-400 mb-2">Aucune notification</h3>
+          <p className="text-gray-500">
+            Les demandes de devis et rendez-vous apparaîtront ici
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {requests.map((request) => (
+            <div key={request.id} className="bg-slate-800 rounded-lg border border-slate-700 p-6">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center space-x-3 mb-3">
+                    <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
+                      <Users className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-white font-semibold">{request.fromUserName}</h3>
+                      <p className="text-gray-400 text-sm">
+                        {request.type === 'devis' ? '📋 Demande de devis' : '📅 Demande de rendez-vous'}
+                      </p>
+                    </div>
+                  </div>
+
+                  {request.message && (
+                    <div className="bg-slate-700 rounded-lg p-3 mb-4">
+                      <p className="text-gray-300 text-sm">{request.message}</p>
+                    </div>
+                  )}
+
+                  <div className="flex items-center space-x-4 text-sm text-gray-400">
+                    <span>🕒 {new Date(request.timestamp).toLocaleString('fr-FR')}</span>
+                    <span className={`px-2 py-1 rounded text-xs font-semibold ${
+                      request.status === 'pending_payment' ? 'bg-yellow-500/20 text-yellow-400' :
+                      request.status === 'paid' ? 'bg-emerald-500/20 text-emerald-400' :
+                      'bg-red-500/20 text-red-400'
+                    }`}>
+                      {request.status === 'pending_payment' ? 'Paiement requis' :
+                       request.status === 'paid' ? 'Payé - Débloqué' :
+                       'Expiré'}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="ml-6">
+                  {request.status === 'pending_payment' ? (
+                    <button
+                      onClick={() => handlePaymentClick(request)}
+                      className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center"
+                    >
+                      <DollarSign className="w-5 h-5 mr-2" />
+                      Payer 70€
+                    </button>
+                  ) : request.status === 'paid' ? (
+                    <button
+                      onClick={() => {
+                        // TODO: Ouvrir la messagerie
+                        alert('Ouverture de la messagerie...');
+                      }}
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center"
+                    >
+                      <MessageCircle className="w-5 h-5 mr-2" />
+                      Messagerie
+                    </button>
+                  ) : (
+                    <div className="text-gray-500 text-sm">Expiré</div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Payment Modal */}
+      {showPaymentModal && selectedRequest && (
+        <StripePaymentModal
+          request={selectedRequest}
+          user={user}
+          onClose={() => setShowPaymentModal(false)}
+          onSuccess={handlePaymentSuccess}
+        />
+      )}
+    </div>
+  );
+};
+
 // Hero Component
 const Hero = ({ onShowAuth, setAuthType }) => {
   return (
