@@ -255,3 +255,5 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: "Backend completé avec tous les modèles et endpoints principaux. Prêt pour test du backend avant de passer au frontend."
+  - agent: "testing"
+    message: "Tests du backend effectués. La plupart des fonctionnalités fonctionnent correctement, mais le système d'administration n'est pas accessible car il n'y a pas d'utilisateur admin dans le système. Il faudrait créer un utilisateur admin manuellement dans la base de données ou ajouter un endpoint pour créer un admin. Les autres fonctionnalités (authentification, profils, documents, swipes, matches, messages) fonctionnent comme prévu."
