@@ -122,15 +122,18 @@ backend:
 
   - task: "API Authentication JWT"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Implémenté authentification JWT avec bcrypt pour hash des mots de passe, endpoints register/login"
+      - working: true
+        agent: "testing"
+        comment: "L'authentification JWT fonctionne correctement. Les endpoints /auth/register et /auth/login fonctionnent comme prévu. Le hachage des mots de passe avec bcrypt est bien implémenté. Les tokens JWT sont correctement générés et validés."
 
   - task: "API endpoints CRUD (Users, Profiles, Swipes, Matches)"
     implemented: true
