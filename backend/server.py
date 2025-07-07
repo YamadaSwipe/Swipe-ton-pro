@@ -566,7 +566,7 @@ async def delete_user(
     return {"message": "User deleted successfully"}
 
 # Statistics Routes
-@admin_router.get("/stats")
+@api_router.get("/admin/stats")
 async def get_platform_stats(current_admin: Admin = Depends(get_current_admin)):
     if not check_permission(current_admin, "view_stats"):
         raise HTTPException(
