@@ -84,9 +84,9 @@ const AdminLogin = () => {
           <div className="max-w-4xl mx-auto">
             <div className="bg-green-500/20 border border-green-500 rounded-xl p-8 text-center mb-8">
               <div className="text-6xl mb-4">🎉</div>
-              <h2 className="text-3xl font-bold mb-4">SYSTÈME D'ADMINISTRATION OPÉRATIONNEL !</h2>
+              <h2 className="text-3xl font-bold mb-4">SYSTÈME D'ADMINISTRATION SWIPE TON PRO OPÉRATIONNEL !</h2>
               <p className="text-lg text-green-100">
-                Votre système d'administration Career Tinder fonctionne parfaitement !
+                Votre système d'administration Swipe Ton Pro fonctionne parfaitement !
               </p>
             </div>
 
