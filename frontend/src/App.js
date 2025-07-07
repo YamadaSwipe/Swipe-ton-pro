@@ -140,7 +140,7 @@ const AdminLogin = () => {
               <h3 className="text-xl font-bold mb-3">🔐 Informations d'Accès</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 <div>
-                  <p><strong>Email:</strong> admin@careertinder.com</p>
+                  <p><strong>Email:</strong> admin@swipetonpro.com</p>
                   <p><strong>Mot de passe:</strong> admin123</p>
                 </div>
                 <div>
