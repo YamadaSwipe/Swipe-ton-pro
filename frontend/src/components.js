@@ -1950,7 +1950,7 @@ const DashboardOverview = ({ user, isPending }) => {
                 Nous vérifions vos documents. Votre profil sera activé sous 24-48h.
               </p>
               <div className="space-y-2">
-                <p className="text-sm text-yellow-200">En mode fantôme, vous pouvez :</p>
+                <p className="text-sm text-yellow-200">En mode fantôme, tu peux :</p>
                 <ul className="text-sm text-yellow-200 ml-4 space-y-1">
                   <li>• Voir les projets disponibles</li>
                   <li>• Swiper les projets (sans être visible)</li>
