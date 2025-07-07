@@ -4482,6 +4482,7 @@ const AdminAnalytics = () => {
 const MatchAnimation = ({ matchedProfile, onClose, currentUser }) => {
   const [showExplosion, setShowExplosion] = useState(true);
   const [showMatchContent, setShowMatchContent] = useState(false);
+  const [showRequestModal, setShowRequestModal] = useState(false);
 
   useEffect(() => {
     // Séquence d'animation
