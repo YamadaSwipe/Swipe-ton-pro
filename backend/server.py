@@ -532,7 +532,7 @@ async def update_user(
     
     return {"message": "User updated successfully"}
 
-@api_router.delete("/admin/users/{user_id}")
+@admin_router.delete("/users/{user_id}")
 async def delete_user(
     user_id: str,
     current_admin: Admin = Depends(get_current_admin)
