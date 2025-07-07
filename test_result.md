@@ -106,8 +106,8 @@
 
 ## backend:
   - task: "Modèles User, Profile, Swipe, Match"
-    implemented: false
-    working: "NA"
+    implemented: true
+    working: true
     file: "backend/server.py"
     stuck_count: 0
     priority: "high"
@@ -116,18 +116,24 @@
         - working: "NA"
         - agent: "main"
         - comment: "Démarrage de l'implémentation des modèles de données pour le système de matching"
+        - working: true
+        - agent: "testing"
+        - comment: "Les modèles User, Profile, Swipe et Match sont correctement implémentés et fonctionnels. Les tests de création et récupération des utilisateurs et profils sont réussis."
 
   - task: "APIs de matching (profils, swipes, matches)"
-    implemented: false
-    working: "NA"
+    implemented: true
+    working: false
     file: "backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
         - working: "NA"
         - agent: "main"
         - comment: "APIs pour récupérer profils, enregistrer swipes, détecter matches"
+        - working: false
+        - agent: "testing"
+        - comment: "Les APIs de base fonctionnent correctement (création d'utilisateurs et profils). Le système de swipe et la détection de match fonctionnent bien. Cependant, il y a un problème de sérialisation avec MongoDB ObjectId dans les endpoints GET /api/matches/{user_id} et GET /api/matches/user/{user_id}. Ces endpoints retournent une erreur 500 avec le message 'ObjectId object is not iterable'."
 
 ## frontend:
   - task: "Interface de swipe tactile"
@@ -157,17 +163,20 @@
 ## metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 0
+  test_sequence: 1
   run_ui: false
 
 ## test_plan:
   current_focus:
     - "Modèles User, Profile, Swipe, Match"
     - "APIs de matching (profils, swipes, matches)"
-  stuck_tasks: []
+  stuck_tasks: 
+    - "APIs de matching (profils, swipes, matches)"
   test_all: false
   test_priority: "high_first"
 
 ## agent_communication:
     - agent: "main"
     - message: "Début de l'implémentation du système de matching Career Tinder avec swipe haut/bas et matching mutuel"
+    - agent: "testing"
+    - message: "Tests du backend effectués. Les modèles de données fonctionnent correctement. Les APIs de base (création d'utilisateurs et profils) fonctionnent bien. Le système de swipe et la détection de match fonctionnent correctement. Cependant, il y a un problème de sérialisation avec MongoDB ObjectId dans les endpoints de récupération des matches potentiels et des matches existants. Ces endpoints retournent une erreur 500."
