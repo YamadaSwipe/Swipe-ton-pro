@@ -1081,9 +1081,7 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
         : [...prev, category]
     );
   };
-    experience: '',
-    location: ''
-  });
+
   const [documents, setDocuments] = useState([]);
   const [profileImage, setProfileImage] = useState(null);
   const [selectedPack, setSelectedPack] = useState(null);
