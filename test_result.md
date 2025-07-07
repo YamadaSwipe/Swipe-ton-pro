@@ -177,6 +177,66 @@
       - working: "NA"
         agent: "main"
         comment: "Will need to store match data - currently using localStorage"
+  
+  - task: "Server Health Check"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Backend server needs to be tested for availability"
+      - working: true
+        agent: "testing"
+        comment: "Backend server is running properly and responding to requests. The root endpoint returns a 'Hello World' message as expected."
+
+  - task: "Basic API Endpoints"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Need to test existing API endpoints"
+      - working: true
+        agent: "testing"
+        comment: "The backend has two working API endpoints: POST /api/status for creating status checks and GET /api/status for retrieving them. Both endpoints are functioning correctly."
+
+  - task: "CORS Configuration"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Need to ensure CORS is properly configured for frontend communication"
+      - working: true
+        agent: "testing"
+        comment: "CORS is properly configured. The backend responds with appropriate CORS headers, allowing requests from the frontend origin."
+
+  - task: "Data Persistence"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Need to test if data is properly stored and retrieved"
+      - working: true
+        agent: "testing"
+        comment: "Data persistence is working correctly. The backend can store data in MongoDB and retrieve it successfully."
 
 ## metadata:
   created_by: "main_agent"
