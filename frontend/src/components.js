@@ -3602,7 +3602,7 @@ const ProfessionalCard = ({ professional, onSwipe, hideButtons = false, isPrevie
   return (
     <>
       {/* Professional Image */}
-      <div className="relative h-64">
+      <div className="relative h-40">
         {professional.profileImage ? (
           <img
             src={professional.profileImage}
