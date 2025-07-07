@@ -269,32 +269,28 @@ const ProfileShowcase = () => {
         <div className="relative">
           <div className="flex justify-center items-center space-x-8 h-96">
             {visibleProfiles.map((profile, index) => {
-              const x = (index - 1) * 320; // Position horizontale
+              const x = (index - 1) * 320;
               const isCenter = index === 1;
               
               return (
                 <motion.div
                   key={`${profile.type}-${profile.id}-${currentProfileIndex}`}
-                  className={`bg-slate-800 rounded-2xl overflow-hidden border-2 shadow-xl transition-all cursor-pointer ${
+                  className={`w-80 relative bg-slate-800 rounded-2xl overflow-hidden border-2 shadow-xl transition-all cursor-pointer ${
                     isCenter ? 'border-emerald-500 shadow-emerald-500/20' : 'border-slate-700'
                   }`}
-                  style={{
-                    transform: `translateX(${x}px)`,
-                  }}
                   initial={{ x: 400, opacity: 0 }}
                   animate={{ 
-                  x: 0, 
-                  opacity: index === 1 ? 1 : 0.6, 
-                  scale: index === 1 ? 1 : 0.85,
-                  zIndex: index === 1 ? 10 : 5
-                }}
-                exit={{ x: -300, opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-                className="w-80 relative"
-              >
-                <div className={`bg-slate-800 rounded-2xl overflow-hidden border-2 shadow-xl transition-all ${
-                  index === 1 ? 'border-emerald-500 shadow-emerald-500/20' : 'border-slate-700'
-                }`}>
+                    x: 0, 
+                    opacity: isCenter ? 1 : 0.6, 
+                    scale: isCenter ? 1 : 0.85,
+                    zIndex: isCenter ? 10 : 5
+                  }}
+                  exit={{ x: -300, opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  onClick={() => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                >
                   {profile.type === 'project' ? (
                     <ProjectCard 
                       project={profile} 
@@ -311,9 +307,9 @@ const ProfileShowcase = () => {
                       isPreview={true}
                     />
                   )}
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
 
           {/* Indicators */}
