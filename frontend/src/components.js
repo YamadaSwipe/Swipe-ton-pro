@@ -1049,6 +1049,9 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
     company: '',
     siret: '',
     specialty: '',
+    experience: '',
+    location: ''
+  });
 
   // Liste complète des métiers
   const allSpecialties = [
