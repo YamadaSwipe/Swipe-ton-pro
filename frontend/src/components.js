@@ -1090,6 +1090,60 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
 
+  // Check for successful payment return from Stripe
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get('session_id');
+    
+    if (sessionId) {
+      handlePaymentSuccess(sessionId);
+      // Clean URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
+
+  // Handle successful payment and finalize user creation
+  const handlePaymentSuccess = async (sessionId) => {
+    try {
+      // Get temporary user data
+      const tempUserData = JSON.parse(localStorage.getItem('swipe_ton_pro_temp_user') || '{}');
+      
+      if (tempUserData.stripeSessionId === sessionId) {
+        // Verify payment with backend
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/payments/checkout/status/${sessionId}`);
+        
+        if (response.ok) {
+          const paymentData = await response.json();
+          
+          if (paymentData.payment_status === 'paid') {
+            // Create final user account
+            const allUsers = JSON.parse(localStorage.getItem('swipe_ton_pro_all_users') || '[]');
+            
+            const finalUserData = {
+              ...tempUserData,
+              status: 'pending', // Professional needs document validation
+              paymentCompleted: true,
+              stripeSessionId: sessionId
+            };
+            
+            const updatedUsers = [...allUsers, finalUserData];
+            localStorage.setItem('swipe_ton_pro_all_users', JSON.stringify(updatedUsers));
+            
+            // Clean temp data
+            localStorage.removeItem('swipe_ton_pro_temp_user');
+            
+            // Authenticate user
+            onAuth(finalUserData);
+            alert('✅ Paiement réussi ! Votre compte professionnel est créé. Validation des documents en cours...');
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Erreur lors de la finalisation:', error);
+      alert('Erreur lors de la finalisation de votre inscription. Contactez le support.');
+    }
+  };
+
   const packs = [
     {
       id: 'starter',
