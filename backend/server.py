@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, Depends, HTTPException, File, UploadFile, status
+from fastapi import FastAPI, APIRouter, Depends, HTTPException, File, UploadFile, status, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -14,6 +14,7 @@ import jwt
 import bcrypt
 from enum import Enum
 import base64
+from emergentintegrations.payments.stripe.checkout import StripeCheckout, CheckoutSessionResponse, CheckoutStatusResponse, CheckoutSessionRequest
 
 
 ROOT_DIR = Path(__file__).parent
@@ -31,6 +32,12 @@ JWT_EXPIRATION_HOURS = 24
 
 # Stripe Configuration
 STRIPE_API_KEY = os.environ.get('STRIPE_API_KEY')
+stripe_checkout = StripeCheckout(api_key=STRIPE_API_KEY)
+
+# Payment packages (fixed prices)
+PAYMENT_PACKAGES = {
+    "messaging_unlock": 60.0  # 60€ pour débloquer la messagerie
+}
 
 # Create the main app without a prefix
 app = FastAPI(title="Swipe-ton-pro API", version="1.0.0")
@@ -82,6 +89,13 @@ class MessageType(str, Enum):
     TEXT = "text"
     QUOTE_REQUEST = "quote_request"
     MEETING_REQUEST = "meeting_request"
+
+class PaymentStatus(str, Enum):
+    INITIATED = "initiated"
+    PENDING = "pending"
+    COMPLETED = "completed"
+    FAILED = "failed"
+    EXPIRED = "expired"
 
 # Pydantic Models
 class UserBase(BaseModel):
@@ -184,20 +198,21 @@ class MessageResponse(MessageBase):
     created_at: datetime
     is_read: bool = False
 
-class PaymentBase(BaseModel):
-    amount: float
-    currency: str = "EUR"
+class PaymentTransactionCreate(BaseModel):
+    package_id: str
     match_id: str
 
-class PaymentCreate(PaymentBase):
-    pass
-
-class PaymentResponse(PaymentBase):
+class PaymentTransactionResponse(BaseModel):
     id: str
     user_id: str
-    stripe_payment_intent_id: Optional[str] = None
-    status: str
+    match_id: str
+    package_id: str
+    amount: float
+    currency: str
+    session_id: Optional[str] = None
+    payment_status: PaymentStatus
     created_at: datetime
+    updated_at: datetime
 
 # Utility functions
 def hash_password(password: str) -> str:
@@ -242,6 +257,41 @@ async def get_admin_user(current_user: dict = Depends(get_current_user)):
             detail="Admin access required"
         )
     return current_user
+
+# Create admin user endpoint (should be secured in production)
+@api_router.post("/admin/create-admin", response_model=UserResponse)
+async def create_admin_user(admin_key: str = "admin-creation-key-2024"):
+    """Create an admin user (should be secured in production)"""
+    if admin_key != "admin-creation-key-2024":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Invalid admin key"
+        )
+    
+    # Check if admin already exists
+    existing_admin = await db.users.find_one({"user_type": "admin"})
+    if existing_admin:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Admin user already exists"
+        )
+    
+    admin_data = {
+        "email": "admin@swipetonpro.com",
+        "password": hash_password("admin123"),
+        "first_name": "Admin",
+        "last_name": "User",
+        "user_type": "admin",
+        "id": str(uuid.uuid4()),
+        "status": UserStatus.VALIDATED,
+        "is_featured": False,
+        "created_at": datetime.utcnow(),
+        "updated_at": datetime.utcnow()
+    }
+    
+    await db.users.insert_one(admin_data)
+    admin_data.pop("password")
+    return UserResponse(**admin_data)
 
 # Create admin user endpoint (should be secured in production)
 @api_router.post("/admin/create-admin", response_model=UserResponse)
