@@ -1424,21 +1424,30 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
                 required
               />
 
-              <select
-                value={formData.specialty}
-                onChange={(e) => setFormData({...formData, specialty: e.target.value})}
-                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                required
-              >
-                <option value="">Sélectionner votre spécialité</option>
-                <option value="electricien">Électricien</option>
-                <option value="plombier">Plombier</option>
-                <option value="menuisier">Menuisier</option>
-                <option value="peintre">Peintre</option>
-                <option value="macon">Maçon</option>
-                <option value="chauffagiste">Chauffagiste</option>
-                <option value="carreleur">Carreleur</option>
-              </select>
+              {/* Spécialités multiples */}
+              <div className="space-y-3">
+                <label className="text-white font-medium">Spécialités (vous pouvez en choisir plusieurs)</label>
+                <div className="max-h-48 overflow-y-auto bg-slate-700 border border-slate-600 rounded-lg p-3">
+                  <div className="grid grid-cols-2 gap-2">
+                    {allSpecialties.map((specialty) => (
+                      <label key={specialty} className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={selectedSpecialties.includes(specialty)}
+                          onChange={() => toggleSpecialty(specialty)}
+                          className="w-4 h-4 text-emerald-500 bg-slate-600 border-slate-500 rounded focus:ring-emerald-500"
+                        />
+                        <span className="text-white text-sm">{specialty}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+                {selectedSpecialties.length > 0 && (
+                  <div className="text-emerald-400 text-sm">
+                    ✅ {selectedSpecialties.length} spécialité(s) sélectionnée(s): {selectedSpecialties.join(', ')}
+                  </div>
+                )}
+              </div>
 
               <input
                 type="text"
