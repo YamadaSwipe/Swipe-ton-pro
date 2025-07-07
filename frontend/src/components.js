@@ -582,8 +582,8 @@ const Hero = ({ onShowAuth, setAuthType }) => {
             transition={{ delay: 0.4 }}
             className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto"
           >
-            Que vous soyez un porteur de projet cherchant le talent idéal ou un professionnel en 
-            quête de nouvelles opportunités, notre plateforme vous connecte instantanément.
+            Que tu sois un porteur de projet cherchant le talent idéal ou un professionnel en 
+            quête de nouvelles opportunités, notre plateforme te connecte instantanément.
           </motion.p>
 
           <motion.div
