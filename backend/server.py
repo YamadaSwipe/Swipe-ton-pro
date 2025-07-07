@@ -243,6 +243,41 @@ async def get_admin_user(current_user: dict = Depends(get_current_user)):
         )
     return current_user
 
+# Create admin user endpoint (should be secured in production)
+@api_router.post("/admin/create-admin", response_model=UserResponse)
+async def create_admin_user(admin_key: str = "admin-creation-key-2024"):
+    """Create an admin user (should be secured in production)"""
+    if admin_key != "admin-creation-key-2024":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Invalid admin key"
+        )
+    
+    # Check if admin already exists
+    existing_admin = await db.users.find_one({"user_type": "admin"})
+    if existing_admin:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Admin user already exists"
+        )
+    
+    admin_data = {
+        "email": "admin@swipetonpro.com",
+        "password": hash_password("admin123"),
+        "first_name": "Admin",
+        "last_name": "User",
+        "user_type": "admin",
+        "id": str(uuid.uuid4()),
+        "status": UserStatus.VALIDATED,
+        "is_featured": False,
+        "created_at": datetime.utcnow(),
+        "updated_at": datetime.utcnow()
+    }
+    
+    await db.users.insert_one(admin_data)
+    admin_data.pop("password")
+    return UserResponse(**admin_data)
+
 # Routes
 @api_router.get("/")
 async def root():
