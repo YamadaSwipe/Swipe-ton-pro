@@ -3978,6 +3978,10 @@ export const Components = {
   Dashboard,
   SwipeInterface,
   DocumentsManagement,
+  ProfileShowcase,
+  ProjectCard,
+  ProfessionalCard,
+  AdminOverview,
   UserManagement,
   PendingValidations,
   AdminAnalytics
