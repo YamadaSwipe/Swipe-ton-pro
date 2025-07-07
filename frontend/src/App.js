@@ -23,11 +23,6 @@ const Home = () => {
   const [user, setUser] = useState(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authType, setAuthType] = useState('particulier');
-  
-  // Debug: log when showAuthModal changes
-  useEffect(() => {
-    console.log('showAuthModal changed:', showAuthModal);
-  }, [showAuthModal]);
 
   useEffect(() => {
     // Check for existing user session
