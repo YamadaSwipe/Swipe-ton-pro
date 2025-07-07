@@ -629,7 +629,7 @@ const Hero = ({ onShowAuth, setAuthType }) => {
               <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-blue-500 rounded-full mx-auto mb-4 flex items-center justify-center">
                 <img 
                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d"
-                  alt="Thomas, Électricien" 
+                  alt="Ishak S., Électricien" 
                   className="w-16 h-16 rounded-full object-cover"
                 />
               </div>
