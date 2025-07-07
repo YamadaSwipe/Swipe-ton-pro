@@ -4157,7 +4157,7 @@ const Testimonials = () => {
 };
 
 // Mobile App Component
-const MobileApp = () => {
+const MobileApp = ({ onShowAuth, setAuthType }) => {
   return (
     <section className="py-20 bg-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
