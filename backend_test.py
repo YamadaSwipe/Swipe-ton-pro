@@ -355,6 +355,12 @@ def run_all_tests():
     print_info(f"Admin account: {ADMIN_EMAIL}")
     print_info(f"Test started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
+    # Setup admin user if needed
+    setup_result = setup_admin_user()
+    if not setup_result:
+        print_failure("Failed to setup admin user. Aborting tests.")
+        return 1
+    
     # Test results tracking
     results = {
         "total": 0,
