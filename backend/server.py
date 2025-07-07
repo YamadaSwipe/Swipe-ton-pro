@@ -262,7 +262,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Admin Authentication Routes
-@admin_router.post("/login")
+@api_router.post("/admin/login")
 async def admin_login(login_data: AdminLogin):
     admin = await db.admins.find_one({"email": login_data.email})
     if not admin or not verify_password(login_data.password, admin["password_hash"]):
