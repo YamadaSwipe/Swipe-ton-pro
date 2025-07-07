@@ -313,7 +313,7 @@ async def get_current_admin_profile(current_admin: Admin = Depends(get_current_a
     }
 
 # Admin Management Routes
-@admin_router.post("/invite")
+@api_router.post("/admin/invite")
 async def invite_admin(
     invite_data: AdminInvite,
     current_admin: Admin = Depends(get_current_admin)
