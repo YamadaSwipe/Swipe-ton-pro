@@ -3377,7 +3377,7 @@ const SwipeInterface = ({ user, onBack }) => {
           {/* Next card preview */}
           {profiles[currentIndex + 1] && (
             <div className="absolute inset-0 z-0 transform translate-x-8 scale-95 opacity-50">
-              <div className="bg-slate-700 rounded-3xl overflow-hidden border border-slate-600 shadow-xl">
+              <div className="bg-slate-700 rounded-3xl overflow-hidden border border-slate-600 shadow-xl flex flex-col h-full">
                 {profiles[currentIndex + 1].type === 'project' ? (
                   <ProjectCard 
                     project={profiles[currentIndex + 1]} 
