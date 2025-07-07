@@ -1407,6 +1407,9 @@ const Dashboard = ({ user, onLogout }) => {
             {!isAdmin && activeTab === 'overview' && (
               <DashboardOverview user={user} isPending={isPending} />
             )}
+            {activeTab === 'notifications' && isProfessional && (
+              <NotificationsManagement user={user} />
+            )}
             {activeTab === 'profile' && (
               <ProfileManagement user={user} />
             )}
