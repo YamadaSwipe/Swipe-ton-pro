@@ -708,7 +708,7 @@ const ProfileShowcase = () => {
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-white mb-4">Rejoint notre communauté</h2>
           <p className="text-xl text-gray-300">
-            Professionnels qualifiés et projets passionnants vous attendent
+            Professionnels qualifiés et projets passionnants t'attendent
           </p>
         </div>
 
