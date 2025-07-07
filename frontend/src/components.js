@@ -3693,7 +3693,7 @@ const HowItWorks = () => {
     {
       icon: <Search className="w-12 h-12 text-emerald-500" />,
       title: "Décrivez votre projet",
-      description: "Décrivez votre projet en quelques clics et laissez notre algorithme intelligent vous proposer les meilleurs profils."
+      description: "Décris ton projet en quelques clics et laisse notre algorithme intelligent te proposer les meilleurs profils."
     },
     {
       icon: <Heart className="w-12 h-12 text-emerald-500" />,
