@@ -80,7 +80,7 @@ const Home = () => {
       <PricingPlans />
       <OnSwipeForYou />
       <Testimonials />
-      <MobileApp />
+      <MobileApp onShowAuth={setShowAuthModal} setAuthType={setAuthType} />
       <Footer />
       
       {showAuthModal && (
