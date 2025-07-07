@@ -1541,7 +1541,7 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
 
               {/* Spécialités multiples */}
               <div className="space-y-3">
-                <label className="text-white font-medium">Spécialités (vous pouvez en choisir plusieurs)</label>
+                <label className="text-white font-medium">Spécialités (tu peux en choisir plusieurs)</label>
                 <div className="max-h-48 overflow-y-auto bg-slate-700 border border-slate-600 rounded-lg p-3">
                   <div className="grid grid-cols-2 gap-2">
                     {allSpecialties.map((specialty) => (
