@@ -246,12 +246,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Modèles MongoDB (Users, Profiles, Swipes, Matches, Messages, Documents)"
-    - "API Authentication JWT"
-    - "API endpoints CRUD (Users, Profiles, Swipes, Matches)"
-    - "Upload et validation de documents"
     - "Système profil vedette admin"
-  stuck_tasks: []
+  stuck_tasks:
+    - "Système profil vedette admin"
   test_all: false
   test_priority: "high_first"
 
