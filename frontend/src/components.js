@@ -147,9 +147,7 @@ const Hero = ({ onShowAuth, setAuthType }) => {
           >
             <button 
               onClick={() => {
-                console.log('Button clicked - setting authType to particulier');
                 setAuthType('particulier');
-                console.log('Button clicked - setting showAuthModal to true');
                 onShowAuth(true);
               }}
               className="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors flex items-center"
