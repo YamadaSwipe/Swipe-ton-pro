@@ -20,6 +20,12 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
+# Stripe initialization
+stripe_api_key = os.environ.get('STRIPE_API_KEY')
+if not stripe_api_key:
+    raise ValueError("STRIPE_API_KEY environment variable is required")
+stripe_checkout = StripeCheckout(api_key=stripe_api_key)
+
 # Create the main app without a prefix
 app = FastAPI()
 
