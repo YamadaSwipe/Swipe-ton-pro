@@ -143,28 +143,70 @@
 
 ## frontend:
   - task: "Interface de swipe tactile"
-    implemented: false
+    implemented: true
     working: "NA"
     file: "frontend/src/App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: "NA"
         - agent: "main"
         - comment: "Interface avec gestes swipe haut/bas et animations"
+        - working: "NA"
+        - agent: "testing"
+        - comment: "L'interface de swipe tactile est implémentée dans le composant SwipeCard avec des gestionnaires d'événements pour les interactions tactiles et souris. Le code gère les swipes vers le haut (like) et vers le bas (pass) avec des animations et indicateurs visuels."
 
   - task: "Affichage des profils avec défilement"
-    implemented: false
+    implemented: true
     working: "NA"
     file: "frontend/src/App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: "NA"
         - agent: "main"
         - comment: "Affichage des profils avec défilement de gauche à droite"
+        - working: "NA"
+        - agent: "testing"
+        - comment: "L'affichage des profils est implémenté avec un système de cartes empilées. Les profils sont affichés avec leurs informations (nom, bio, localisation, tarif, portfolio) et défilent lorsque l'utilisateur swipe."
+        
+  - task: "Statistiques et compteurs"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+        - agent: "testing"
+        - comment: "Les statistiques (likes, passes, matches) sont implémentées et affichées dans l'en-tête de l'application."
+        
+  - task: "Notification de match"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+        - agent: "testing"
+        - comment: "La notification de match est implémentée avec le composant MatchNotification qui s'affiche lorsqu'un match est détecté."
+        
+  - task: "Écran de fin de profils"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "low"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+        - agent: "testing"
+        - comment: "L'écran de fin de profils est implémenté avec un message et un bouton pour recommencer la démo."
 
 ## metadata:
   created_by: "main_agent"
