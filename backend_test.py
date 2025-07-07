@@ -3,6 +3,7 @@ import json
 import unittest
 import sys
 import os
+import time
 from datetime import datetime
 
 # Get the backend URL from the frontend .env file
@@ -83,6 +84,38 @@ class BackendAPITest(unittest.TestCase):
             print("✅ CORS headers test passed")
         except Exception as e:
             print(f"❌ CORS headers test failed: {str(e)}")
+            raise
+    
+    def test_05_data_persistence(self):
+        """Test if data is persisted in MongoDB"""
+        try:
+            # Create a unique client name with timestamp
+            unique_client = f"persistence_test_{int(time.time())}"
+            
+            # Post new status check
+            payload = {"client_name": unique_client}
+            post_response = requests.post(f"{API_URL}/status", json=payload)
+            self.assertEqual(post_response.status_code, 200)
+            post_data = post_response.json()
+            created_id = post_data["id"]
+            
+            # Get all status checks and verify our entry exists
+            get_response = requests.get(f"{API_URL}/status")
+            self.assertEqual(get_response.status_code, 200)
+            get_data = get_response.json()
+            
+            # Find our entry in the response
+            found = False
+            for item in get_data:
+                if item["id"] == created_id:
+                    self.assertEqual(item["client_name"], unique_client)
+                    found = True
+                    break
+            
+            self.assertTrue(found, "Created entry was not found in GET response")
+            print("✅ Data persistence test passed")
+        except Exception as e:
+            print(f"❌ Data persistence test failed: {str(e)}")
             raise
 
 if __name__ == "__main__":
