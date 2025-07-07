@@ -45,7 +45,7 @@ app = FastAPI(title="Career Tinder Admin API", version="1.0.0")
 api_router = APIRouter(prefix="/api")
 
 # Admin router for admin-specific endpoints
-admin_router = APIRouter(prefix="/admin")
+admin_router = APIRouter()
 
 # Enums
 class AdminRole(str, Enum):
