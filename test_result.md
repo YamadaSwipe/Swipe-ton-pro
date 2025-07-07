@@ -152,15 +152,18 @@ backend:
 
   - task: "Upload et validation de documents"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Endpoints pour upload de documents en base64, validation par admin avec statuts (pending/approved/rejected)"
+      - working: true
+        agent: "testing"
+        comment: "Les endpoints pour l'upload et la gestion des documents fonctionnent correctement. L'upload de documents en base64 fonctionne bien. Les documents sont correctement stockés avec le statut 'pending' par défaut."
 
   - task: "Système profil vedette admin"
     implemented: true
