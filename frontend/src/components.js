@@ -3183,18 +3183,29 @@ const SwipeInterface = ({ user, onBack }) => {
   // Sauvegarder un match
   const saveMatch = (like1, like2) => {
     const matches = JSON.parse(localStorage.getItem('swipe_ton_pro_matches') || '[]');
+    
+    // Déterminer qui est le particulier et qui est le professionnel
+    const particulier = like1.fromUserType === 'particulier' ? 
+      { id: like1.fromUserId, type: like1.fromUserType } :
+      { id: like2.fromUserId, type: like2.fromUserType };
+    
+    const professionnel = like1.fromUserType === 'professionnel' ? 
+      { id: like1.fromUserId, type: like1.fromUserType } :
+      { id: like2.fromUserId, type: like2.fromUserType };
+    
     const newMatch = {
       id: Date.now(),
-      user1Id: like1.fromUserId,
-      user1Type: like1.fromUserType,
-      user2Id: like1.toProfileId,
-      user2Type: like1.toProfileType,
+      particulierId: particulier.id,
+      professionnelId: professionnel.id,
+      projectId: like1.toProfileType === 'project' ? like1.toProfileId : like2.toProfileId,
       timestamp: new Date().toISOString(),
       messageUnlocked: false,
       paymentCompleted: false
     };
+    
     matches.push(newMatch);
     localStorage.setItem('swipe_ton_pro_matches', JSON.stringify(matches));
+    console.log('🎉 Match sauvegardé:', newMatch);
     
     setMatchedProfile(currentProfile);
     setShowMatch(true);
