@@ -497,7 +497,7 @@ async def list_users(
         "limit": limit
     }
 
-@api_router.put("/admin/users/{user_id}")
+@admin_router.put("/users/{user_id}")
 async def update_user(
     user_id: str,
     user_update: UserUpdate,
