@@ -4269,20 +4269,27 @@ const Footer = () => {
           
           <div>
             <h4 className="text-white font-semibold mb-4">Contact</h4>
-            <ul className="space-y-2">
+            <ul className="space-y-3">
               <li className="flex items-center text-gray-400">
-                <Mail className="w-4 h-4 mr-2" />
-                <a href="mailto:contact@swipetonpro.fr" className="hover:text-white transition-colors">
-                  contact@swipetonpro.fr
-                </a>
+                <Mail className="w-5 h-5 mr-3 text-emerald-400" />
+                <div>
+                  <div className="text-white font-medium">Contact commercial</div>
+                  <a href="mailto:contact@swipetonpro.fr" className="hover:text-emerald-400 transition-colors">
+                    contact@swipetonpro.fr
+                  </a>
+                </div>
               </li>
               <li className="flex items-center text-gray-400">
-                <Mail className="w-4 h-4 mr-2" />
-                <a href="mailto:support@swipetonpro.fr" className="hover:text-white transition-colors">
-                  support@swipetonpro.fr
-                </a>
+                <Mail className="w-5 h-5 mr-3 text-emerald-400" />
+                <div>
+                  <div className="text-white font-medium">Support technique</div>
+                  <a href="mailto:support@swipetonpro.fr" className="hover:text-emerald-400 transition-colors">
+                    support@swipetonpro.fr
+                  </a>
+                </div>
               </li>
-              <li className="text-gray-400 text-sm mt-4">
+              <li className="text-gray-400 text-sm mt-4 flex items-center">
+                <span className="text-emerald-400 mr-2">💬</span>
                 Une question ? Contactez-nous !
               </li>
             </ul>
