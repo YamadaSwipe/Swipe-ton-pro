@@ -4162,7 +4162,7 @@ const MobileApp = () => {
     <section className="py-20 bg-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-white mb-4">Visualisez avant de choisir</h2>
+          <h2 className="text-4xl font-bold text-white mb-4">Visualise avant de choisir</h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             Notre application mobile te permet de voir les profils en détail et de prendre 
             des décisions éclairées avec des portfolios complets, tout cela avant et après 
