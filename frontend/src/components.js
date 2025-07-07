@@ -572,7 +572,7 @@ const Hero = ({ onShowAuth, setAuthType }) => {
             transition={{ delay: 0.2 }}
             className="text-4xl md:text-6xl font-bold text-white mb-6"
           >
-            <span className="text-white">ton prochain </span>
+            <span className="text-white">Ton prochain </span>
             <span className="text-emerald-400">CRUSH</span><br />
             <span className="text-white">professionnel en un </span>
             <span className="text-emerald-400">SWIPE</span>
