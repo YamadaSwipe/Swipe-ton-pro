@@ -50,18 +50,23 @@ const Header = ({ onShowAuth, setAuthType }) => {
           </div>
           
           <nav className="hidden md:flex space-x-8">
-            <a href="#" className="text-gray-300 hover:text-white transition-colors">Accueil</a>
-            <div className="flex flex-col items-center group cursor-pointer">
-              <a href="#" className="text-gray-300 hover:text-white transition-colors text-base font-medium">
+            <div 
+              className="flex flex-col items-center group cursor-pointer"
+              onClick={() => alert('Cette option est en cours de déploiement, restez connecté pour suivre la suite.')}
+            >
+              <span className="text-gray-300 hover:text-white transition-colors text-base font-medium">
                 Grand compte
-              </a>
+              </span>
               <span className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors">
                 nous contacter
               </span>
             </div>
-            <a href="#" className="text-gray-300 hover:text-white transition-colors font-medium">
+            <span 
+              className="text-gray-300 hover:text-white transition-colors font-medium cursor-pointer"
+              onClick={() => alert('Cette option est en cours de déploiement, restez connecté pour suivre la suite.')}
+            >
               Enseignes au bout du doigt
-            </a>
+            </span>
           </nav>
 
           <div className="hidden md:flex items-center space-x-4">
