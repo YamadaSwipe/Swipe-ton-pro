@@ -163,7 +163,7 @@ const AdminLogin = () => {
             <span className="text-4xl">⚙️</span>
           </div>
           <h1 className="text-3xl font-bold mb-2">Administration</h1>
-          <p className="text-blue-200">Career Tinder - Swipe Ton Pro</p>
+          <p className="text-blue-200">Swipe Ton Pro</p>
         </div>
         
         <form onSubmit={handleSubmit} className="space-y-6">
