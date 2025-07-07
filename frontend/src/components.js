@@ -3512,7 +3512,7 @@ const ProjectCard = ({ project, onSwipe, isPending, hideButtons = false, isPrevi
   return (
     <>
       {/* Project Image */}
-      <div className="relative h-64 bg-gradient-to-br from-emerald-500 to-blue-600 flex items-center justify-center">
+      <div className="relative h-40 bg-gradient-to-br from-emerald-500 to-blue-600 flex items-center justify-center">
         <div className="text-center text-white">
           <FileText className="w-16 h-16 mx-auto mb-2" />
           <h3 className="text-xl font-bold">{project.category}</h3>
