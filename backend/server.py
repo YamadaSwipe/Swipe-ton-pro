@@ -701,6 +701,174 @@ async def reject_document(document_id: str, admin_comment: str, admin_user: dict
     updated_document = await db.documents.find_one({"id": document_id})
     return DocumentResponse(**updated_document)
 
+# Payment endpoints
+@api_router.post("/payments/checkout/session")
+async def create_checkout_session(
+    payment_data: PaymentTransactionCreate,
+    request: Request,
+    current_user: dict = Depends(get_current_user)
+):
+    """Create a Stripe checkout session for unlocking messaging"""
+    
+    # Validate package
+    if payment_data.package_id not in PAYMENT_PACKAGES:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid package ID"
+        )
+    
+    # Validate match exists and user is part of it
+    match = await db.matches.find_one({"id": payment_data.match_id})
+    if not match:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Match not found"
+        )
+    
+    if current_user["id"] not in [match["user1_id"], match["user2_id"]]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not your match"
+        )
+    
+    # Check if chat is already unlocked
+    if match.get("is_chat_unlocked", False):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Chat is already unlocked"
+        )
+    
+    # Get amount from server-defined packages (security)
+    amount = PAYMENT_PACKAGES[payment_data.package_id]
+    
+    # Get origin URL from request headers
+    origin_url = request.headers.get("origin") or "https://b576644a-935c-4d99-b908-174b2317a67c.preview.emergentagent.com"
+    
+    # Build success and cancel URLs
+    success_url = f"{origin_url}/matches?session_id={{CHECKOUT_SESSION_ID}}"
+    cancel_url = f"{origin_url}/matches"
+    
+    # Create checkout session request
+    checkout_request = CheckoutSessionRequest(
+        amount=amount,
+        currency="eur",
+        success_url=success_url,
+        cancel_url=cancel_url,
+        metadata={
+            "user_id": current_user["id"],
+            "match_id": payment_data.match_id,
+            "package_id": payment_data.package_id,
+            "source": "swipe_ton_pro"
+        }
+    )
+    
+    try:
+        # Create Stripe checkout session
+        session: CheckoutSessionResponse = await stripe_checkout.create_checkout_session(checkout_request)
+        
+        # Create payment transaction record
+        transaction_data = {
+            "id": str(uuid.uuid4()),
+            "user_id": current_user["id"],
+            "match_id": payment_data.match_id,
+            "package_id": payment_data.package_id,
+            "amount": amount,
+            "currency": "eur",
+            "session_id": session.session_id,
+            "payment_status": PaymentStatus.INITIATED,
+            "created_at": datetime.utcnow(),
+            "updated_at": datetime.utcnow()
+        }
+        
+        await db.payment_transactions.insert_one(transaction_data)
+        
+        return {"url": session.url, "session_id": session.session_id}
+        
+    except Exception as e:
+        logger.error(f"Error creating checkout session: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to create checkout session"
+        )
+
+@api_router.get("/payments/checkout/status/{session_id}")
+async def get_checkout_status(
+    session_id: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """Get the status of a Stripe checkout session"""
+    
+    # Find payment transaction
+    transaction = await db.payment_transactions.find_one({"session_id": session_id})
+    if not transaction:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Payment transaction not found"
+        )
+    
+    # Verify user owns this transaction
+    if transaction["user_id"] != current_user["id"]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not your transaction"
+        )
+    
+    try:
+        # Get checkout status from Stripe
+        checkout_status: CheckoutStatusResponse = await stripe_checkout.get_checkout_status(session_id)
+        
+        # Update transaction status if changed
+        new_payment_status = None
+        if checkout_status.payment_status == "paid" and transaction["payment_status"] != PaymentStatus.COMPLETED:
+            new_payment_status = PaymentStatus.COMPLETED
+            
+            # Unlock the chat for this match
+            await db.matches.update_one(
+                {"id": transaction["match_id"]},
+                {"$set": {
+                    "is_chat_unlocked": True,
+                    "unlocked_by": current_user["id"]
+                }}
+            )
+            
+        elif checkout_status.status == "expired" and transaction["payment_status"] not in [PaymentStatus.COMPLETED, PaymentStatus.EXPIRED]:
+            new_payment_status = PaymentStatus.EXPIRED
+            
+        elif checkout_status.payment_status == "unpaid" and transaction["payment_status"] not in [PaymentStatus.COMPLETED, PaymentStatus.FAILED]:
+            new_payment_status = PaymentStatus.PENDING
+        
+        # Update transaction if status changed
+        if new_payment_status:
+            await db.payment_transactions.update_one(
+                {"session_id": session_id},
+                {"$set": {
+                    "payment_status": new_payment_status,
+                    "updated_at": datetime.utcnow()
+                }}
+            )
+        
+        return {
+            "session_id": session_id,
+            "status": checkout_status.status,
+            "payment_status": checkout_status.payment_status,
+            "amount_total": checkout_status.amount_total,
+            "currency": checkout_status.currency,
+            "transaction_status": new_payment_status or transaction["payment_status"]
+        }
+        
+    except Exception as e:
+        logger.error(f"Error checking payment status: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to check payment status"
+        )
+
+@api_router.get("/payments/transactions/me", response_model=List[PaymentTransactionResponse])
+async def get_my_payment_transactions(current_user: dict = Depends(get_current_user)):
+    """Get user's payment transactions"""
+    transactions = await db.payment_transactions.find({"user_id": current_user["id"]}).to_list(100)
+    return [PaymentTransactionResponse(**transaction) for transaction in transactions]
+
 # Include the router in the main app
 app.include_router(api_router)
 
