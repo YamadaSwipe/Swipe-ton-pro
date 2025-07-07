@@ -3,6 +3,12 @@ import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import axios from "axios";
 
+// Import components
+import SwipePage from "./components/SwipePage";
+import MatchesPage from "./components/MatchesPage";
+import ProfilePage from "./components/ProfilePage";
+import AdminPage from "./components/AdminPage";
+
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
@@ -77,9 +83,17 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <h1 className="text-2xl font-bold text-white">Swipe-ton-pro</h1>
+            <a href="/" className="text-2xl font-bold text-white hover:text-blue-400">
+              Swipe-ton-pro
+            </a>
           </div>
           <div className="flex items-center space-x-4">
+            <a href="/swipe" className="text-white hover:text-blue-400">Découvrir</a>
+            <a href="/matches" className="text-white hover:text-blue-400">Matches</a>
+            <a href="/profile" className="text-white hover:text-blue-400">Profil</a>
+            {user?.user_type === 'admin' && (
+              <a href="/admin" className="text-white hover:text-red-400">Admin</a>
+            )}
             <span className="text-white">{user?.first_name} {user?.last_name}</span>
             <button
               onClick={logout}
@@ -122,43 +136,51 @@ const Home = () => {
 
         {featuredUser && (
           <div className="mb-12">
-            <h3 className="text-2xl font-bold mb-6 text-center">Profil en vedette</h3>
-            <div className="bg-gray-800 rounded-lg p-6 max-w-md mx-auto">
+            <h3 className="text-2xl font-bold mb-6 text-center">⭐ Profil en vedette</h3>
+            <div className="bg-gray-800 rounded-lg p-6 max-w-md mx-auto border-2 border-yellow-500">
               <div className="text-center">
-                <div className="w-24 h-24 bg-blue-500 rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <span className="text-2xl font-bold">
+                <div className="w-24 h-24 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+                  <span className="text-2xl font-bold text-gray-900">
                     {featuredUser.first_name[0]}{featuredUser.last_name[0]}
                   </span>
                 </div>
                 <h4 className="text-xl font-bold">{featuredUser.first_name} {featuredUser.last_name}</h4>
-                <p className="text-gray-300">{featuredUser.user_type}</p>
+                <p className="text-yellow-400 capitalize font-semibold">{featuredUser.user_type}</p>
+                {featuredUser.company_name && (
+                  <p className="text-gray-300 text-sm">{featuredUser.company_name}</p>
+                )}
                 <p className="text-sm text-gray-400 mt-2">{featuredUser.description}</p>
+                <div className="mt-3">
+                  <span className="px-3 py-1 bg-green-600 text-white rounded-full text-sm">
+                    Profil vedette
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-bold mb-4">Découvrir</h3>
+          <div className="bg-gray-800 rounded-lg p-6 hover:bg-gray-700 transition-colors">
+            <h3 className="text-xl font-bold mb-4">🔍 Découvrir</h3>
             <p className="text-gray-300 mb-4">Parcourez les profils et trouvez votre match professionnel</p>
-            <a href="/swipe" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+            <a href="/swipe" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded inline-block">
               Commencer à swiper
             </a>
           </div>
 
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-bold mb-4">Mes Matches</h3>
+          <div className="bg-gray-800 rounded-lg p-6 hover:bg-gray-700 transition-colors">
+            <h3 className="text-xl font-bold mb-4">💬 Mes Matches</h3>
             <p className="text-gray-300 mb-4">Gérez vos connexions et conversations</p>
-            <a href="/matches" className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+            <a href="/matches" className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded inline-block">
               Voir mes matches
             </a>
           </div>
 
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-bold mb-4">Mon Profil</h3>
+          <div className="bg-gray-800 rounded-lg p-6 hover:bg-gray-700 transition-colors">
+            <h3 className="text-xl font-bold mb-4">👤 Mon Profil</h3>
             <p className="text-gray-300 mb-4">Gérez votre profil et vos documents</p>
-            <a href="/profile" className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded">
+            <a href="/profile" className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded inline-block">
               Éditer profil
             </a>
           </div>
@@ -166,13 +188,31 @@ const Home = () => {
 
         {user?.user_type === 'admin' && (
           <div className="mt-12 bg-red-800 rounded-lg p-6">
-            <h3 className="text-xl font-bold mb-4">Administration</h3>
+            <h3 className="text-xl font-bold mb-4">🔧 Administration</h3>
             <p className="text-gray-300 mb-4">Gérez les utilisateurs et les validations</p>
-            <a href="/admin" className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+            <a href="/admin" className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded inline-block">
               Panneau d'administration
             </a>
           </div>
         )}
+
+        <div className="mt-12 text-center">
+          <div className="bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-bold mb-4">🔒 Mode Fantôme</h3>
+            <p className="text-gray-300 mb-4">
+              Votre statut actuel: <span className={`px-3 py-1 rounded-full text-sm ${
+                user?.status === 'validated' ? 'bg-green-600' : 'bg-yellow-600'
+              }`}>
+                {user?.status === 'validated' ? 'Validé' : 'Mode fantôme'}
+              </span>
+            </p>
+            {user?.status !== 'validated' && (
+              <p className="text-yellow-400 text-sm">
+                Uploadez vos documents dans votre profil pour sortir du mode fantôme !
+              </p>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -233,9 +273,12 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center">
       <div className="bg-gray-800 p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h2 className="text-3xl font-bold text-white mb-6 text-center">
-          {isLogin ? 'Connexion' : 'Inscription'}
-        </h2>
+        <div className="text-center mb-6">
+          <h1 className="text-3xl font-bold text-white mb-2">Swipe-ton-pro</h1>
+          <h2 className="text-xl text-gray-300">
+            {isLogin ? 'Connexion' : 'Inscription'}
+          </h2>
+        </div>
 
         {error && (
           <div className="bg-red-600 text-white p-3 rounded mb-4">
@@ -396,6 +439,24 @@ const ProtectedRoute = ({ children }) => {
   return user ? children : <Navigate to="/login" />;
 };
 
+const AdminRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
+  if (user.user_type !== 'admin') {
+    return <Navigate to="/" />;
+  }
+
+  return children;
+};
+
 function App() {
   return (
     <AuthProvider>
@@ -407,6 +468,26 @@ function App() {
               <ProtectedRoute>
                 <Home />
               </ProtectedRoute>
+            } />
+            <Route path="/swipe" element={
+              <ProtectedRoute>
+                <SwipePage />
+              </ProtectedRoute>
+            } />
+            <Route path="/matches" element={
+              <ProtectedRoute>
+                <MatchesPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin" element={
+              <AdminRoute>
+                <AdminPage />
+              </AdminRoute>
             } />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
