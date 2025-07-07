@@ -619,7 +619,7 @@ async def list_reports(
         "limit": limit
     }
 
-@api_router.put("/admin/reports/{report_id}/resolve")
+@admin_router.put("/reports/{report_id}/resolve")
 async def resolve_report(
     report_id: str,
     current_admin: Admin = Depends(get_current_admin)
