@@ -1136,6 +1136,56 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
     }
   ];
 
+  // Handle Stripe payment for professional pack
+  const handleStripePayment = async () => {
+    try {
+      // Create a temporary user ID for the payment
+      const tempUserId = 'temp_' + Date.now();
+      
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/payments/checkout/session`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: tempUserId,
+          user_type: 'professionnel',
+          match_id: `pack_${selectedPack.id}`,
+          origin_url: window.location.origin
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de la création de la session de paiement');
+      }
+
+      const data = await response.json();
+      
+      // Save user data temporarily before redirecting to payment
+      const tempUserData = {
+        id: tempUserId,
+        ...formData,
+        type: currentAuthType,
+        specialties: selectedSpecialties,
+        status: 'pending_payment',
+        documents: documents,
+        profileImage: profileImage,
+        selectedPack: selectedPack,
+        createdAt: new Date().toISOString(),
+        stripeSessionId: data.session_id
+      };
+      
+      localStorage.setItem('swipe_ton_pro_temp_user', JSON.stringify(tempUserData));
+      
+      // Redirect to Stripe
+      window.location.href = data.checkout_url;
+      
+    } catch (error) {
+      console.error('Erreur paiement:', error);
+      alert('Erreur lors du paiement: ' + error.message);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     
