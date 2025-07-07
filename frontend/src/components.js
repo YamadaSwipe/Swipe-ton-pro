@@ -100,9 +100,9 @@ const Hero = ({ onShowAuth, setAuthType }) => {
   return (
     <section className="pt-20 pb-32 bg-slate-900 relative overflow-hidden">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-blue-600"></div>
-        <div className="absolute inset-0 bg-slate-800 opacity-20"></div>
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-blue-600 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-slate-800 opacity-20 pointer-events-none"></div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
