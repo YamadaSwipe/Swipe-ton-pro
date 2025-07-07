@@ -1501,35 +1501,6 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
             </button>
           </div>
 
-          {!isLogin && currentAuthType === 'particulier' && (
-            <>
-              {/* Catégories de projets pour particuliers */}
-              <div className="space-y-3">
-                <label className="text-white font-medium">Types de projets qui vous intéressent (optionnel)</label>
-                <div className="max-h-48 overflow-y-auto bg-slate-700 border border-slate-600 rounded-lg p-3">
-                  <div className="grid grid-cols-2 gap-2">
-                    {allSpecialties.map((category) => (
-                      <label key={category} className="flex items-center space-x-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={selectedProjectCategories.includes(category)}
-                          onChange={() => toggleProjectCategory(category)}
-                          className="w-4 h-4 text-yellow-500 bg-slate-600 border-slate-500 rounded focus:ring-yellow-500"
-                        />
-                        <span className="text-white text-sm">{category}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-                {selectedProjectCategories.length > 0 && (
-                  <div className="text-yellow-400 text-sm">
-                    ✅ {selectedProjectCategories.length} catégorie(s) sélectionnée(s): {selectedProjectCategories.join(', ')}
-                  </div>
-                )}
-              </div>
-            </>
-          )}
-
           {!isLogin && currentAuthType === 'professionnel' && (
             <>
               <input
