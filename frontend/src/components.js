@@ -3144,15 +3144,34 @@ const SwipeInterface = ({ user, onBack }) => {
   const checkForMatch = (currentLike) => {
     const likes = JSON.parse(localStorage.getItem('swipe_ton_pro_likes') || '[]');
     
-    // Chercher un like réciproque
-    const reciprocalLike = likes.find(like => 
-      like.fromUserId === currentLike.toProfileId &&
-      like.toProfileId === currentLike.fromUserId &&
-      like.id !== currentLike.id
-    );
+    // Pour le matching, on doit vérifier :
+    // - Si un particulier like un pro ET ce pro like un projet de ce particulier
+    // - OU si un pro like un projet ET le créateur du projet like ce pro
+    
+    let reciprocalLike = null;
+    
+    if (currentLike.fromUserType === 'particulier' && currentLike.toProfileType === 'professional') {
+      // Un particulier like un pro - chercher si ce pro a liké un projet de ce particulier
+      reciprocalLike = likes.find(like => 
+        like.fromUserId === currentLike.toProfileId && // Le pro
+        like.fromUserType === 'professionnel' &&
+        like.toProfileType === 'project' &&
+        like.toProfile?.userId === currentLike.fromUserId // Projet appartenant au particulier
+      );
+    } else if (currentLike.fromUserType === 'professionnel' && currentLike.toProfileType === 'project') {
+      // Un pro like un projet - chercher si le créateur du projet a liké ce pro
+      const projectOwnerId = currentLike.toProfile?.userId || currentProfile?.userId;
+      reciprocalLike = likes.find(like => 
+        like.fromUserId === projectOwnerId && // Le créateur du projet
+        like.fromUserType === 'particulier' &&
+        like.toProfileType === 'professional' &&
+        like.toProfileId === currentLike.fromUserId // Le professionnel
+      );
+    }
 
     if (reciprocalLike) {
       // C'est un match !
+      console.log('🎉 MATCH DÉTECTÉ!', currentLike, reciprocalLike);
       saveMatch(currentLike, reciprocalLike);
       return true;
     }
