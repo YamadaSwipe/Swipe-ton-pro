@@ -230,8 +230,9 @@ async def get_status_checks():
     status_checks = await db.status_checks.find().to_list(1000)
     return [StatusCheck(**status_check) for status_check in status_checks]
 
-# Include the router in the main app
+# Include the routers in the main app
 app.include_router(api_router)
+api_router.include_router(admin_router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -249,7 +250,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Admin Authentication Routes
-@api_router.post("/admin/login")
+@admin_router.post("/login")
 async def admin_login(login_data: AdminLogin):
     admin = await db.admins.find_one({"email": login_data.email})
     if not admin or not verify_password(login_data.password, admin["password_hash"]):
