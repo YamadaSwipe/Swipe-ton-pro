@@ -3528,7 +3528,7 @@ const ProjectCard = ({ project, onSwipe, isPending, hideButtons = false, isPrevi
       </div>
 
       {/* Project Info */}
-      <div className="p-6 space-y-4">
+      <div className="p-6 space-y-4 flex-1">
         <div>
           <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
           <p className="text-gray-300 text-sm">{project.description}</p>
