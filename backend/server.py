@@ -364,7 +364,7 @@ async def invite_admin(
     
     return {"message": "Invitation sent successfully", "invitation_id": invitation.id}
 
-@admin_router.post("/accept-invitation")
+@api_router.post("/admin/accept-invitation")
 async def accept_invitation(accept_data: AdminAcceptInvitation):
     try:
         payload = jwt.decode(accept_data.token, SECRET_KEY, algorithms=[ALGORITHM])
