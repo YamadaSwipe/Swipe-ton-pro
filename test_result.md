@@ -101,3 +101,125 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Développer une plateforme de matching professionnel 'Swipe-ton-pro' avec système de swipe bidirectionnel, profil vedette sélectionnable par admin, validation de documents, mode fantôme, messagerie avec paiement Stripe 60€, et dashboard admin CRM."
+
+backend:
+  - task: "Modèles MongoDB (Users, Profiles, Swipes, Matches, Messages, Documents)"
+    implemented: false
+    working: "NA"
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history: []
+
+  - task: "API Authentication JWT"
+    implemented: false
+    working: "NA"
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history: []
+
+  - task: "API endpoints CRUD (Users, Profiles, Swipes, Matches)"
+    implemented: false
+    working: "NA"
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history: []
+
+  - task: "Upload et validation de documents"
+    implemented: false
+    working: "NA"
+    file: "server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history: []
+
+  - task: "Système profil vedette admin"
+    implemented: false
+    working: "NA"
+    file: "server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history: []
+
+  - task: "Intégration Stripe paiement 60€"
+    implemented: false
+    working: "NA"
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history: []
+
+frontend:
+  - task: "Inscription avec sélection type/statut"
+    implemented: false
+    working: "NA"
+    file: "App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history: []
+
+  - task: "Interface de swipe (cartes profils)"
+    implemented: false
+    working: "NA"
+    file: "App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history: []
+
+  - task: "Dashboard admin (validation, profil vedette)"
+    implemented: false
+    working: "NA"
+    file: "App.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history: []
+
+  - task: "Interface messagerie/chat"
+    implemented: false
+    working: "NA"
+    file: "App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history: []
+
+  - task: "Remplacer profil fictif par profil vedette"
+    implemented: false
+    working: "NA"
+    file: "App.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history: []
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 0
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Modèles MongoDB (Users, Profiles, Swipes, Matches, Messages, Documents)"
+    - "API Authentication JWT"
+    - "API endpoints CRUD (Users, Profiles, Swipes, Matches)"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: "Démarrage du développement de la plateforme Swipe-ton-pro. Focus sur le backend en premier avec les modèles MongoDB et l'authentification JWT."
