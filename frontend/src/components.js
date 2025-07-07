@@ -3698,7 +3698,7 @@ const HowItWorks = () => {
     {
       icon: <Heart className="w-12 h-12 text-emerald-500" />,
       title: "Swipez les profils",
-      description: "Parcourez les profils de professionnels qualifiés et swipez vers la droite pour ceux qui vous intéressent."
+      description: "Parcours les profils de professionnels qualifiés et swipe vers la droite pour ceux qui t'intéressent."
     },
     {
       icon: <CheckCircle className="w-12 h-12 text-emerald-500" />,
