@@ -209,6 +209,10 @@ async def startup_event():
     # Print all registered routes in the API router
     for route in api_router.routes:
         print(f"API Router Route: {route.path}, Methods: {route.methods}")
+    
+    # Print all registered routes in the admin router
+    for route in admin_router.routes:
+        print(f"Admin Router Route: {route.path}, Methods: {route.methods}")
 
 @api_router.get("/test")
 async def test_route():
