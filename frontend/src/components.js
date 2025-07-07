@@ -2954,18 +2954,27 @@ const ProjectModal = ({ project, onSave, onCancel }) => {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-gray-400 text-sm mb-2">Catégorie *</label>
-              <select
-                value={formData.category}
-                onChange={(e) => setFormData({...formData, category: e.target.value})}
-                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                required
-              >
-                <option value="">Sélectionner une catégorie</option>
-                {categories.map(cat => (
-                  <option key={cat} value={cat}>{cat}</option>
-                ))}
-              </select>
+              <label className="block text-gray-400 text-sm mb-2">Métiers recherchés * (choix multiples)</label>
+              <div className="max-h-48 overflow-y-auto bg-slate-700 border border-slate-600 rounded-lg p-3">
+                <div className="grid grid-cols-2 gap-2">
+                  {allSpecialties.map((specialty) => (
+                    <label key={specialty} className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={formData.categories.includes(specialty)}
+                        onChange={() => toggleCategory(specialty)}
+                        className="w-4 h-4 text-emerald-500 bg-slate-600 border-slate-500 rounded focus:ring-emerald-500"
+                      />
+                      <span className="text-white text-sm">{specialty}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              {formData.categories.length > 0 && (
+                <div className="text-emerald-400 text-sm mt-2">
+                  ✅ {formData.categories.length} métier(s) sélectionné(s): {formData.categories.join(', ')}
+                </div>
+              )}
             </div>
             <div>
               <label className="block text-gray-400 text-sm mb-2">Budget *</label>
