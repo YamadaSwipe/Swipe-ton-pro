@@ -4651,6 +4651,20 @@ const MatchAnimation = ({ matchedProfile, onClose, currentUser }) => {
           </div>
         </motion.div>
       )}
+
+      {/* Request Modal */}
+      {showRequestModal && (
+        <RequestModal
+          matchedProfile={matchedProfile}
+          currentUser={currentUser}
+          onClose={() => setShowRequestModal(false)}
+          onRequest={(type) => {
+            setShowRequestModal(false);
+            onClose();
+            // Le professionnel recevra la notification et devra payer
+          }}
+        />
+      )}
     </div>
   );
 };
