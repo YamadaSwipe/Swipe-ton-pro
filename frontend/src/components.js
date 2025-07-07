@@ -1190,7 +1190,7 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
       features: [
         'Profil premium+',
         '250 demandes/mois',
-        'Facturation devis 80€',
+        'Facturation devis 60€',
         'Projets complexes',
         'Support chat',
         'Option "être rappelé"',
