@@ -236,7 +236,9 @@ async def get_status_checks():
 
 # Include the routers in the main app
 app.include_router(api_router)
-api_router.include_router(admin_router)
+
+# Include admin router directly in the api router with proper prefix
+api_router.include_router(admin_router, prefix="/admin")
 
 app.add_middleware(
     CORSMiddleware,
