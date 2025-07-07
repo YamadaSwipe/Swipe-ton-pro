@@ -184,7 +184,7 @@
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -192,6 +192,9 @@
       - working: true
         agent: "main"
         comment: "Added MongoDB collections for payment_transactions and matches. Stripe integration with emergentintegrations package implemented."
+      - working: true
+        agent: "testing"
+        comment: "Verified that payment_transactions collection is properly updated when creating a checkout session. The matches collection is also updated after successful payment to unlock messaging."
 
   - task: "Stripe Payment API"
     implemented: true
@@ -199,11 +202,14 @@
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Implemented Stripe checkout session creation and status checking endpoints. Payment processing for 70€ connection fee working."
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested Stripe payment integration. The /api/payments/checkout/session endpoint creates a valid Stripe checkout session with the correct amount (70€). The /api/payments/checkout/status/{session_id} endpoint correctly retrieves the payment status. Error handling for invalid data and session IDs is also working properly."
   
   - task: "Server Health Check"
     implemented: true
