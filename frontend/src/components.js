@@ -2904,8 +2904,8 @@ const ProjectModal = ({ project, onSave, onCancel }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    if (!formData.title || !formData.description || !formData.category || !formData.budget || !formData.location) {
-      alert('Veuillez remplir tous les champs obligatoires');
+    if (!formData.title || !formData.description || formData.categories.length === 0 || !formData.budget || !formData.location) {
+      alert('Veuillez remplir tous les champs obligatoires et sélectionner au moins une catégorie de métier');
       return;
     }
     
