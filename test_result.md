@@ -179,16 +179,31 @@
 
 ## backend:
   - task: "Match Data Storage"
-    implemented: false
-    working: "NA"
-    file: "/app/backend/main.py"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Will need to store match data - currently using localStorage"
+      - working: true
+        agent: "main"
+        comment: "Added MongoDB collections for payment_transactions and matches. Stripe integration with emergentintegrations package implemented."
+
+  - task: "Stripe Payment API"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Implemented Stripe checkout session creation and status checking endpoints. Payment processing for 70€ connection fee working."
   
   - task: "Server Health Check"
     implemented: true
