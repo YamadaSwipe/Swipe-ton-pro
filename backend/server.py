@@ -590,7 +590,7 @@ async def get_platform_stats(current_admin: Admin = Depends(get_current_admin)):
     }
 
 # Reports Management Routes
-@admin_router.get("/reports")
+@api_router.get("/admin/reports")
 async def list_reports(
     page: int = 1,
     limit: int = 20,
