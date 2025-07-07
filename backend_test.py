@@ -62,6 +62,77 @@ def print_response(response):
     except:
         print_info(f"Response: {response.text}")
 
+def setup_admin_user():
+    print_test_header("Setting up Admin User")
+    
+    try:
+        # Connect to MongoDB
+        client = MongoClient(MONGO_URL)
+        db = client[DB_NAME]
+        
+        # Check if admin user exists
+        admin = db.admins.find_one({"email": ADMIN_EMAIL})
+        
+        if admin:
+            print_info(f"Admin user {ADMIN_EMAIL} already exists")
+            return True
+        
+        # Create admin user if it doesn't exist
+        admin_id = str(uuid.uuid4())
+        admin_data = {
+            "id": admin_id,
+            "email": ADMIN_EMAIL,
+            "name": "Super Admin",
+            "password_hash": get_password_hash(ADMIN_PASSWORD),
+            "role": "super_admin",
+            "permissions": ["view_users", "view_stats", "view_admins", "view_invitations", 
+                           "view_reports", "invite_admins", "modify_users", "delete_users", 
+                           "resolve_reports"],
+            "created_at": datetime.utcnow(),
+            "is_active": True
+        }
+        
+        db.admins.insert_one(admin_data)
+        print_success(f"Created super admin user: {ADMIN_EMAIL}")
+        return True
+        
+    except Exception as e:
+        print_failure(f"Failed to setup admin user: {str(e)}")
+        return False
+
+# Colors for terminal output
+class Colors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+def print_test_header(test_name):
+    print(f"\n{Colors.HEADER}{Colors.BOLD}===== Testing {test_name} ====={Colors.ENDC}")
+
+def print_success(message):
+    print(f"{Colors.OKGREEN}✓ {message}{Colors.ENDC}")
+
+def print_failure(message):
+    print(f"{Colors.FAIL}✗ {message}{Colors.ENDC}")
+
+def print_info(message):
+    print(f"{Colors.OKBLUE}ℹ {message}{Colors.ENDC}")
+
+def print_warning(message):
+    print(f"{Colors.WARNING}⚠ {message}{Colors.ENDC}")
+
+def print_response(response):
+    try:
+        print_info(f"Status Code: {response.status_code}")
+        print_info(f"Response: {json.dumps(response.json(), indent=2)}")
+    except:
+        print_info(f"Response: {response.text}")
+
 def test_admin_login():
     print_test_header("Admin Login")
     
