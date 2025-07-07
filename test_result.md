@@ -151,19 +151,31 @@
         comment: "Created MatchAnimation component with wall-breaking explosion effect using Framer Motion. 12 wall fragments scatter with particles and heart animations."
 
   - task: "Match Messaging System"
-    implemented: false
-    working: false
+    implemented: true
+    working: true
     file: "/app/frontend/src/components.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: false
         agent: "user"
         comment: "Need to open messaging interface after match with payment system (70€)"
-      - working: false
+      - working: true
         agent: "main"
-        comment: "Placeholder button added in MatchAnimation. Still need to implement messaging component and 70€ payment integration."
+        comment: "Implemented complete messaging system with Stripe payment integration. Added RequestModal, NotificationsManagement, and StripePaymentModal components. Backend API endpoints ready."
+
+  - task: "Stripe Payment Integration"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Integrated Stripe with emergentintegrations. Created /api/payments/checkout/session and /api/payments/checkout/status endpoints. 70€ payment flow implemented."
 
 ## backend:
   - task: "Match Data Storage"
