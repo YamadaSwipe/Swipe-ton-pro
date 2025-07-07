@@ -4949,5 +4949,7 @@ export const Components = {
   PendingValidations,
   AdminAnalytics,
   RequestModal,
-  MatchAnimation
+  MatchAnimation,
+  NotificationsManagement,
+  StripePaymentModal
 };
