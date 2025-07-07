@@ -77,7 +77,9 @@ class BackendAPITest(unittest.TestCase):
             response = requests.options(f"{API_URL}/", headers=headers)
             self.assertEqual(response.status_code, 200)
             self.assertTrue("access-control-allow-origin" in response.headers)
-            self.assertEqual(response.headers["access-control-allow-origin"], "*")
+            # The server is configured to reflect the Origin header value rather than using "*"
+            self.assertEqual(response.headers["access-control-allow-origin"], "http://localhost:3000")
+            self.assertTrue("access-control-allow-methods" in response.headers)
             print("✅ CORS headers test passed")
         except Exception as e:
             print(f"❌ CORS headers test failed: {str(e)}")
