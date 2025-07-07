@@ -152,6 +152,12 @@ async def get_potential_matches(user_id: str, limit: int = 10) -> List[Dict[str,
     
     # Get potential matches
     potential_matches = await db.profiles.find(query).limit(limit).to_list(limit)
+    
+    # Convert ObjectId to string for JSON serialization
+    for match in potential_matches:
+        if '_id' in match:
+            match['_id'] = str(match['_id'])
+    
     return potential_matches
 
 
