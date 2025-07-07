@@ -4161,7 +4161,7 @@ const MobileApp = () => {
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-white mb-4">Visualisez avant de choisir</h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Notre application mobile vous permet de voir les profils en détail et de prendre 
+            Notre application mobile te permet de voir les profils en détail et de prendre 
             des décisions éclairées avec des portfolios complets, tout cela avant et après 
             votre décision de sélection.
           </p>
