@@ -776,7 +776,7 @@ const ProfileShowcase = () => {
         {/* Call to action */}
         <div className="text-center mt-16">
           <h3 className="text-2xl font-bold text-white mb-4">
-            Rejoignez des milliers d'utilisateurs satisfaits
+            REJOINS NOUS & créons ensemble un écosystème unique
           </h3>
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
             <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
