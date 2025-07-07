@@ -3943,7 +3943,436 @@ const PendingValidations = () => {
   );
 };
 
-const AdminAnalytics = () => {
+const AdminManagement = ({ user }) => {
+  const [admins, setAdmins] = useState([]);
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [editingAdmin, setEditingAdmin] = useState(null);
+
+  const adminLevels = [
+    {
+      id: 'super_admin',
+      name: 'Super Administrateur',
+      color: 'text-red-400',
+      bgColor: 'bg-red-500/20',
+      permissions: ['all'],
+      description: 'Accès complet à toutes les fonctionnalités'
+    },
+    {
+      id: 'admin',
+      name: 'Administrateur',
+      color: 'text-purple-400',
+      bgColor: 'bg-purple-500/20',
+      permissions: ['users', 'validation', 'analytics', 'projects'],
+      description: 'Gestion des utilisateurs et validations'
+    },
+    {
+      id: 'moderator',
+      name: 'Modérateur',
+      color: 'text-blue-400',
+      bgColor: 'bg-blue-500/20',
+      permissions: ['validation', 'users_view'],
+      description: 'Validation des profils et modération'
+    },
+    {
+      id: 'support',
+      name: 'Support',
+      color: 'text-green-400',
+      bgColor: 'bg-green-500/20',
+      permissions: ['users_view', 'messages'],
+      description: 'Support client et assistance'
+    }
+  ];
+
+  useEffect(() => {
+    // Charger les administrateurs
+    const allAdmins = JSON.parse(localStorage.getItem('swipe_ton_pro_admins') || '[]');
+    
+    // Ajouter l'admin principal s'il n'existe pas
+    const mainAdmin = allAdmins.find(a => a.email === 'admin@swipetonpro.fr');
+    if (!mainAdmin) {
+      const defaultAdmin = {
+        id: 'admin',
+        email: 'admin@swipetonpro.fr',
+        firstName: 'Admin',
+        lastName: 'Principal',
+        level: 'super_admin',
+        status: 'active',
+        createdAt: new Date().toISOString(),
+        createdBy: 'system'
+      };
+      allAdmins.unshift(defaultAdmin);
+      localStorage.setItem('swipe_ton_pro_admins', JSON.stringify(allAdmins));
+    }
+    
+    setAdmins(allAdmins);
+  }, []);
+
+  const handleInviteAdmin = (adminData) => {
+    const newAdmin = {
+      id: Date.now(),
+      ...adminData,
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+      createdBy: user.email,
+      inviteToken: Math.random().toString(36).substring(2, 15)
+    };
+    
+    const updatedAdmins = [...admins, newAdmin];
+    setAdmins(updatedAdmins);
+    localStorage.setItem('swipe_ton_pro_admins', JSON.stringify(updatedAdmins));
+    setShowInviteModal(false);
+  };
+
+  const handleUpdateAdminLevel = (adminId, newLevel) => {
+    if (user.level !== 'super_admin' && user.email !== 'admin@swipetonpro.fr') {
+      alert('Seul un Super Administrateur peut modifier les niveaux');
+      return;
+    }
+    
+    const updatedAdmins = admins.map(admin => 
+      admin.id === adminId ? { ...admin, level: newLevel } : admin
+    );
+    setAdmins(updatedAdmins);
+    localStorage.setItem('swipe_ton_pro_admins', JSON.stringify(updatedAdmins));
+  };
+
+  const handleDeactivateAdmin = (adminId) => {
+    if (adminId === 'admin') {
+      alert('Impossible de désactiver l\'administrateur principal');
+      return;
+    }
+    
+    if (user.level !== 'super_admin' && user.email !== 'admin@swipetonpro.fr') {
+      alert('Seul un Super Administrateur peut désactiver des comptes');
+      return;
+    }
+    
+    if (window.confirm('Êtes-vous sûr de vouloir désactiver cet administrateur ?')) {
+      const updatedAdmins = admins.map(admin => 
+        admin.id === adminId ? { ...admin, status: 'inactive' } : admin
+      );
+      setAdmins(updatedAdmins);
+      localStorage.setItem('swipe_ton_pro_admins', JSON.stringify(updatedAdmins));
+    }
+  };
+
+  const getLevelInfo = (levelId) => {
+    return adminLevels.find(level => level.id === levelId) || adminLevels[3];
+  };
+
+  const canManageAdmins = user.email === 'admin@swipetonpro.fr' || user.level === 'super_admin';
+
+  return (
+    <div className="space-y-8">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Gestion des Administrateurs</h1>
+          <p className="text-gray-400 mt-2">Gérez les niveaux d'accès et invitez de nouveaux administrateurs</p>
+        </div>
+        {canManageAdmins && (
+          <button
+            onClick={() => setShowInviteModal(true)}
+            className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center"
+          >
+            <Users className="w-5 h-5 mr-2" />
+            Inviter un admin
+          </button>
+        )}
+      </div>
+
+      {/* Niveaux d'administration */}
+      <div className="bg-slate-800 rounded-lg border border-slate-700 p-6">
+        <h3 className="text-xl font-semibold text-white mb-4">Niveaux d'administration</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {adminLevels.map((level) => (
+            <div key={level.id} className={`p-4 rounded-lg border ${level.bgColor} border-opacity-30`}>
+              <div className="flex items-center mb-2">
+                <Shield className={`w-5 h-5 ${level.color} mr-2`} />
+                <h4 className={`font-semibold ${level.color}`}>{level.name}</h4>
+              </div>
+              <p className="text-gray-300 text-sm mb-3">{level.description}</p>
+              <div className="space-y-1">
+                {level.permissions.map(perm => (
+                  <span key={perm} className="inline-block bg-slate-700 text-gray-300 px-2 py-1 rounded text-xs mr-1">
+                    {perm === 'all' ? 'Toutes' : 
+                     perm === 'users' ? 'Gestion users' :
+                     perm === 'validation' ? 'Validations' :
+                     perm === 'analytics' ? 'Analytics' :
+                     perm === 'projects' ? 'Projets' :
+                     perm === 'users_view' ? 'Vue users' :
+                     perm === 'messages' ? 'Messages' : perm}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Liste des administrateurs */}
+      <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
+        <div className="p-6 border-b border-slate-700">
+          <h3 className="text-xl font-semibold text-white">Administrateurs actuels</h3>
+        </div>
+        
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-slate-700">
+              <tr>
+                <th className="px-6 py-4 text-left text-white font-semibold">Administrateur</th>
+                <th className="px-6 py-4 text-left text-white font-semibold">Email</th>
+                <th className="px-6 py-4 text-left text-white font-semibold">Niveau</th>
+                <th className="px-6 py-4 text-left text-white font-semibold">Statut</th>
+                <th className="px-6 py-4 text-left text-white font-semibold">Ajouté le</th>
+                <th className="px-6 py-4 text-left text-white font-semibold">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {admins.map((admin) => {
+                const levelInfo = getLevelInfo(admin.level);
+                return (
+                  <tr key={admin.id} className="border-t border-slate-700 hover:bg-slate-700/50">
+                    <td className="px-6 py-4">
+                      <div className="flex items-center">
+                        <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center mr-3">
+                          <span className="text-white font-semibold">
+                            {admin.firstName[0]}{admin.lastName[0]}
+                          </span>
+                        </div>
+                        <div>
+                          <p className="text-white font-medium">{admin.firstName} {admin.lastName}</p>
+                          {admin.id === 'admin' && (
+                            <span className="text-xs text-yellow-400">Admin Principal</span>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-gray-300">{admin.email}</td>
+                    <td className="px-6 py-4">
+                      {canManageAdmins && admin.id !== 'admin' ? (
+                        <select
+                          value={admin.level}
+                          onChange={(e) => handleUpdateAdminLevel(admin.id, e.target.value)}
+                          className={`px-3 py-1 rounded text-sm font-semibold bg-slate-600 border border-slate-500 ${levelInfo.color}`}
+                        >
+                          {adminLevels.map(level => (
+                            <option key={level.id} value={level.id}>{level.name}</option>
+                          ))}
+                        </select>
+                      ) : (
+                        <span className={`px-3 py-1 rounded text-sm font-semibold ${levelInfo.bgColor} ${levelInfo.color}`}>
+                          {levelInfo.name}
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`px-3 py-1 rounded text-sm font-semibold ${
+                        admin.status === 'active' ? 'bg-emerald-500/20 text-emerald-400' :
+                        admin.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
+                        'bg-red-500/20 text-red-400'
+                      }`}>
+                        {admin.status === 'active' ? 'Actif' :
+                         admin.status === 'pending' ? 'En attente' : 'Inactif'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-gray-300 text-sm">
+                      {new Date(admin.createdAt).toLocaleDateString('fr-FR')}
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex space-x-2">
+                        {admin.status === 'pending' && (
+                          <button
+                            onClick={() => {
+                              const updatedAdmins = admins.map(a => 
+                                a.id === admin.id ? { ...a, status: 'active' } : a
+                              );
+                              setAdmins(updatedAdmins);
+                              localStorage.setItem('swipe_ton_pro_admins', JSON.stringify(updatedAdmins));
+                            }}
+                            className="text-emerald-400 hover:text-emerald-300 text-sm"
+                          >
+                            Activer
+                          </button>
+                        )}
+                        {canManageAdmins && admin.id !== 'admin' && admin.status === 'active' && (
+                          <button
+                            onClick={() => handleDeactivateAdmin(admin.id)}
+                            className="text-red-400 hover:text-red-300 text-sm"
+                          >
+                            Désactiver
+                          </button>
+                        )}
+                        {admin.status === 'pending' && (
+                          <button
+                            onClick={() => {
+                              const link = `${window.location.origin}?invite=${admin.inviteToken}`;
+                              navigator.clipboard.writeText(link);
+                              alert('Lien d\'invitation copié !');
+                            }}
+                            className="text-blue-400 hover:text-blue-300 text-sm"
+                          >
+                            Copier lien
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Modal d'invitation */}
+      {showInviteModal && (
+        <AdminInviteModal
+          onInvite={handleInviteAdmin}
+          onCancel={() => setShowInviteModal(false)}
+          adminLevels={adminLevels}
+        />
+      )}
+    </div>
+  );
+};
+
+// Admin Invite Modal Component
+const AdminInviteModal = ({ onInvite, onCancel, adminLevels }) => {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    level: 'support'
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.level) {
+      alert('Veuillez remplir tous les champs');
+      return;
+    }
+    
+    onInvite(formData);
+  };
+
+  const selectedLevel = adminLevels.find(level => level.id === formData.level);
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-slate-800 rounded-2xl p-6 w-full max-w-md">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-white">Inviter un administrateur</h2>
+          <button onClick={onCancel} className="text-gray-400 hover:text-white">
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-gray-400 text-sm mb-2">Prénom</label>
+              <input
+                type="text"
+                value={formData.firstName}
+                onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-gray-400 text-sm mb-2">Nom</label>
+              <input
+                type="text"
+                value={formData.lastName}
+                onChange={(e) => setFormData({...formData, lastName: e.target.value})}
+                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-gray-400 text-sm mb-2">Email</label>
+            <input
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-400 text-sm mb-2">Niveau d'administration</label>
+            <select
+              value={formData.level}
+              onChange={(e) => setFormData({...formData, level: e.target.value})}
+              className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+              required
+            >
+              {adminLevels.map(level => (
+                <option key={level.id} value={level.id}>{level.name}</option>
+              ))}
+            </select>
+          </div>
+
+          {selectedLevel && (
+            <div className={`p-4 rounded-lg ${selectedLevel.bgColor} border border-opacity-30`}>
+              <div className="flex items-center mb-2">
+                <Shield className={`w-5 h-5 ${selectedLevel.color} mr-2`} />
+                <h4 className={`font-semibold ${selectedLevel.color}`}>{selectedLevel.name}</h4>
+              </div>
+              <p className="text-gray-300 text-sm mb-2">{selectedLevel.description}</p>
+              <div className="space-y-1">
+                <p className="text-gray-400 text-xs">Permissions:</p>
+                {selectedLevel.permissions.map(perm => (
+                  <span key={perm} className="inline-block bg-slate-700 text-gray-300 px-2 py-1 rounded text-xs mr-1">
+                    {perm === 'all' ? 'Toutes' : 
+                     perm === 'users' ? 'Gestion users' :
+                     perm === 'validation' ? 'Validations' :
+                     perm === 'analytics' ? 'Analytics' :
+                     perm === 'projects' ? 'Projets' :
+                     perm === 'users_view' ? 'Vue users' :
+                     perm === 'messages' ? 'Messages' : perm}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+            <div className="flex items-start">
+              <AlertCircle className="w-5 h-5 text-blue-400 mr-3 mt-0.5" />
+              <div>
+                <p className="text-blue-400 text-sm font-medium">Information</p>
+                <p className="text-blue-300 text-xs mt-1">
+                  Un lien d'invitation sera généré. L'administrateur devra l'utiliser pour activer son compte.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex space-x-4">
+            <button
+              type="submit"
+              className="flex-1 bg-purple-500 hover:bg-purple-600 text-white py-3 rounded-lg font-semibold transition-colors"
+            >
+              Envoyer l'invitation
+            </button>
+            <button
+              type="button"
+              onClick={onCancel}
+              className="px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-semibold transition-colors"
+            >
+              Annuler
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
   return (
     <div className="space-y-8">
       <h1 className="text-3xl font-bold text-white">Analytics & Statistiques</h1>
