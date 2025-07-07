@@ -13,10 +13,56 @@ const MatchesPage = () => {
   const [messageType, setMessageType] = useState('text');
   const [quoteAmount, setQuoteAmount] = useState('');
   const [meetingDate, setMeetingDate] = useState('');
+  const [unlockingPayment, setUnlockingPayment] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState('');
 
   useEffect(() => {
     fetchMatches();
+    checkPaymentReturn();
   }, []);
+
+  const checkPaymentReturn = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get('session_id');
+    
+    if (sessionId) {
+      setPaymentStatus('Vérification du paiement...');
+      pollPaymentStatus(sessionId);
+    }
+  };
+
+  const pollPaymentStatus = async (sessionId, attempts = 0) => {
+    const maxAttempts = 5;
+    const pollInterval = 2000; // 2 seconds
+    
+    if (attempts >= maxAttempts) {
+      setPaymentStatus('Délai de vérification dépassé. Veuillez vérifier votre email.');
+      return;
+    }
+
+    try {
+      const response = await axios.get(`${API}/payments/checkout/status/${sessionId}`);
+      
+      if (response.data.payment_status === 'paid') {
+        setPaymentStatus('Paiement réussi ! Chat débloqué.');
+        // Refresh matches to update unlock status
+        await fetchMatches();
+        // Clear URL parameters
+        window.history.replaceState({}, document.title, window.location.pathname);
+        return;
+      } else if (response.data.status === 'expired') {
+        setPaymentStatus('Session de paiement expirée. Veuillez réessayer.');
+        return;
+      }
+
+      // If payment is still pending, continue polling
+      setPaymentStatus('Traitement du paiement en cours...');
+      setTimeout(() => pollPaymentStatus(sessionId, attempts + 1), pollInterval);
+    } catch (error) {
+      console.error('Error checking payment status:', error);
+      setPaymentStatus('Erreur lors de la vérification du paiement.');
+    }
+  };
 
   const fetchMatches = async () => {
     try {
@@ -39,12 +85,31 @@ const MatchesPage = () => {
   };
 
   const unlockChat = async (matchId) => {
+    if (unlockingPayment) return;
+    
+    setUnlockingPayment(true);
+    setPaymentStatus('Initialisation du paiement...');
+    
     try {
-      await axios.post(`${API}/matches/${matchId}/unlock`);
-      // Refresh matches
-      await fetchMatches();
+      const response = await axios.post(`${API}/payments/checkout/session`, {
+        package_id: "messaging_unlock",
+        match_id: matchId
+      }, {
+        headers: {
+          'Origin': window.location.origin
+        }
+      });
+
+      if (response.data.url) {
+        // Redirect to Stripe Checkout
+        window.location.href = response.data.url;
+      } else {
+        throw new Error('No checkout URL received');
+      }
     } catch (error) {
-      console.error('Error unlocking chat:', error);
+      console.error('Error creating checkout session:', error);
+      setPaymentStatus('Erreur lors de la création de la session de paiement.');
+      setUnlockingPayment(false);
     }
   };
 
@@ -89,7 +154,7 @@ const MatchesPage = () => {
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold">Mes Matches</h1>
+          <h1 className="text-3xl font-bold">💬 Mes Matches</h1>
           <button
             onClick={() => window.location.href = '/'}
             className="mt-4 text-blue-400 hover:text-blue-300"
@@ -97,6 +162,17 @@ const MatchesPage = () => {
             Retour à l'accueil
           </button>
         </div>
+
+        {/* Payment Status Message */}
+        {paymentStatus && (
+          <div className={`mb-6 p-4 rounded-lg text-center ${
+            paymentStatus.includes('réussi') ? 'bg-green-600' : 
+            paymentStatus.includes('erreur') || paymentStatus.includes('expirée') ? 'bg-red-600' : 
+            'bg-yellow-600'
+          }`}>
+            {paymentStatus}
+          </div>
+        )}
 
         {matches.length === 0 ? (
           <div className="text-center">
@@ -138,7 +214,7 @@ const MatchesPage = () => {
                               ? 'bg-green-600 text-white' 
                               : 'bg-yellow-600 text-white'
                           }`}>
-                            {match.is_chat_unlocked ? 'Débloqué' : 'Verrouillé'}
+                            {match.is_chat_unlocked ? '✅ Débloqué' : '🔒 Verrouillé'}
                           </span>
                         </div>
                       </div>
@@ -161,20 +237,33 @@ const MatchesPage = () => {
 
                   {!selectedMatch.is_chat_unlocked ? (
                     <div className="flex-1 flex items-center justify-center">
-                      <div className="text-center">
+                      <div className="text-center max-w-md">
                         <div className="w-16 h-16 bg-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
                           <span className="text-2xl">🔒</span>
                         </div>
                         <h4 className="text-lg font-bold mb-2">Chat verrouillé</h4>
                         <p className="text-gray-300 mb-4">
-                          Débloquez le chat pour commencer la conversation
+                          Débloquez le chat pour commencer la conversation avec votre match
                         </p>
+                        <div className="bg-gray-700 rounded-lg p-4 mb-4">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-semibold">Déverrouillage messagerie</span>
+                            <span className="text-2xl font-bold text-green-400">60€</span>
+                          </div>
+                          <p className="text-sm text-gray-400">
+                            Paiement unique pour débloquer la messagerie avec ce match
+                          </p>
+                        </div>
                         <button
                           onClick={() => unlockChat(selectedMatch.id)}
-                          className="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-2 rounded-lg"
+                          disabled={unlockingPayment}
+                          className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 text-white px-6 py-3 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          Débloquer pour 60€
+                          {unlockingPayment ? 'Redirection vers le paiement...' : '💳 Payer 60€ et débloquer'}
                         </button>
+                        <p className="text-xs text-gray-500 mt-2">
+                          Paiement sécurisé par Stripe
+                        </p>
                       </div>
                     </div>
                   ) : (
@@ -194,12 +283,12 @@ const MatchesPage = () => {
                               <p>{message.content}</p>
                               {message.message_type === 'quote_request' && (
                                 <p className="text-sm mt-1 opacity-75">
-                                  Demande de devis: {message.quote_amount}€
+                                  💰 Demande de devis: {message.quote_amount}€
                                 </p>
                               )}
                               {message.message_type === 'meeting_request' && (
                                 <p className="text-sm mt-1 opacity-75">
-                                  Demande de RDV: {new Date(message.meeting_date).toLocaleDateString()}
+                                  📅 Demande de RDV: {new Date(message.meeting_date).toLocaleDateString()}
                                 </p>
                               )}
                               <p className="text-xs opacity-50 mt-1">
@@ -218,9 +307,9 @@ const MatchesPage = () => {
                             onChange={(e) => setMessageType(e.target.value)}
                             className="px-3 py-1 bg-gray-700 text-white rounded text-sm"
                           >
-                            <option value="text">Message</option>
-                            <option value="quote_request">Demande de devis</option>
-                            <option value="meeting_request">Demande de RDV</option>
+                            <option value="text">💬 Message</option>
+                            <option value="quote_request">💰 Demande de devis</option>
+                            <option value="meeting_request">📅 Demande de RDV</option>
                           </select>
                         </div>
 
