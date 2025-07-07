@@ -2873,25 +2873,33 @@ const ProjectModal = ({ project, onSave, onCancel }) => {
   const [formData, setFormData] = useState({
     title: project?.title || '',
     description: project?.description || '',
-    category: project?.category || '',
+    categories: project?.categories || [],
     budget: project?.budget || '',
     location: project?.location || '',
     urgency: project?.urgency || 'normal',
     requirements: project?.requirements || ''
   });
 
-  const categories = [
-    'Électricité',
-    'Plomberie', 
-    'Menuiserie',
-    'Peinture',
-    'Maçonnerie',
-    'Chauffage',
-    'Carrelage',
-    'Jardinage',
-    'Rénovation',
-    'Autre'
+  // Liste complète des métiers (même que pour les professionnels)
+  const allSpecialties = [
+    'Électricien', 'Plombier', 'Menuisier', 'Peintre', 'Maçon', 'Chauffagiste', 'Carreleur',
+    'Couvreur', 'Charpentier', 'Serrurier', 'Vitrier', 'Tapissier', 'Parqueteur', 'Façadier',
+    'Terrassier', 'Paysagiste', 'Jardinier', 'Élagage', 'Piscine', 'Climatisation',
+    'Domotique', 'Antenne/Satellite', 'Télésurveillance', 'Portail/Automatisme', 'Isolation',
+    'Ravalement', 'Déménagement', 'Nettoyage', 'Femme de ménage', 'Garde d\'enfants',
+    'Aide à domicile', 'Réparation électroménager', 'Informatique', 'Serrure/Coffre-fort',
+    'Stores/Volets', 'Moustiquaires', 'Véranda', 'Pergola', 'Abri de jardin', 'Clôture'
   ];
+
+  // Gestion des catégories multiples
+  const toggleCategory = (category) => {
+    setFormData(prev => ({
+      ...prev,
+      categories: prev.categories.includes(category) 
+        ? prev.categories.filter(c => c !== category)
+        : [...prev.categories, category]
+    }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
