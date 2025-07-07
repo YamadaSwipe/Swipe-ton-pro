@@ -2767,7 +2767,7 @@ const SwipeInterface = ({ user, onBack }) => {
                   <div className={`absolute top-4 right-4 z-30 px-4 py-2 rounded-full font-bold text-lg ${
                     swipeDirection === 'up' ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white'
                   }`}>
-                    {swipeDirection === 'up' ? '✓ VALIDER' : '✗ REFUSER'}
+                    {swipeDirection === 'up' ? '❤️ LIKE' : '➡️ NEXT'}
                   </div>
                 )}
 
