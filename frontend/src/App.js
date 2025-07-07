@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import axios from "axios";
+import SwipeTonPro from "./components/SwipeTonPro";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -50,7 +51,7 @@ const AdminLogin = () => {
     } catch (err) {
       // Fallback - just show success for demo
       setAdmin({
-        name: "Super Admin",
+        name: "Admin Swipe Ton Pro",
         email: formData.email,
         role: "super_admin"
       });
@@ -69,14 +70,23 @@ const AdminLogin = () => {
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 mb-8">
             <div className="flex justify-between items-center">
               <div>
-                <h1 className="text-3xl font-bold">✅ Administration Active</h1>
+                <h1 className="text-3xl font-bold">✅ Administration Swipe Ton Pro</h1>
                 <p className="text-blue-200 mt-1">Connecté en tant que {admin.name} ({admin.role})</p>
               </div>
-              <button 
-                onClick={() => setIsLoggedIn(false)}
-                className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg transition duration-200">
-                Déconnexion
-              </button>
+              <div className="flex space-x-3">
+                <a
+                  href="/"
+                  className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg transition duration-200"
+                >
+                  Voir l'App
+                </a>
+                <button 
+                  onClick={() => setIsLoggedIn(false)}
+                  className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg transition duration-200"
+                >
+                  Déconnexion
+                </button>
+              </div>
             </div>
           </div>
 
@@ -217,51 +227,12 @@ const AdminLogin = () => {
   );
 };
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
-
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
-
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" alt="Emergent" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-        <div className="mt-8">
-          <a
-            href="/admin"
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            🔐 Accès Administration
-          </a>
-        </div>
-      </header>
-    </div>
-  );
-};
-
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<SwipeTonPro />} />
           <Route path="/admin" element={<AdminLogin />} />
         </Routes>
       </BrowserRouter>
