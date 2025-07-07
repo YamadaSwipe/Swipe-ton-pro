@@ -1263,6 +1263,8 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
         ...formData,
         type: currentAuthType,
         status: currentAuthType === 'professionnel' ? 'pending' : 'active',
+        specialties: currentAuthType === 'professionnel' ? selectedSpecialties : [],
+        projectCategories: currentAuthType === 'particulier' ? selectedProjectCategories : [],
         documents: documents,
         profileImage: profileImage,
         selectedPack: selectedPack,
