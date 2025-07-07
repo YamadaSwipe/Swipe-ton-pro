@@ -4124,7 +4124,7 @@ const Testimonials = () => {
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-white mb-4">Ils nous font confiance</h2>
           <p className="text-xl text-gray-300">
-            Des milliers de projets réalisés avec succès
+            Encore des milliers de projets à réaliser ensemble
           </p>
         </div>
 
