@@ -39,13 +39,95 @@ client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
 # Create the main app without a prefix
-app = FastAPI()
+app = FastAPI(title="Career Tinder Admin API", version="1.0.0")
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
+# Enums
+class AdminRole(str, Enum):
+    SUPER_ADMIN = "super_admin"
+    ADMIN = "admin"
+    MODERATOR = "moderator"
+
+class UserStatus(str, Enum):
+    ACTIVE = "active"
+    SUSPENDED = "suspended"
+    BANNED = "banned"
+
+class InvitationStatus(str, Enum):
+    PENDING = "pending"
+    ACCEPTED = "accepted"
+    EXPIRED = "expired"
 
 # Define Models
+class User(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    email: EmailStr
+    name: str
+    phone: Optional[str] = None
+    status: UserStatus = UserStatus.ACTIVE
+    is_professional: bool = False
+    profile_data: Optional[Dict[str, Any]] = None
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    last_login: Optional[datetime] = None
+
+class Admin(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    email: EmailStr
+    name: str
+    password_hash: str
+    role: AdminRole
+    permissions: List[str] = []
+    created_by: Optional[str] = None
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    last_login: Optional[datetime] = None
+    is_active: bool = True
+
+class Invitation(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    email: EmailStr
+    role: AdminRole
+    permissions: List[str] = []
+    invited_by: str
+    token: str
+    expires_at: datetime
+    status: InvitationStatus = InvitationStatus.PENDING
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+class Report(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    reporter_id: str
+    reported_user_id: str
+    reason: str
+    description: str
+    status: str = "pending"
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    resolved_by: Optional[str] = None
+    resolved_at: Optional[datetime] = None
+
+# Request Models
+class AdminLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+class AdminCreate(BaseModel):
+    email: EmailStr
+    name: str
+    password: str
+    role: AdminRole
+    permissions: List[str] = []
+
+class AdminInvite(BaseModel):
+    email: EmailStr
+    role: AdminRole
+    permissions: List[str] = []
+
+class AdminAcceptInvitation(BaseModel):
+    token: str
+    name: str
+    password: str
+
 class StatusCheck(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     client_name: str
@@ -53,6 +135,11 @@ class StatusCheck(BaseModel):
 
 class StatusCheckCreate(BaseModel):
     client_name: str
+
+class UserUpdate(BaseModel):
+    name: Optional[str] = None
+    phone: Optional[str] = None
+    status: Optional[UserStatus] = None
 
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
