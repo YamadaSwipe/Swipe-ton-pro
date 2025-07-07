@@ -42,6 +42,24 @@ class StatusCheck(BaseModel):
 class StatusCheckCreate(BaseModel):
     client_name: str
 
+# Payment Models
+class PaymentTransaction(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    user_type: str
+    amount: float
+    currency: str
+    session_id: str
+    payment_status: str  # "initiated", "paid", "failed", "expired"
+    metadata: Optional[Dict[str, str]] = None
+    timestamp: datetime = Field(default_factory=datetime.utcnow)
+
+class PaymentRequest(BaseModel):
+    user_id: str
+    user_type: str
+    match_id: str
+    origin_url: str
+
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
