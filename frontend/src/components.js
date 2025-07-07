@@ -1248,6 +1248,7 @@ const Dashboard = ({ user, onLogout }) => {
 
   const professionalTabs = [
     { id: 'overview', label: 'Tableau de bord', icon: TrendingUp },
+    { id: 'notifications', label: 'Notifications', icon: AlertCircle },
     { id: 'profile', label: 'Mon profil', icon: Users },
     { id: 'documents', label: 'Mes documents', icon: FileText },
     { id: 'projects', label: 'Projets', icon: FileText },
