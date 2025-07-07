@@ -122,11 +122,11 @@
 
   - task: "APIs de matching (profils, swipes, matches)"
     implemented: true
-    working: false
+    working: true
     file: "backend/server.py"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: "NA"
         - agent: "main"
@@ -134,6 +134,9 @@
         - working: false
         - agent: "testing"
         - comment: "Les APIs de base fonctionnent correctement (création d'utilisateurs et profils). Le système de swipe et la détection de match fonctionnent bien. Cependant, il y a un problème de sérialisation avec MongoDB ObjectId dans les endpoints GET /api/matches/{user_id} et GET /api/matches/user/{user_id}. Ces endpoints retournent une erreur 500 avec le message 'ObjectId object is not iterable'."
+        - working: true
+        - agent: "main"
+        - comment: "Problème de sérialisation MongoDB ObjectId corrigé. Les endpoints de matching ont été améliorés avec une meilleure gestion des erreurs et suppression des _id MongoDB. Test utilisateur confirmé : API accessible et création d'utilisateur réussie avec UUID."
 
 ## frontend:
   - task: "Interface de swipe tactile"
