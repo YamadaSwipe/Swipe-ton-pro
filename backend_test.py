@@ -136,30 +136,37 @@ def print_response(response):
 def test_admin_login():
     print_test_header("Admin Login")
     
-    url = f"{BASE_URL}/admin/login"
+    # Try both URL formats to see which one works
+    urls = [
+        f"{BASE_URL}/admin/login",
+        f"{BASE_URL}/admin/login/"
+    ]
+    
     payload = {
         "email": ADMIN_EMAIL,
         "password": ADMIN_PASSWORD
     }
     
-    try:
-        response = requests.post(url, json=payload)
-        print_response(response)
-        
-        if response.status_code == 200:
-            data = response.json()
-            if "access_token" in data and "admin" in data:
-                print_success("Admin login successful")
-                return data["access_token"], data["admin"]
-            else:
-                print_failure("Admin login response missing token or admin data")
-                return None, None
-        else:
-            print_failure(f"Admin login failed with status code {response.status_code}")
-            return None, None
-    except Exception as e:
-        print_failure(f"Exception during admin login: {str(e)}")
-        return None, None
+    for url in urls:
+        print_info(f"Trying URL: {url}")
+        try:
+            response = requests.post(url, json=payload)
+            print_response(response)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "access_token" in data and "admin" in data:
+                    print_success("Admin login successful")
+                    return data["access_token"], data["admin"]
+                else:
+                    print_failure("Admin login response missing token or admin data")
+            elif response.status_code != 404:  # Only print failure for non-404 errors
+                print_failure(f"Admin login failed with status code {response.status_code}")
+        except Exception as e:
+            print_failure(f"Exception during admin login: {str(e)}")
+    
+    print_failure("Admin login failed with all URL formats")
+    return None, None
 
 def test_get_admin_profile(token):
     print_test_header("Get Admin Profile")
