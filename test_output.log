@@ -1,0 +1,708 @@
+Testing backend API at: https://81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com/api
+❌ Server health check failed: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/ (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf8921819f310>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+E❌ POST /status endpoint test failed: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/status (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217f88910>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+E❌ GET /status endpoint test failed: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/status (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217f8abd0>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+E❌ CORS headers test failed: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/ (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217f8abd0>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+E❌ Data persistence test failed: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/status (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217f88b50>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+E❌ Stripe checkout session creation test failed: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/payments/checkout/session (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf8921819c290>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+E❌ Stripe checkout session creation test failed: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/payments/checkout/session (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217f9e150>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+❌ Stripe checkout status check test failed: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/payments/checkout/session (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217f9e150>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+E❌ Stripe checkout with invalid data test failed: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/payments/checkout/session (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217fa4410>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+E❌ Stripe checkout status with invalid session test failed: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/payments/checkout/status/sess_fb29c40f9a9840b185cb61477445ef22 (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217fa65d0>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+E❌ Stripe checkout session creation test failed: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/payments/checkout/session (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf8921819f790>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+❌ Payment amount verification test failed: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/payments/checkout/session (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf8921819f790>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+E
+======================================================================
+ERROR: test_01_server_health (__main__.BackendAPITest.test_01_server_health)
+Test if the server is running and responding to requests
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 198, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 85, in create_connection
+    raise err
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: [Errno 110] Connection timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 753, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 207, in _new_conn
+    raise ConnectTimeoutError(
+urllib3.exceptions.ConnectTimeoutError: (<urllib3.connection.HTTPSConnection object at 0xf8921819f310>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/ (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf8921819f310>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/backend_test.py", line 31, in test_01_server_health
+    response = requests.get(f"{API_URL}/")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/adapters.py", line 688, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/ (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf8921819f310>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+
+======================================================================
+ERROR: test_02_status_endpoint_post (__main__.BackendAPITest.test_02_status_endpoint_post)
+Test the POST /status endpoint
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 198, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 85, in create_connection
+    raise err
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: [Errno 110] Connection timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 753, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 207, in _new_conn
+    raise ConnectTimeoutError(
+urllib3.exceptions.ConnectTimeoutError: (<urllib3.connection.HTTPSConnection object at 0xf89217f88910>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/status (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217f88910>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/backend_test.py", line 44, in test_02_status_endpoint_post
+    response = requests.post(f"{API_URL}/status", json=payload)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/adapters.py", line 688, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/status (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217f88910>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+
+======================================================================
+ERROR: test_03_status_endpoint_get (__main__.BackendAPITest.test_03_status_endpoint_get)
+Test the GET /status endpoint
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 198, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 85, in create_connection
+    raise err
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: [Errno 110] Connection timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 753, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 207, in _new_conn
+    raise ConnectTimeoutError(
+urllib3.exceptions.ConnectTimeoutError: (<urllib3.connection.HTTPSConnection object at 0xf89217f8abd0>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/status (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217f8abd0>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/backend_test.py", line 58, in test_03_status_endpoint_get
+    response = requests.get(f"{API_URL}/status")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/adapters.py", line 688, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/status (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217f8abd0>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+
+======================================================================
+ERROR: test_04_cors_headers (__main__.BackendAPITest.test_04_cors_headers)
+Test if CORS headers are properly set
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 198, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 85, in create_connection
+    raise err
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: [Errno 110] Connection timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 753, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 207, in _new_conn
+    raise ConnectTimeoutError(
+urllib3.exceptions.ConnectTimeoutError: (<urllib3.connection.HTTPSConnection object at 0xf89217f8abd0>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/ (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217f8abd0>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/backend_test.py", line 79, in test_04_cors_headers
+    response = requests.options(f"{API_URL}/", headers=headers)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/api.py", line 85, in options
+    return request("options", url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/adapters.py", line 688, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/ (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217f8abd0>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+
+======================================================================
+ERROR: test_05_data_persistence (__main__.BackendAPITest.test_05_data_persistence)
+Test if data is persisted in MongoDB
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 198, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 85, in create_connection
+    raise err
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: [Errno 110] Connection timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 753, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 207, in _new_conn
+    raise ConnectTimeoutError(
+urllib3.exceptions.ConnectTimeoutError: (<urllib3.connection.HTTPSConnection object at 0xf89217f88b50>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/status (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217f88b50>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/backend_test.py", line 98, in test_05_data_persistence
+    created_id = post_data["id"]
+                    ~~~~~~^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/adapters.py", line 688, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/status (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217f88b50>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+
+======================================================================
+ERROR: test_06_stripe_checkout_session_creation (__main__.BackendAPITest.test_06_stripe_checkout_session_creation)
+Test the creation of a Stripe checkout session
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 198, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 85, in create_connection
+    raise err
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: [Errno 110] Connection timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 753, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 207, in _new_conn
+    raise ConnectTimeoutError(
+urllib3.exceptions.ConnectTimeoutError: (<urllib3.connection.HTTPSConnection object at 0xf8921819c290>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/payments/checkout/session (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf8921819c290>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/backend_test.py", line 136, in test_06_stripe_checkout_session_creation
+  File "/root/.venv/lib/python3.11/site-packages/requests/api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/adapters.py", line 688, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/payments/checkout/session (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf8921819c290>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+
+======================================================================
+ERROR: test_07_stripe_checkout_status (__main__.BackendAPITest.test_07_stripe_checkout_status)
+Test checking the status of a Stripe checkout session
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 198, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 85, in create_connection
+    raise err
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: [Errno 110] Connection timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 753, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 207, in _new_conn
+    raise ConnectTimeoutError(
+urllib3.exceptions.ConnectTimeoutError: (<urllib3.connection.HTTPSConnection object at 0xf89217f9e150>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/payments/checkout/session (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217f9e150>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/backend_test.py", line 161, in test_07_stripe_checkout_status
+    response = requests.get(f"{API_URL}/payments/checkout/status/{self.session_id}")
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/backend_test.py", line 136, in test_06_stripe_checkout_session_creation
+  File "/root/.venv/lib/python3.11/site-packages/requests/api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/adapters.py", line 688, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/payments/checkout/session (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217f9e150>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+
+======================================================================
+ERROR: test_08_stripe_checkout_with_invalid_data (__main__.BackendAPITest.test_08_stripe_checkout_with_invalid_data)
+Test error handling with invalid data for checkout session creation
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 198, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 85, in create_connection
+    raise err
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: [Errno 110] Connection timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 753, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 207, in _new_conn
+    raise ConnectTimeoutError(
+urllib3.exceptions.ConnectTimeoutError: (<urllib3.connection.HTTPSConnection object at 0xf89217fa4410>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/payments/checkout/session (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217fa4410>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/backend_test.py", line 196, in test_08_stripe_checkout_with_invalid_data
+    self.assertIn(response.status_code, [400, 422])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/adapters.py", line 688, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/payments/checkout/session (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217fa4410>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+
+======================================================================
+ERROR: test_09_stripe_checkout_status_with_invalid_session (__main__.BackendAPITest.test_09_stripe_checkout_status_with_invalid_session)
+Test error handling with invalid session ID for status check
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 198, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 85, in create_connection
+    raise err
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: [Errno 110] Connection timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 753, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 207, in _new_conn
+    raise ConnectTimeoutError(
+urllib3.exceptions.ConnectTimeoutError: (<urllib3.connection.HTTPSConnection object at 0xf89217fa65d0>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/payments/checkout/status/sess_fb29c40f9a9840b185cb61477445ef22 (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217fa65d0>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/backend_test.py", line 213, in test_09_stripe_checkout_status_with_invalid_session
+    self.assertGreaterEqual(response.status_code, 400)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/adapters.py", line 688, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/payments/checkout/status/sess_fb29c40f9a9840b185cb61477445ef22 (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf89217fa65d0>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+
+======================================================================
+ERROR: test_10_payment_amount_verification (__main__.BackendAPITest.test_10_payment_amount_verification)
+Test that the payment amount is correctly set to 70€
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 198, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 85, in create_connection
+    raise err
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: [Errno 110] Connection timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 753, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connection.py", line 207, in _new_conn
+    raise ConnectTimeoutError(
+urllib3.exceptions.ConnectTimeoutError: (<urllib3.connection.HTTPSConnection object at 0xf8921819f790>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.venv/lib/python3.11/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/urllib3/util/retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/payments/checkout/session (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf8921819f790>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/backend_test.py", line 229, in test_10_payment_amount_verification
+    response = requests.get(f"{API_URL}/payments/checkout/status/{self.session_id}")
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/backend_test.py", line 136, in test_06_stripe_checkout_session_creation
+  File "/root/.venv/lib/python3.11/site-packages/requests/api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.venv/lib/python3.11/site-packages/requests/adapters.py", line 688, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com', port=443): Max retries exceeded with url: /api/payments/checkout/session (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0xf8921819f790>, 'Connection to 81d95aab-1dcc-45b1-a85e-ac032ba166dc.preview.emergentagent.com timed out. (connect timeout=None)'))
+
+----------------------------------------------------------------------
+Ran 10 tests in 1352.333s
+
+FAILED (errors=10)
