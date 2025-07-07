@@ -4192,14 +4192,8 @@ const MobileApp = ({ onShowAuth, setAuthType }) => {
               </ul>
               <button 
                 onClick={() => {
-                  // Scroller vers le haut et déclencher l'inscription
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                  setTimeout(() => {
-                    const inscriptionBtn = document.querySelector('button:has-text("Commencer gratuitement")');
-                    if (inscriptionBtn) {
-                      inscriptionBtn.click();
-                    }
-                  }, 500);
+                  setAuthType('particulier');
+                  onShowAuth(true);
                 }}
                 className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
               >
