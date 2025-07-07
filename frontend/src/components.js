@@ -4676,5 +4676,6 @@ export const Components = {
   AdminOverview,
   UserManagement,
   PendingValidations,
-  AdminAnalytics
+  AdminAnalytics,
+  MatchAnimation
 };
