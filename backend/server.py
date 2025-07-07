@@ -288,7 +288,7 @@ async def admin_login(login_data: AdminLogin):
         }
     }
 
-@api_router.get("/admin/me")
+@admin_router.get("/me")
 async def get_current_admin_profile(current_admin: Admin = Depends(get_current_admin)):
     return {
         "id": current_admin.id,
@@ -301,7 +301,7 @@ async def get_current_admin_profile(current_admin: Admin = Depends(get_current_a
     }
 
 # Admin Management Routes
-@api_router.post("/admin/invite")
+@admin_router.post("/invite")
 async def invite_admin(
     invite_data: AdminInvite,
     current_admin: Admin = Depends(get_current_admin)
