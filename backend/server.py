@@ -239,33 +239,37 @@ async def create_swipe(swipe: SwipeCreate):
 @api_router.get("/matches/user/{user_id}")
 async def get_user_matches(user_id: str):
     """Get all matches for a user"""
-    matches = await db.matches.find({
-        "$or": [
-            {"user1_id": user_id},
-            {"user2_id": user_id}
-        ],
-        "is_active": True
-    }).to_list(1000)
-    
-    # Get profile info for each match
-    enriched_matches = []
-    for match in matches:
-        # Convert ObjectId to string for JSON serialization
-        if '_id' in match:
-            match['_id'] = str(match['_id'])
-            
-        other_user_id = match["user2_id"] if match["user1_id"] == user_id else match["user1_id"]
-        other_profile = await db.profiles.find_one({"user_id": other_user_id})
-        if other_profile:
-            # Convert ObjectId to string for JSON serialization
-            if '_id' in other_profile:
-                other_profile['_id'] = str(other_profile['_id'])
-            enriched_matches.append({
-                "match": match,
-                "profile": other_profile
-            })
-    
-    return {"matches": enriched_matches}
+    try:
+        matches = await db.matches.find({
+            "$or": [
+                {"user1_id": user_id},
+                {"user2_id": user_id}
+            ],
+            "is_active": True
+        }).to_list(1000)
+        
+        # Get profile info for each match
+        enriched_matches = []
+        for match in matches:
+            # Remove MongoDB internal _id field
+            if '_id' in match:
+                del match['_id']
+                
+            other_user_id = match["user2_id"] if match["user1_id"] == user_id else match["user1_id"]
+            other_profile = await db.profiles.find_one({"user_id": other_user_id})
+            if other_profile:
+                # Remove MongoDB internal _id field
+                if '_id' in other_profile:
+                    del other_profile['_id']
+                enriched_matches.append({
+                    "match": match,
+                    "profile": other_profile
+                })
+        
+        return {"matches": enriched_matches}
+    except Exception as e:
+        logger.error(f"Error getting user matches: {str(e)}")
+        return {"matches": []}
 
 # Legacy status check routes (keeping for compatibility)
 @api_router.post("/status", response_model=StatusCheck)
