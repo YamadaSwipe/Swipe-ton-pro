@@ -10,6 +10,7 @@ from typing import List, Optional, Dict, Any
 import uuid
 from datetime import datetime
 from enum import Enum
+from bson import ObjectId
 
 
 ROOT_DIR = Path(__file__).parent
@@ -115,7 +116,44 @@ class StatusCheckCreate(BaseModel):
     client_name: str
 
 
-# Helper functions
+# Helper functions to handle MongoDB ObjectId
+def clean_mongo_doc(doc):
+    """Remove MongoDB _id field and convert any ObjectId to string"""
+    if doc is None:
+        return None
+    
+    if isinstance(doc, dict):
+        # Create a new dict to avoid modifying the original
+        cleaned = {}
+        for key, value in doc.items():
+            # Skip the _id field
+            if key == '_id':
+                continue
+            # Convert ObjectId to string
+            if isinstance(value, ObjectId):
+                cleaned[key] = str(value)
+            # Recursively clean nested dicts
+            elif isinstance(value, dict):
+                cleaned[key] = clean_mongo_doc(value)
+            # Clean items in lists
+            elif isinstance(value, list):
+                cleaned[key] = [clean_mongo_doc(item) for item in value]
+            else:
+                cleaned[key] = value
+        return cleaned
+    
+    # If it's a list, clean each item
+    elif isinstance(doc, list):
+        return [clean_mongo_doc(item) for item in doc]
+    
+    # If it's an ObjectId, convert to string
+    elif isinstance(doc, ObjectId):
+        return str(doc)
+    
+    # Otherwise return as is
+    return doc
+
+
 async def check_for_match(swiper_id: str, swiped_id: str) -> Optional[Match]:
     """Check if there's a mutual like and create a match if so"""
     # Check if the other user also liked this user
@@ -137,10 +175,12 @@ async def get_potential_matches(user_id: str, limit: int = 10) -> List[Dict[str,
     try:
         # Get user's previous swipes to exclude them
         previous_swipes = await db.swipes.find({"swiper_id": user_id}).to_list(1000)
+        previous_swipes = [clean_mongo_doc(swipe) for swipe in previous_swipes]
         swiped_ids = [swipe["swiped_id"] for swipe in previous_swipes] if previous_swipes else []
         
         # Get user's profile to determine matching logic
         user_profile = await db.profiles.find_one({"user_id": user_id})
+        user_profile = clean_mongo_doc(user_profile)
         if not user_profile:
             return []
         
@@ -154,13 +194,8 @@ async def get_potential_matches(user_id: str, limit: int = 10) -> List[Dict[str,
         # Get potential matches
         potential_matches = await db.profiles.find(query).limit(limit).to_list(limit)
         
-        # Convert ObjectId to string for JSON serialization and clean up
-        cleaned_matches = []
-        for match in potential_matches:
-            # Remove MongoDB internal _id field
-            if '_id' in match:
-                del match['_id']
-            cleaned_matches.append(match)
+        # Clean MongoDB documents
+        cleaned_matches = [clean_mongo_doc(match) for match in potential_matches]
         
         return cleaned_matches
     except Exception as e:
@@ -186,7 +221,7 @@ async def get_user(user_id: str):
     user = await db.users.find_one({"id": user_id})
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    return User(**user)
+    return User(**clean_mongo_doc(user))
 
 # Profile routes
 @api_router.post("/profiles", response_model=Profile)
@@ -201,14 +236,14 @@ async def get_profile(profile_id: str):
     profile = await db.profiles.find_one({"id": profile_id})
     if not profile:
         raise HTTPException(status_code=404, detail="Profile not found")
-    return Profile(**profile)
+    return Profile(**clean_mongo_doc(profile))
 
 @api_router.get("/profiles/user/{user_id}", response_model=Profile)
 async def get_profile_by_user(user_id: str):
     profile = await db.profiles.find_one({"user_id": user_id})
     if not profile:
         raise HTTPException(status_code=404, detail="Profile not found")
-    return Profile(**profile)
+    return Profile(**clean_mongo_doc(profile))
 
 # Matching routes
 @api_router.get("/matches/{user_id}")
@@ -248,19 +283,17 @@ async def get_user_matches(user_id: str):
             "is_active": True
         }).to_list(1000)
         
+        # Clean MongoDB documents
+        matches = [clean_mongo_doc(match) for match in matches]
+        
         # Get profile info for each match
         enriched_matches = []
         for match in matches:
-            # Remove MongoDB internal _id field
-            if '_id' in match:
-                del match['_id']
-                
             other_user_id = match["user2_id"] if match["user1_id"] == user_id else match["user1_id"]
             other_profile = await db.profiles.find_one({"user_id": other_user_id})
+            other_profile = clean_mongo_doc(other_profile)
+            
             if other_profile:
-                # Remove MongoDB internal _id field
-                if '_id' in other_profile:
-                    del other_profile['_id']
                 enriched_matches.append({
                     "match": match,
                     "profile": other_profile
@@ -282,7 +315,8 @@ async def create_status_check(input: StatusCheckCreate):
 @api_router.get("/status", response_model=List[StatusCheck])
 async def get_status_checks():
     status_checks = await db.status_checks.find().to_list(1000)
-    return [StatusCheck(**status_check) for status_check in status_checks]
+    cleaned_checks = [clean_mongo_doc(check) for check in status_checks]
+    return [StatusCheck(**check) for check in cleaned_checks]
 
 # Include the router in the main app
 app.include_router(api_router)
