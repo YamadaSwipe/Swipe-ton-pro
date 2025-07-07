@@ -8,17 +8,8 @@ import random
 from dotenv import load_dotenv
 import sys
 
-# Load environment variables from frontend/.env to get the backend URL
-load_dotenv("frontend/.env")
-
-# Get the backend URL from environment variables
-BACKEND_URL = os.environ.get("REACT_APP_BACKEND_URL")
-if not BACKEND_URL:
-    print("Error: REACT_APP_BACKEND_URL not found in environment variables")
-    sys.exit(1)
-
-# Ensure the URL ends with /api
-API_URL = f"{BACKEND_URL}/api"
+# Use local URL for testing
+API_URL = "http://localhost:8001/api"
 print(f"Using API URL: {API_URL}")
 
 # Test data - More comprehensive for thorough testing
