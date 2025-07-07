@@ -1162,7 +1162,7 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
       features: [
         'Profil vérifié',
         '50 demandes/mois',
-        'Facturation devis 30€',
+        'Facturation devis 60€',
         'Analytics basiques',
         'Support email'
       ]
