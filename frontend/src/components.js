@@ -198,6 +198,143 @@ const Hero = ({ onShowAuth, setAuthType }) => {
           </motion.div>
         </div>
       </div>
+      
+      {/* Section vitrine des profils */}
+      <ProfileShowcase />
+    </section>
+  );
+};
+
+// Profile Showcase Component
+const ProfileShowcase = () => {
+  const [allProfiles, setAllProfiles] = useState([]);
+  const [currentProfileIndex, setCurrentProfileIndex] = useState(0);
+
+  useEffect(() => {
+    // Charger tous les profils (utilisateurs + projets)
+    const allUsers = JSON.parse(localStorage.getItem('swipe_ton_pro_all_users') || '[]');
+    const allProjects = JSON.parse(localStorage.getItem('swipe_ton_pro_projects') || '[]');
+    
+    const profiles = [
+      ...allUsers.filter(u => u.type === 'professionnel' && u.status === 'active').map(u => ({
+        type: 'professional',
+        ...u
+      })),
+      ...allProjects.filter(p => p.status === 'open').map(p => ({
+        type: 'project',
+        ...p
+      }))
+    ];
+    
+    // Mélanger les profils
+    const shuffledProfiles = profiles.sort(() => Math.random() - 0.5);
+    setAllProfiles(shuffledProfiles);
+  }, []);
+
+  useEffect(() => {
+    // Auto-scroll des profils
+    if (allProfiles.length > 0) {
+      const interval = setInterval(() => {
+        setCurrentProfileIndex(prev => (prev + 1) % allProfiles.length);
+      }, 3000);
+      
+      return () => clearInterval(interval);
+    }
+  }, [allProfiles.length]);
+
+  const getVisibleProfiles = () => {
+    if (allProfiles.length === 0) return [];
+    
+    const profiles = [];
+    for (let i = 0; i < 3; i++) {
+      const index = (currentProfileIndex + i) % allProfiles.length;
+      profiles.push(allProfiles[index]);
+    }
+    return profiles;
+  };
+
+  const visibleProfiles = getVisibleProfiles();
+
+  return (
+    <section className="py-20 bg-slate-800 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-white mb-4">Découvrez notre communauté</h2>
+          <p className="text-xl text-gray-300">
+            Professionnels qualifiés et projets passionnants vous attendent
+          </p>
+        </div>
+
+        {/* Carousel de profils */}
+        <div className="relative">
+          <div className="flex justify-center items-center space-x-8 h-96">
+            {visibleProfiles.map((profile, index) => (
+              <motion.div
+                key={`${profile.type}-${profile.id}-${currentProfileIndex}`}
+                initial={{ x: 300, opacity: 0, scale: 0.8 }}
+                animate={{ 
+                  x: 0, 
+                  opacity: index === 1 ? 1 : 0.6, 
+                  scale: index === 1 ? 1 : 0.85,
+                  zIndex: index === 1 ? 10 : 5
+                }}
+                exit={{ x: -300, opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
+                className="w-80 relative"
+              >
+                <div className={`bg-slate-800 rounded-2xl overflow-hidden border-2 shadow-xl transition-all ${
+                  index === 1 ? 'border-emerald-500 shadow-emerald-500/20' : 'border-slate-700'
+                }`}>
+                  {profile.type === 'project' ? (
+                    <ProjectCard 
+                      project={profile} 
+                      onSwipe={() => {}} 
+                      isPending={false}
+                      hideButtons={true}
+                      isPreview={true}
+                    />
+                  ) : (
+                    <ProfessionalCard 
+                      professional={profile} 
+                      onSwipe={() => {}}
+                      hideButtons={true}
+                      isPreview={true}
+                    />
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Indicators */}
+          <div className="flex justify-center space-x-2 mt-8">
+            {allProfiles.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentProfileIndex(index)}
+                className={`w-3 h-3 rounded-full transition-colors ${
+                  index === currentProfileIndex ? 'bg-emerald-500' : 'bg-slate-600'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Call to action */}
+        <div className="text-center mt-16">
+          <h3 className="text-2xl font-bold text-white mb-4">
+            Rejoignez des milliers d'utilisateurs satisfaits
+          </h3>
+          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+            <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+              Créer mon compte particulier
+            </button>
+            <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+              Devenir professionnel
+            </button>
+          </div>
+        </div>
+      </div>
     </section>
   );
 };
