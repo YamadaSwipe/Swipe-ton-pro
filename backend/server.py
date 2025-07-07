@@ -229,12 +229,12 @@ async def create_status_check(input: StatusCheckCreate):
     _ = await db.status_checks.insert_one(status_obj.dict())
     return status_obj
 
-@api_router.get("/status", response_model=List[StatusCheck])
+@admin_router.get("/status", response_model=List[StatusCheck])
 async def get_status_checks():
     status_checks = await db.status_checks.find().to_list(1000)
     return [StatusCheck(**status_check) for status_check in status_checks]
 
-# Include the routers in the main app
+# Include the routers in the main app AFTER all routes are defined
 app.include_router(api_router)
 
 # Include admin router directly in the api router with proper prefix
