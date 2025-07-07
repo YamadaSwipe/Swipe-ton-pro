@@ -2613,7 +2613,7 @@ const SwipeInterface = ({ user, onBack }) => {
 };
 
 // Project Card Component
-const ProjectCard = ({ project, onSwipe, isPending }) => {
+const ProjectCard = ({ project, onSwipe, isPending, hideButtons = false, isPreview = false }) => {
   const getUrgencyColor = (urgency) => {
     switch (urgency) {
       case 'very_high': return 'bg-red-500 text-white';
@@ -2642,7 +2642,7 @@ const ProjectCard = ({ project, onSwipe, isPending }) => {
           <FileText className="w-16 h-16 mx-auto mb-2" />
           <h3 className="text-xl font-bold">{project.category}</h3>
         </div>
-        {project.urgency && project.urgency !== 'normal' && (
+        {project.urgency && project.urgency !== 'normal' && !isPreview && (
           <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-sm font-semibold ${getUrgencyColor(project.urgency)}`}>
             {getUrgencyText(project.urgency)}
           </div>
@@ -2675,7 +2675,7 @@ const ProjectCard = ({ project, onSwipe, isPending }) => {
           <span className="text-sm">Client: {project.clientName}</span>
         </div>
 
-        {project.requirements && (
+        {project.requirements && !isPreview && (
           <div className="bg-slate-700 p-3 rounded-lg">
             <p className="text-gray-300 text-sm">
               <strong>Exigences :</strong> {project.requirements}
@@ -2683,7 +2683,7 @@ const ProjectCard = ({ project, onSwipe, isPending }) => {
           </div>
         )}
 
-        {isPending && (
+        {isPending && !isPreview && (
           <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-3">
             <p className="text-yellow-400 text-sm text-center">
               Mode fantôme - Vous pouvez voir mais pas être contacté
@@ -2693,35 +2693,37 @@ const ProjectCard = ({ project, onSwipe, isPending }) => {
       </div>
 
       {/* Action Buttons */}
-      <div className="p-6 pt-0">
-        <div className="flex space-x-4">
-          <button
-            onClick={() => onSwipe('left')}
-            className="flex-1 bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg font-semibold transition-colors flex items-center justify-center"
-          >
-            <X className="w-5 h-5 mr-2" />
-            Passer
-          </button>
-          <button
-            onClick={() => onSwipe('right')}
-            disabled={isPending}
-            className={`flex-1 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center ${
-              isPending 
-                ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                : 'bg-emerald-500 hover:bg-emerald-600 text-white'
-            }`}
-          >
-            <Heart className="w-5 h-5 mr-2" />
-            {isPending ? 'Fantôme' : 'Postuler'}
-          </button>
+      {!hideButtons && !isPreview && (
+        <div className="p-6 pt-0">
+          <div className="flex space-x-4">
+            <button
+              onClick={() => onSwipe('reject')}
+              className="flex-1 bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg font-semibold transition-colors flex items-center justify-center"
+            >
+              <X className="w-5 h-5 mr-2" />
+              Passer
+            </button>
+            <button
+              onClick={() => onSwipe('accept')}
+              disabled={isPending}
+              className={`flex-1 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center ${
+                isPending 
+                  ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                  : 'bg-emerald-500 hover:bg-emerald-600 text-white'
+              }`}
+            >
+              <Heart className="w-5 h-5 mr-2" />
+              {isPending ? 'Fantôme' : 'Postuler'}
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
 
 // Professional Card Component
-const ProfessionalCard = ({ professional, onSwipe }) => {
+const ProfessionalCard = ({ professional, onSwipe, hideButtons = false, isPreview = false }) => {
   return (
     <>
       {/* Professional Image */}
@@ -2743,7 +2745,7 @@ const ProfessionalCard = ({ professional, onSwipe }) => {
         <div className="absolute bottom-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
           {professional.specialty}
         </div>
-        {professional.status === 'active' && (
+        {professional.status === 'active' && !isPreview && (
           <div className="absolute top-4 right-4 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white"></div>
         )}
       </div>
@@ -2773,7 +2775,7 @@ const ProfessionalCard = ({ professional, onSwipe }) => {
           </div>
         </div>
 
-        {professional.bio && (
+        {professional.bio && !isPreview && (
           <div className="bg-slate-700 p-3 rounded-lg">
             <p className="text-gray-300 text-sm">{professional.bio}</p>
           </div>
@@ -2781,29 +2783,31 @@ const ProfessionalCard = ({ professional, onSwipe }) => {
 
         <div className="flex items-center space-x-4 text-sm text-gray-400">
           <span>✅ Profil vérifié</span>
-          <span>📞 Disponible</span>
+          <span>📞 {professional.availability || 'Disponible'}</span>
         </div>
       </div>
 
       {/* Action Buttons */}
-      <div className="p-6 pt-0">
-        <div className="flex space-x-4">
-          <button
-            onClick={() => onSwipe('left')}
-            className="flex-1 bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg font-semibold transition-colors flex items-center justify-center"
-          >
-            <X className="w-5 h-5 mr-2" />
-            Passer
-          </button>
-          <button
-            onClick={() => onSwipe('right')}
-            className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-lg font-semibold transition-colors flex items-center justify-center"
-          >
-            <Heart className="w-5 h-5 mr-2" />
-            Contacter
-          </button>
+      {!hideButtons && !isPreview && (
+        <div className="p-6 pt-0">
+          <div className="flex space-x-4">
+            <button
+              onClick={() => onSwipe('reject')}
+              className="flex-1 bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg font-semibold transition-colors flex items-center justify-center"
+            >
+              <X className="w-5 h-5 mr-2" />
+              Passer
+            </button>
+            <button
+              onClick={() => onSwipe('accept')}
+              className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-lg font-semibold transition-colors flex items-center justify-center"
+            >
+              <Heart className="w-5 h-5 mr-2" />
+              Contacter
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
