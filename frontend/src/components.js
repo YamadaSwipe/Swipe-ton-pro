@@ -2477,6 +2477,8 @@ const SwipeInterface = ({ user, onBack }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [dragPosition, setDragPosition] = useState({ x: 0, y: 0 });
   const [startPosition, setStartPosition] = useState({ x: 0, y: 0 });
+  const [showMatch, setShowMatch] = useState(false);
+  const [matchedProfile, setMatchedProfile] = useState(null);
 
   const isProfessional = user.type === 'professionnel';
   const isPending = user.status === 'pending';
@@ -2512,6 +2514,61 @@ const SwipeInterface = ({ user, onBack }) => {
 
   const currentProfile = profiles[currentIndex];
 
+  // Sauvegarder un like
+  const saveLike = (fromUser, toProfile, profileType) => {
+    const likes = JSON.parse(localStorage.getItem('swipe_ton_pro_likes') || '[]');
+    const newLike = {
+      id: Date.now(),
+      fromUserId: fromUser.id,
+      fromUserType: fromUser.type,
+      toProfileId: toProfile.id,
+      toProfileType: profileType,
+      timestamp: new Date().toISOString()
+    };
+    likes.push(newLike);
+    localStorage.setItem('swipe_ton_pro_likes', JSON.stringify(likes));
+    return newLike;
+  };
+
+  // Vérifier s'il y a un match mutuel
+  const checkForMatch = (currentLike) => {
+    const likes = JSON.parse(localStorage.getItem('swipe_ton_pro_likes') || '[]');
+    
+    // Chercher un like réciproque
+    const reciprocalLike = likes.find(like => 
+      like.fromUserId === currentLike.toProfileId &&
+      like.toProfileId === currentLike.fromUserId &&
+      like.id !== currentLike.id
+    );
+
+    if (reciprocalLike) {
+      // C'est un match !
+      saveMatch(currentLike, reciprocalLike);
+      return true;
+    }
+    return false;
+  };
+
+  // Sauvegarder un match
+  const saveMatch = (like1, like2) => {
+    const matches = JSON.parse(localStorage.getItem('swipe_ton_pro_matches') || '[]');
+    const newMatch = {
+      id: Date.now(),
+      user1Id: like1.fromUserId,
+      user1Type: like1.fromUserType,
+      user2Id: like1.toProfileId,
+      user2Type: like1.toProfileType,
+      timestamp: new Date().toISOString(),
+      messageUnlocked: false,
+      paymentCompleted: false
+    };
+    matches.push(newMatch);
+    localStorage.setItem('swipe_ton_pro_matches', JSON.stringify(matches));
+    
+    setMatchedProfile(currentProfile);
+    setShowMatch(true);
+  };
+
   const handleMouseDown = (e) => {
     setIsDragging(true);
     setStartPosition({ x: e.clientX, y: e.clientY });
@@ -2528,9 +2585,9 @@ const SwipeInterface = ({ user, onBack }) => {
     // Déterminer la direction du swipe
     if (Math.abs(deltaY) > Math.abs(deltaX)) {
       if (deltaY < -50) {
-        setSwipeDirection('up'); // Valider
+        setSwipeDirection('up'); // Valider (LIKE)
       } else if (deltaY > 50) {
-        setSwipeDirection('down'); // Refuser
+        setSwipeDirection('down'); // Passer au suivant (NEXT)
       } else {
         setSwipeDirection(null);
       }
@@ -2545,11 +2602,11 @@ const SwipeInterface = ({ user, onBack }) => {
     setIsDragging(false);
     
     if (swipeDirection === 'up' && !isPending) {
-      // Swipe vers le haut = valider
-      handleSwipe('accept');
+      // Swipe vers le haut = LIKE
+      handleSwipe('like');
     } else if (swipeDirection === 'down') {
-      // Swipe vers le bas = refuser
-      handleSwipe('reject');
+      // Swipe vers le bas = NEXT
+      handleSwipe('next');
     }
     
     // Reset positions
@@ -2558,10 +2615,20 @@ const SwipeInterface = ({ user, onBack }) => {
   };
 
   const handleSwipe = (action) => {
-    if (action === 'accept' && !isPending) {
-      console.log('Accepté:', currentProfile?.title || currentProfile?.firstName);
-    } else if (action === 'reject') {
-      console.log('Refusé:', currentProfile?.title || currentProfile?.firstName);
+    if (action === 'like' && !isPending) {
+      // Sauvegarder le like
+      const newLike = saveLike(user, currentProfile, currentProfile.type);
+      
+      // Vérifier s'il y a un match
+      const isMatch = checkForMatch(newLike);
+      
+      console.log('👍 LIKE:', currentProfile?.title || currentProfile?.firstName);
+      if (isMatch) {
+        console.log('🎉 MATCH DETECTED!');
+        // L'animation de match se déclenchera via setShowMatch(true) dans saveMatch
+      }
+    } else if (action === 'next') {
+      console.log('➡️ NEXT:', currentProfile?.title || currentProfile?.firstName);
     }
     
     // Animation de sortie puis passage au suivant
