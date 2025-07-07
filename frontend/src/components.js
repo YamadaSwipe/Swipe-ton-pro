@@ -4478,6 +4478,181 @@ const AdminAnalytics = () => {
   );
 };
 
+// Match Animation Component
+const MatchAnimation = ({ matchedProfile, onClose, currentUser }) => {
+  const [showExplosion, setShowExplosion] = useState(true);
+  const [showMatchContent, setShowMatchContent] = useState(false);
+
+  useEffect(() => {
+    // Séquence d'animation
+    setTimeout(() => {
+      setShowExplosion(false);
+      setShowMatchContent(true);
+    }, 2000);
+  }, []);
+
+  return (
+    <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
+      {/* Animation d'explosion */}
+      {showExplosion && (
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: [0, 1.2, 1] }}
+          transition={{ duration: 2, ease: "easeOut" }}
+          className="relative"
+        >
+          {/* Effet d'explosion */}
+          <div className="relative">
+            {/* Mur qui se brise */}
+            <motion.div
+              initial={{ opacity: 1 }}
+              animate={{ 
+                opacity: [1, 1, 0],
+                scale: [1, 1.1, 1.3],
+                rotate: [0, 5, -10, 20]
+              }}
+              transition={{ duration: 2, times: [0, 0.7, 1] }}
+              className="absolute inset-0"
+            >
+              {/* Fragments du mur */}
+              {[...Array(12)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ 
+                    x: 0, 
+                    y: 0, 
+                    rotate: 0,
+                    opacity: 1 
+                  }}
+                  animate={{ 
+                    x: (Math.random() - 0.5) * 800,
+                    y: (Math.random() - 0.5) * 600,
+                    rotate: Math.random() * 360,
+                    opacity: 0
+                  }}
+                  transition={{ 
+                    duration: 1.5,
+                    delay: 0.5 + (i * 0.1),
+                    ease: "easeOut"
+                  }}
+                  className="absolute w-20 h-20 bg-slate-700 border border-slate-600"
+                  style={{
+                    left: `${(i % 4) * 25}%`,
+                    top: `${Math.floor(i / 4) * 33}%`,
+                  }}
+                />
+              ))}
+            </motion.div>
+
+            {/* Effet de particules */}
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: [0, 1, 2], opacity: [0, 1, 0] }}
+              transition={{ duration: 1.5, delay: 1 }}
+              className="w-32 h-32 border-8 border-emerald-500 rounded-full"
+            />
+
+            {/* Texte d'explosion */}
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: [0, 1.5, 1], opacity: [0, 1, 1] }}
+              transition={{ duration: 1, delay: 0.8 }}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              <div className="text-6xl font-bold text-emerald-400">💥</div>
+            </motion.div>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Contenu du match */}
+      {showMatchContent && (
+        <motion.div
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="bg-slate-800 rounded-3xl p-8 max-w-md w-full mx-4 text-center border-2 border-emerald-500 shadow-2xl shadow-emerald-500/20"
+        >
+          {/* Animation du cœur */}
+          <motion.div
+            animate={{ 
+              scale: [1, 1.2, 1],
+              rotate: [0, 10, -10, 0]
+            }}
+            transition={{ 
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="text-6xl mb-6"
+          >
+            ❤️
+          </motion.div>
+
+          <h2 className="text-3xl font-bold text-white mb-2">C'est un Match !</h2>
+          <p className="text-gray-300 mb-6">
+            Vous vous êtes mutuellement likés avec{' '}
+            <span className="text-emerald-400 font-semibold">
+              {matchedProfile?.firstName || matchedProfile?.title || 'ce profil'}
+            </span>
+          </p>
+
+          {/* Profils des deux utilisateurs */}
+          <div className="flex justify-center items-center space-x-4 mb-8">
+            <div className="w-20 h-20 rounded-full overflow-hidden bg-slate-700">
+              {currentUser.profileImage ? (
+                <img src={currentUser.profileImage} alt="Vous" className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-400">
+                  <Users className="w-8 h-8" />
+                </div>
+              )}
+            </div>
+            
+            <motion.div
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ duration: 1, repeat: Infinity }}
+              className="text-2xl text-emerald-400"
+            >
+              ❤️
+            </motion.div>
+
+            <div className="w-20 h-20 rounded-full overflow-hidden bg-slate-700">
+              {matchedProfile?.profileImage ? (
+                <img src={matchedProfile.profileImage} alt="Match" className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-400">
+                  <Users className="w-8 h-8" />
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="space-y-4">
+            <button
+              onClick={() => {
+                onClose();
+                // TODO: Ouvrir la messagerie
+              }}
+              className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-lg font-semibold transition-colors"
+            >
+              💬 Commencer la conversation
+            </button>
+            
+            <button
+              onClick={onClose}
+              className="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-lg font-semibold transition-colors"
+            >
+              Continuer à swiper
+            </button>
+          </div>
+        </motion.div>
+      )}
+    </div>
+  );
+};
+
 // Export all components
 export const Components = {
   Header,
