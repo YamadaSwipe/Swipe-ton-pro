@@ -1197,13 +1197,13 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
           return;
         }
         
-        if (!formData.company || !formData.siret || !formData.specialty) {
-          alert('Veuillez remplir toutes les informations professionnelles');
+        if (!formData.company || !formData.siret || selectedSpecialties.length === 0) {
+          alert('Veuillez remplir toutes les informations professionnelles et sélectionner au moins une spécialité');
           return;
         }
         
-        // Show payment modal
-        setShowPayment(true);
+        // Initiate Stripe payment for pack
+        handleStripePayment();
         return;
       }
       
