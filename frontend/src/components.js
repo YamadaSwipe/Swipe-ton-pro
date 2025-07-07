@@ -4373,6 +4373,7 @@ const AdminInviteModal = ({ onInvite, onCancel, adminLevels }) => {
     </div>
   );
 };
+const AdminAnalytics = () => {
   return (
     <div className="space-y-8">
       <h1 className="text-3xl font-bold text-white">Analytics & Statistiques</h1>
