@@ -209,7 +209,7 @@ const AdminLogin = () => {
         
         <div className="mt-6 p-4 bg-white/10 rounded-lg">
           <p className="text-sm font-medium mb-2">🔐 Compte de test :</p>
-          <p className="text-xs text-blue-200">📧 admin@careertinder.com</p>
+          <p className="text-xs text-blue-200">📧 admin@swipetonpro.com</p>
           <p className="text-xs text-blue-200">🔑 admin123</p>
         </div>
       </div>
