@@ -438,7 +438,7 @@ async def list_admins(current_admin: Admin = Depends(get_current_admin)):
         for admin in admins
     ]
 
-@api_router.get("/admin/invitations")
+@admin_router.get("/invitations")
 async def list_invitations(current_admin: Admin = Depends(get_current_admin)):
     if not check_permission(current_admin, "view_invitations"):
         raise HTTPException(
