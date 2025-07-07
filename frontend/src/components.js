@@ -572,8 +572,8 @@ const Hero = ({ onShowAuth, setAuthType }) => {
             transition={{ delay: 0.2 }}
             className="text-4xl md:text-6xl font-bold text-white mb-6"
           >
-            Votre prochain match<br />
-            <span className="text-emerald-400">professionnel</span> est un swipe.
+            Votre prochain CRUSH<br />
+            <span className="text-emerald-400">professionnel</span> en un SWIPE.
           </motion.h1>
 
           <motion.p
