@@ -2708,6 +2708,18 @@ const SwipeInterface = ({ user, onBack }) => {
         </div>
       </div>
 
+      {/* Match Animation */}
+      {showMatch && (
+        <MatchAnimation 
+          matchedProfile={matchedProfile} 
+          onClose={() => {
+            setShowMatch(false);
+            setMatchedProfile(null);
+          }}
+          currentUser={user}
+        />
+      )}
+
       {/* Swipe Interface */}
       <div className="flex items-center justify-center min-h-[calc(100vh-120px)] p-4 relative overflow-hidden">
         <div className="w-full max-w-md relative">
