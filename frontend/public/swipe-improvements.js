@@ -57,7 +57,7 @@
                 border: 2px solid #2ed573;
             `;
             
-            selector.innerHTML = \`
+            selector.innerHTML = `
                 <div style="font-size: 12px; color: #666; margin-bottom: 8px; font-weight: bold;">Mode de test</div>
                 <select onchange="changeUserType(this.value)" style="
                     border: 2px solid #2ed573;
@@ -73,7 +73,7 @@
                 <div id="matchingInfo" style="font-size: 11px; color: #666; margin-top: 8px;">
                     Vous êtes un particulier
                 </div>
-            \`;
+            `;
             
             document.body.appendChild(selector);
         }
