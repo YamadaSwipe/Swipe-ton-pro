@@ -2812,11 +2812,15 @@ const ProjectsManagement = ({ user, isProfessional }) => {
                 </span>
               </div>
               
-              {project.category && (
+              {project.categories && project.categories.length > 0 && (
                 <div className="mb-4">
-                  <span className="bg-blue-500/20 text-blue-400 px-2 py-1 rounded text-sm">
-                    {project.category}
-                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    {project.categories.map((category, index) => (
+                      <span key={index} className="bg-blue-500/20 text-blue-400 px-2 py-1 rounded text-sm">
+                        {category}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               )}
               
