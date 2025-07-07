@@ -95,6 +95,122 @@ const Header = ({ onShowAuth, setAuthType }) => {
   );
 };
 
+// Request Modal Component
+const RequestModal = ({ matchedProfile, currentUser, onClose, onRequest }) => {
+  const [requestType, setRequestType] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = () => {
+    if (!requestType) {
+      alert('Veuillez sélectionner le type de demande');
+      return;
+    }
+
+    // Sauvegarder la demande
+    const requests = JSON.parse(localStorage.getItem('swipe_ton_pro_requests') || '[]');
+    const newRequest = {
+      id: Date.now(),
+      fromUserId: currentUser.id,
+      fromUserName: `${currentUser.firstName} ${currentUser.lastName}`,
+      toUserId: matchedProfile.id,
+      toUserName: matchedProfile.firstName || matchedProfile.title,
+      type: requestType,
+      message: message,
+      status: 'pending_payment',
+      timestamp: new Date().toISOString()
+    };
+    
+    requests.push(newRequest);
+    localStorage.setItem('swipe_ton_pro_requests', JSON.stringify(requests));
+    
+    onRequest(requestType);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/90 z-60 flex items-center justify-center p-4">
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        className="bg-slate-800 rounded-2xl p-6 max-w-md w-full border-2 border-emerald-500"
+      >
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-2xl font-bold text-white">Faire une demande</h3>
+          <button onClick={onClose} className="text-gray-400 hover:text-white">
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          <p className="text-gray-300">
+            Choisissez le type de demande pour{' '}
+            <span className="text-emerald-400 font-semibold">
+              {matchedProfile?.firstName || matchedProfile?.title}
+            </span>
+          </p>
+
+          <div className="space-y-3">
+            <button
+              onClick={() => setRequestType('devis')}
+              className={`w-full p-4 rounded-lg border-2 transition-all ${
+                requestType === 'devis' 
+                  ? 'border-emerald-500 bg-emerald-500/20 text-emerald-400' 
+                  : 'border-slate-600 bg-slate-700 text-gray-300 hover:border-slate-500'
+              }`}
+            >
+              📋 Demander un devis
+            </button>
+            
+            <button
+              onClick={() => setRequestType('rdv')}
+              className={`w-full p-4 rounded-lg border-2 transition-all ${
+                requestType === 'rdv' 
+                  ? 'border-emerald-500 bg-emerald-500/20 text-emerald-400' 
+                  : 'border-slate-600 bg-slate-700 text-gray-300 hover:border-slate-500'
+              }`}
+            >
+              📅 Prise de rendez-vous
+            </button>
+          </div>
+
+          <textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Message optionnel..."
+            className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:border-emerald-500 focus:outline-none"
+            rows={3}
+          />
+
+          <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-4">
+            <p className="text-yellow-400 text-sm text-center">
+              ⚠️ Le professionnel devra payer 70€ de mise en relation pour débloquer la messagerie
+            </p>
+          </div>
+
+          <div className="flex space-x-3">
+            <button
+              onClick={onClose}
+              className="flex-1 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-semibold transition-colors"
+            >
+              Annuler
+            </button>
+            <button
+              onClick={handleSubmit}
+              disabled={!requestType}
+              className={`flex-1 py-3 rounded-lg font-semibold transition-colors ${
+                requestType 
+                  ? 'bg-emerald-500 hover:bg-emerald-600 text-white' 
+                  : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+              }`}
+            >
+              Envoyer la demande
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
 // Hero Component
 const Hero = ({ onShowAuth, setAuthType }) => {
   return (
