@@ -4190,8 +4190,20 @@ const MobileApp = () => {
                   Chat intégré pour échanger
                 </li>
               </ul>
-              <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
-                Swiper gratuitement
+              <button 
+                onClick={() => {
+                  // Scroller vers le haut et déclencher l'inscription
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  setTimeout(() => {
+                    const inscriptionBtn = document.querySelector('button:has-text("Commencer gratuitement")');
+                    if (inscriptionBtn) {
+                      inscriptionBtn.click();
+                    }
+                  }, 500);
+                }}
+                className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+              >
+                SWIPE Gratuitement
               </button>
             </div>
           </div>
