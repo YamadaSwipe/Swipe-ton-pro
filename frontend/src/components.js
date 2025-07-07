@@ -1667,7 +1667,7 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
                         <p className="text-yellow-400 font-medium">Validation en cours</p>
                         <p className="text-yellow-300 mt-1">
                           Votre profil sera activé sous 24-48h après vérification des documents. 
-                          En attendant, vous pourrez swiper en mode fantôme.
+                          En attendant, tu pourras swiper en mode fantôme.
                         </p>
                       </div>
                     </div>
