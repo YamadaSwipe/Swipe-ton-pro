@@ -9,7 +9,7 @@ const API = `${BACKEND_URL}/api`;
 // Admin Login Component
 const AdminLogin = () => {
   const [formData, setFormData] = useState({
-    email: "admin@careertinder.com",
+    email: "admin@swipetonpro.com",
     password: "admin123"
   });
   const [error, setError] = useState('');
