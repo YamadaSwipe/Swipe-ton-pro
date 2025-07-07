@@ -126,7 +126,7 @@
     file: "backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "NA"
         - agent: "main"
@@ -137,6 +137,9 @@
         - working: true
         - agent: "main"
         - comment: "Problème de sérialisation MongoDB ObjectId corrigé. Les endpoints de matching ont été améliorés avec une meilleure gestion des erreurs et suppression des _id MongoDB. Test utilisateur confirmé : API accessible et création d'utilisateur réussie avec UUID."
+        - working: true
+        - agent: "testing"
+        - comment: "Tests complets effectués avec succès. Tous les endpoints fonctionnent correctement, y compris GET /api/matches/{user_id} et GET /api/matches/user/{user_id}. Le problème de sérialisation MongoDB ObjectId a été résolu avec l'ajout d'une fonction clean_mongo_doc qui convertit correctement les ObjectId en chaînes de caractères. Les UUIDs sont utilisés pour tous les identifiants et le flux complet de matching fonctionne comme prévu. Les tests ont vérifié la création d'utilisateurs et de profils, l'enregistrement des swipes, la détection de matches mutuels, et la récupération des profils potentiels et des matches existants."
 
 ## frontend:
   - task: "Interface de swipe tactile"
