@@ -654,6 +654,14 @@ async def resolve_report(
     
     return {"message": "Report resolved successfully"}
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_credentials=True,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
