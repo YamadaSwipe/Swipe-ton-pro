@@ -141,7 +141,62 @@ class UserUpdate(BaseModel):
     phone: Optional[str] = None
     status: Optional[UserStatus] = None
 
-# Add your routes to the router instead of directly to app
+# Utility functions
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
+
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+def create_invitation_token(email: str, role: str):
+    expire = datetime.utcnow() + timedelta(hours=INVITATION_TOKEN_EXPIRE_HOURS)
+    to_encode = {"email": email, "role": role, "exp": expire}
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+async def get_current_admin(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    
+    try:
+        payload = jwt.decode(credentials.credentials, SECRET_KEY, algorithms=[ALGORITHM])
+        admin_id: str = payload.get("sub")
+        if admin_id is None:
+            raise credentials_exception
+    except jwt.PyJWTError:
+        raise credentials_exception
+    
+    admin = await db.admins.find_one({"id": admin_id})
+    if admin is None:
+        raise credentials_exception
+    
+    return Admin(**admin)
+
+def check_permission(admin: Admin, required_permission: str):
+    if admin.role == AdminRole.SUPER_ADMIN:
+        return True
+    return required_permission in admin.permissions
+
+async def send_invitation_email(email: str, token: str, invited_by: str):
+    # Mock implementation - in production, use real email service
+    print(f"Sending invitation email to {email}")
+    print(f"Invitation token: {token}")
+    print(f"Invited by: {invited_by}")
+    # In production, integrate with services like SendGrid, SES, etc.
+    return True
 @api_router.get("/")
 async def root():
     return {"message": "Hello World"}
