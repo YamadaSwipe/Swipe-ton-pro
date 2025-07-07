@@ -167,15 +167,18 @@ backend:
 
   - task: "Système profil vedette admin"
     implemented: true
-    working: "NA"
+    working: false
     file: "server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Endpoints admin pour définir un profil vedette, validation d'utilisateurs, gestion des documents"
+      - working: false
+        agent: "testing"
+        comment: "Les endpoints admin sont implémentés mais ne sont pas accessibles car il n'y a pas d'utilisateur admin dans le système. Le test de connexion en tant qu'admin a échoué. Les endpoints pour définir un profil vedette, valider des utilisateurs et gérer les documents existent mais n'ont pas pu être testés."
 
   - task: "Intégration Stripe paiement 60€"
     implemented: false
