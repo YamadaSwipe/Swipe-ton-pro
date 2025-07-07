@@ -2802,13 +2802,13 @@ const SwipeInterface = ({ user, onBack }) => {
         {/* Action Buttons (backup) */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-6">
           <button
-            onClick={() => handleSwipe('reject')}
+            onClick={() => handleSwipe('next')}
             className="w-16 h-16 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110"
           >
             <X className="w-8 h-8" />
           </button>
           <button
-            onClick={() => handleSwipe('accept')}
+            onClick={() => handleSwipe('like')}
             disabled={isPending}
             className={`w-16 h-16 rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110 ${
               isPending 
