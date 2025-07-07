@@ -1118,6 +1118,7 @@ const Dashboard = ({ user, onLogout }) => {
     { id: 'overview', label: 'Dashboard Admin', icon: TrendingUp },
     { id: 'users', label: 'Gestion Utilisateurs', icon: Users },
     { id: 'pending', label: 'Validations', icon: AlertCircle },
+    { id: 'admins', label: 'Gestion Admins', icon: Shield },
     { id: 'projects', label: 'Tous les Projets', icon: FileText },
     { id: 'analytics', label: 'Analytics', icon: TrendingUp },
     { id: 'settings', label: 'Paramètres Site', icon: Settings }
