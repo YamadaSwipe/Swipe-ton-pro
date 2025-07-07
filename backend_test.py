@@ -4,6 +4,7 @@ import unittest
 import sys
 import os
 import time
+import uuid
 from datetime import datetime
 
 # Get the backend URL from the frontend .env file
@@ -116,6 +117,130 @@ class BackendAPITest(unittest.TestCase):
             print("✅ Data persistence test passed")
         except Exception as e:
             print(f"❌ Data persistence test failed: {str(e)}")
+            raise
+    
+    def test_06_stripe_checkout_session_creation(self):
+        """Test the creation of a Stripe checkout session"""
+        try:
+            # Create a payment request with test data
+            user_id = str(uuid.uuid4())
+            match_id = str(uuid.uuid4())
+            
+            payload = {
+                "user_id": user_id,
+                "user_type": "client",
+                "match_id": match_id,
+                "origin_url": BACKEND_URL  # Use backend URL as origin for testing
+            }
+            
+            response = requests.post(f"{API_URL}/payments/checkout/session", json=payload)
+            self.assertEqual(response.status_code, 200)
+            data = response.json()
+            
+            # Verify response structure
+            self.assertTrue("checkout_url" in data)
+            self.assertTrue("session_id" in data)
+            self.assertTrue(data["checkout_url"].startswith("https://checkout.stripe.com/"))
+            
+            # Store session_id for status check test
+            self.session_id = data["session_id"]
+            
+            print("✅ Stripe checkout session creation test passed")
+            print(f"Created session ID: {self.session_id}")
+            return self.session_id
+            
+        except Exception as e:
+            print(f"❌ Stripe checkout session creation test failed: {str(e)}")
+            raise
+    
+    def test_07_stripe_checkout_status(self):
+        """Test checking the status of a Stripe checkout session"""
+        try:
+            # First create a session if we don't have one
+            if not hasattr(self, 'session_id'):
+                self.session_id = self.test_06_stripe_checkout_session_creation()
+            
+            # Check the status of the session
+            response = requests.get(f"{API_URL}/payments/checkout/status/{self.session_id}")
+            self.assertEqual(response.status_code, 200)
+            data = response.json()
+            
+            # Verify response structure
+            self.assertTrue("session_id" in data)
+            self.assertTrue("payment_status" in data)
+            self.assertTrue("status" in data)
+            self.assertTrue("amount_total" in data)
+            self.assertTrue("currency" in data)
+            
+            # The payment status will likely be "unpaid" since we didn't complete the checkout
+            # But the API should still return a valid response
+            self.assertEqual(data["session_id"], self.session_id)
+            
+            print("✅ Stripe checkout status check test passed")
+            print(f"Payment status: {data['payment_status']}")
+            print(f"Session status: {data['status']}")
+            
+        except Exception as e:
+            print(f"❌ Stripe checkout status check test failed: {str(e)}")
+            raise
+    
+    def test_08_stripe_checkout_with_invalid_data(self):
+        """Test error handling with invalid data for checkout session creation"""
+        try:
+            # Test with missing required fields
+            invalid_payload = {
+                "user_id": str(uuid.uuid4()),
+                # Missing user_type, match_id, and origin_url
+            }
+            
+            response = requests.post(f"{API_URL}/payments/checkout/session", json=invalid_payload)
+            
+            # Should return a 422 Unprocessable Entity for validation errors
+            self.assertIn(response.status_code, [400, 422])
+            
+            print("✅ Stripe checkout with invalid data test passed")
+            
+        except Exception as e:
+            print(f"❌ Stripe checkout with invalid data test failed: {str(e)}")
+            raise
+    
+    def test_09_stripe_checkout_status_with_invalid_session(self):
+        """Test error handling with invalid session ID for status check"""
+        try:
+            # Use a non-existent session ID
+            invalid_session_id = "sess_" + str(uuid.uuid4()).replace("-", "")
+            
+            response = requests.get(f"{API_URL}/payments/checkout/status/{invalid_session_id}")
+            
+            # Should return an error status code
+            self.assertGreaterEqual(response.status_code, 400)
+            
+            print("✅ Stripe checkout status with invalid session test passed")
+            
+        except Exception as e:
+            print(f"❌ Stripe checkout status with invalid session test failed: {str(e)}")
+            raise
+    
+    def test_10_payment_amount_verification(self):
+        """Test that the payment amount is correctly set to 70€"""
+        try:
+            # First create a session if we don't have one
+            if not hasattr(self, 'session_id'):
+                self.session_id = self.test_06_stripe_checkout_session_creation()
+            
+            # Check the status of the session to get the amount
+            response = requests.get(f"{API_URL}/payments/checkout/status/{self.session_id}")
+            self.assertEqual(response.status_code, 200)
+            data = response.json()
+            
+            # Verify the amount is 70€ (7000 cents)
+            self.assertEqual(data["amount_total"], 7000)
+            self.assertEqual(data["currency"], "eur")
+            
+            print("✅ Payment amount verification test passed")
+            
+        except Exception as e:
+            print(f"❌ Payment amount verification test failed: {str(e)}")
             raise
 
 if __name__ == "__main__":
