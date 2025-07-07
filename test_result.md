@@ -101,3 +101,73 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+## user_problem_statement: "Implémenter la fonction de matching dans une application Career Tinder 'Swipe Ton Pro' qui connecte particuliers et professionnels. Le matching se fait quand deux profils se like mutuellement avec swipe vers le haut. Les profils défilent de gauche à droite. Swipe haut = like, swipe bas = next."
+
+## backend:
+  - task: "Modèles User, Profile, Swipe, Match"
+    implemented: false
+    working: "NA"
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+        - agent: "main"
+        - comment: "Démarrage de l'implémentation des modèles de données pour le système de matching"
+
+  - task: "APIs de matching (profils, swipes, matches)"
+    implemented: false
+    working: "NA"
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+        - agent: "main"
+        - comment: "APIs pour récupérer profils, enregistrer swipes, détecter matches"
+
+## frontend:
+  - task: "Interface de swipe tactile"
+    implemented: false
+    working: "NA"
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+        - agent: "main"
+        - comment: "Interface avec gestes swipe haut/bas et animations"
+
+  - task: "Affichage des profils avec défilement"
+    implemented: false
+    working: "NA"
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+        - agent: "main"
+        - comment: "Affichage des profils avec défilement de gauche à droite"
+
+## metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 0
+  run_ui: false
+
+## test_plan:
+  current_focus:
+    - "Modèles User, Profile, Swipe, Match"
+    - "APIs de matching (profils, swipes, matches)"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+## agent_communication:
+    - agent: "main"
+    - message: "Début de l'implémentation du système de matching Career Tinder avec swipe haut/bas et matching mutuel"
