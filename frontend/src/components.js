@@ -574,8 +574,7 @@ const Hero = ({ onShowAuth, setAuthType }) => {
           >
             <span className="text-white">ton prochain </span>
             <span className="text-emerald-400">CRUSH</span><br />
-            <span className="text-emerald-400">professionnel</span>
-            <span className="text-white"> en un </span>
+            <span className="text-white">professionnel en un </span>
             <span className="text-emerald-400">SWIPE</span>
             <span className="text-white">.</span>
           </motion.h1>
