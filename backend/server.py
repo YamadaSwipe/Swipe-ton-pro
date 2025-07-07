@@ -662,6 +662,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Include the routers in the main app AFTER all routes are defined
+app.include_router(api_router)
+
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
