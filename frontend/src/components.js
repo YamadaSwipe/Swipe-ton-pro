@@ -2328,6 +2328,10 @@ const SwipeInterface = ({ user, onBack }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [swipeDirection, setSwipeDirection] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragPosition, setDragPosition] = useState({ x: 0, y: 0 });
+  const [startPosition, setStartPosition] = useState({ x: 0, y: 0 });
 
   const isProfessional = user.type === 'professionnel';
   const isPending = user.status === 'pending';
@@ -2363,16 +2367,64 @@ const SwipeInterface = ({ user, onBack }) => {
 
   const currentProfile = profiles[currentIndex];
 
-  const handleSwipe = (direction) => {
-    if (direction === 'right' && !isPending) {
-      // Like - only allowed for validated profiles
-      console.log('Liked:', currentProfile?.title || currentProfile?.firstName);
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartPosition({ x: e.clientX, y: e.clientY });
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    
+    const deltaX = e.clientX - startPosition.x;
+    const deltaY = e.clientY - startPosition.y;
+    
+    setDragPosition({ x: deltaX, y: deltaY });
+    
+    // Déterminer la direction du swipe
+    if (Math.abs(deltaY) > Math.abs(deltaX)) {
+      if (deltaY < -50) {
+        setSwipeDirection('up'); // Valider
+      } else if (deltaY > 50) {
+        setSwipeDirection('down'); // Refuser
+      } else {
+        setSwipeDirection(null);
+      }
+    } else {
+      setSwipeDirection(null);
+    }
+  };
+
+  const handleMouseUp = () => {
+    if (!isDragging) return;
+    
+    setIsDragging(false);
+    
+    if (swipeDirection === 'up' && !isPending) {
+      // Swipe vers le haut = valider
+      handleSwipe('accept');
+    } else if (swipeDirection === 'down') {
+      // Swipe vers le bas = refuser
+      handleSwipe('reject');
     }
     
-    // Move to next profile
-    setCurrentIndex((prev) => 
-      prev < profiles.length - 1 ? prev + 1 : 0
-    );
+    // Reset positions
+    setDragPosition({ x: 0, y: 0 });
+    setSwipeDirection(null);
+  };
+
+  const handleSwipe = (action) => {
+    if (action === 'accept' && !isPending) {
+      console.log('Accepté:', currentProfile?.title || currentProfile?.firstName);
+    } else if (action === 'reject') {
+      console.log('Refusé:', currentProfile?.title || currentProfile?.firstName);
+    }
+    
+    // Animation de sortie puis passage au suivant
+    setTimeout(() => {
+      setCurrentIndex((prev) => 
+        prev < profiles.length - 1 ? prev + 1 : 0
+      );
+    }, 300);
   };
 
   if (loading) {
@@ -2433,26 +2485,96 @@ const SwipeInterface = ({ user, onBack }) => {
         </div>
       </div>
 
+      {/* Swipe Instructions */}
+      <div className="bg-slate-800/50 p-4 text-center">
+        <p className="text-gray-300 text-sm mb-2">
+          💡 <strong>Comment swiper :</strong>
+        </p>
+        <div className="flex justify-center space-x-8 text-sm">
+          <span className="text-emerald-400">⬆️ Swipe vers le haut = Valider</span>
+          <span className="text-red-400">⬇️ Swipe vers le bas = Refuser</span>
+        </div>
+      </div>
+
       {/* Swipe Interface */}
-      <div className="flex items-center justify-center min-h-[calc(100vh-64px)] p-4">
-        <div className="w-full max-w-md">
-          {currentProfile ? (
-            <div className="bg-slate-800 rounded-3xl overflow-hidden border border-slate-700 shadow-2xl">
-              {currentProfile.type === 'project' ? (
-                // Project Card for Professionals
-                <ProjectCard 
-                  project={currentProfile} 
-                  onSwipe={handleSwipe} 
-                  isPending={isPending}
-                />
-              ) : (
-                // Professional Card for Individuals  
-                <ProfessionalCard 
-                  professional={currentProfile} 
-                  onSwipe={handleSwipe}
-                />
-              )}
+      <div className="flex items-center justify-center min-h-[calc(100vh-120px)] p-4 relative overflow-hidden">
+        <div className="w-full max-w-md relative">
+          {/* Next card preview */}
+          {profiles[currentIndex + 1] && (
+            <div className="absolute inset-0 z-0 transform translate-x-8 scale-95 opacity-50">
+              <div className="bg-slate-700 rounded-3xl overflow-hidden border border-slate-600 shadow-xl">
+                {profiles[currentIndex + 1].type === 'project' ? (
+                  <ProjectCard 
+                    project={profiles[currentIndex + 1]} 
+                    onSwipe={() => {}} 
+                    isPending={isPending}
+                    isPreview={true}
+                  />
+                ) : (
+                  <ProfessionalCard 
+                    professional={profiles[currentIndex + 1]} 
+                    onSwipe={() => {}}
+                    isPreview={true}
+                  />
+                )}
+              </div>
             </div>
+          )}
+
+          {/* Current card */}
+          {currentProfile ? (
+            <motion.div
+              initial={{ x: 300, opacity: 0 }}
+              animate={{ 
+                x: dragPosition.x, 
+                y: dragPosition.y, 
+                opacity: 1,
+                rotate: dragPosition.x * 0.1,
+                scale: isDragging ? 0.95 : 1
+              }}
+              exit={{ x: swipeDirection === 'up' ? 0 : 0, y: swipeDirection === 'up' ? -600 : 600, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className={`relative z-10 cursor-grab active:cursor-grabbing ${
+                isDragging ? 'z-20' : ''
+              }`}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseUp}
+              style={{
+                transformOrigin: 'center',
+              }}
+            >
+              <div className={`bg-slate-800 rounded-3xl overflow-hidden border-2 shadow-2xl transition-all ${
+                swipeDirection === 'up' ? 'border-emerald-500 shadow-emerald-500/20' :
+                swipeDirection === 'down' ? 'border-red-500 shadow-red-500/20' :
+                'border-slate-700'
+              }`}>
+                {/* Direction indicator */}
+                {swipeDirection && (
+                  <div className={`absolute top-4 right-4 z-30 px-4 py-2 rounded-full font-bold text-lg ${
+                    swipeDirection === 'up' ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white'
+                  }`}>
+                    {swipeDirection === 'up' ? '✓ VALIDER' : '✗ REFUSER'}
+                  </div>
+                )}
+
+                {currentProfile.type === 'project' ? (
+                  <ProjectCard 
+                    project={currentProfile} 
+                    onSwipe={handleSwipe} 
+                    isPending={isPending}
+                    hideButtons={true}
+                  />
+                ) : (
+                  <ProfessionalCard 
+                    professional={currentProfile} 
+                    onSwipe={handleSwipe}
+                    hideButtons={true}
+                  />
+                )}
+              </div>
+            </motion.div>
           ) : (
             <div className="text-center text-gray-400">
               <p className="text-xl mb-4">
@@ -2463,6 +2585,27 @@ const SwipeInterface = ({ user, onBack }) => {
               </p>
             </div>
           )}
+        </div>
+
+        {/* Action Buttons (backup) */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-6">
+          <button
+            onClick={() => handleSwipe('reject')}
+            className="w-16 h-16 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110"
+          >
+            <X className="w-8 h-8" />
+          </button>
+          <button
+            onClick={() => handleSwipe('accept')}
+            disabled={isPending}
+            className={`w-16 h-16 rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110 ${
+              isPending 
+                ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                : 'bg-emerald-500 hover:bg-emerald-600 text-white'
+            }`}
+          >
+            <Heart className="w-8 h-8" />
+          </button>
         </div>
       </div>
     </div>
