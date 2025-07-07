@@ -4809,5 +4809,6 @@ export const Components = {
   UserManagement,
   PendingValidations,
   AdminAnalytics,
+  RequestModal,
   MatchAnimation
 };
