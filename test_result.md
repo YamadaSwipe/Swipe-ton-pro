@@ -137,15 +137,18 @@ backend:
 
   - task: "API endpoints CRUD (Users, Profiles, Swipes, Matches)"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Créé tous les endpoints CRUD pour Users, Profiles, Swipes, Matches avec logique de matching bidirectionnel"
+      - working: true
+        agent: "testing"
+        comment: "Tous les endpoints CRUD fonctionnent correctement. La création, lecture, mise à jour et suppression des utilisateurs, profils, swipes et matches fonctionnent comme prévu. La logique de matching bidirectionnel est bien implémentée - un match est créé uniquement lorsque deux utilisateurs se likent mutuellement."
 
   - task: "Upload et validation de documents"
     implemented: true
