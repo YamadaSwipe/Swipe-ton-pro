@@ -51,13 +51,17 @@ const Header = ({ onShowAuth, setAuthType }) => {
           
           <nav className="hidden md:flex space-x-8">
             <a href="#" className="text-gray-300 hover:text-white transition-colors">Accueil</a>
-            <a href="#" className="text-gray-300 hover:text-white transition-colors flex items-center">
-              Projets <ChevronDown className="w-4 h-4 ml-1" />
+            <div className="flex flex-col items-center group cursor-pointer">
+              <a href="#" className="text-gray-300 hover:text-white transition-colors text-base font-medium">
+                Grand compte
+              </a>
+              <span className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors">
+                nous contacter
+              </span>
+            </div>
+            <a href="#" className="text-gray-300 hover:text-white transition-colors font-medium">
+              Enseignes au bout du doigt
             </a>
-            <a href="#" className="text-gray-300 hover:text-white transition-colors flex items-center">
-              Artisans <ChevronDown className="w-4 h-4 ml-1" />
-            </a>
-            <a href="#" className="text-gray-300 hover:text-white transition-colors">Contact</a>
           </nav>
 
           <div className="hidden md:flex items-center space-x-4">
