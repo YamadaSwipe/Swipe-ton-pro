@@ -1037,6 +1037,8 @@ const PaymentModal = ({ pack, user, onPayment, onCancel }) => {
 const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
   const [currentAuthType, setCurrentAuthType] = useState(authType);
   const [isLogin, setIsLogin] = useState(authType === 'login');
+  const [selectedSpecialties, setSelectedSpecialties] = useState([]);
+  const [selectedProjectCategories, setSelectedProjectCategories] = useState([]);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -1047,6 +1049,35 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
     company: '',
     siret: '',
     specialty: '',
+
+  // Liste complète des métiers
+  const allSpecialties = [
+    'Électricien', 'Plombier', 'Menuisier', 'Peintre', 'Maçon', 'Chauffagiste', 'Carreleur',
+    'Couvreur', 'Charpentier', 'Serrurier', 'Vitrier', 'Tapissier', 'Parqueteur', 'Façadier',
+    'Terrassier', 'Paysagiste', 'Jardinier', 'Élagage', 'Piscine', 'Climatisation',
+    'Domotique', 'Antenne/Satellite', 'Télésurveillance', 'Portail/Automatisme', 'Isolation',
+    'Ravalement', 'Déménagement', 'Nettoyage', 'Femme de ménage', 'Garde d\'enfants',
+    'Aide à domicile', 'Réparation électroménager', 'Informatique', 'Serrure/Coffre-fort',
+    'Stores/Volets', 'Moustiquaires', 'Véranda', 'Pergola', 'Abri de jardin', 'Clôture'
+  ];
+
+  // Gestion des spécialités multiples
+  const toggleSpecialty = (specialty) => {
+    setSelectedSpecialties(prev => 
+      prev.includes(specialty) 
+        ? prev.filter(s => s !== specialty)
+        : [...prev, specialty]
+    );
+  };
+
+  // Gestion des catégories de projet multiples
+  const toggleProjectCategory = (category) => {
+    setSelectedProjectCategories(prev => 
+      prev.includes(category) 
+        ? prev.filter(c => c !== category)
+        : [...prev, category]
+    );
+  };
     experience: '',
     location: ''
   });
