@@ -117,7 +117,7 @@ const AdminLogin = () => {
             {/* Action Buttons */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <button 
-                onClick={() => alert('👥 Gestion des utilisateurs accessible !\n\nVous pouvez maintenant gérer tous les utilisateurs de votre plateforme Career Tinder.')}
+                onClick={() => alert('👥 Gestion des utilisateurs accessible !\n\nVous pouvez maintenant gérer tous les utilisateurs de votre plateforme Swipe Ton Pro.')}
                 className="bg-blue-500 hover:bg-blue-600 py-4 px-6 rounded-xl font-semibold transition duration-200">
                 👥 Gérer les Utilisateurs
               </button>
