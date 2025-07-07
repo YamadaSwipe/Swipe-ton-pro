@@ -1934,7 +1934,7 @@ const DashboardOverview = ({ user, isPending }) => {
         </h1>
         <p className="text-gray-400">
           {isPending ? 
-            'Votre profil est en cours de validation. Vous pouvez swiper en mode fantôme.' :
+            'Ton profil est en cours de validation. Tu peux swiper en mode fantôme.' :
             'Voici un aperçu de votre activité.'
           }
         </p>
