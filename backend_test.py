@@ -9,11 +9,8 @@ from datetime import datetime
 
 # Get the backend URL from the frontend .env file
 def get_backend_url():
-    with open('/app/frontend/.env', 'r') as f:
-        for line in f:
-            if line.startswith('REACT_APP_BACKEND_URL='):
-                return line.strip().split('=')[1].strip('"\'')
-    return None
+    # For testing purposes, use localhost
+    return "http://localhost:8001"
 
 BACKEND_URL = get_backend_url()
 if not BACKEND_URL:
