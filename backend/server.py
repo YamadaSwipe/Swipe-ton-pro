@@ -302,6 +302,320 @@ async def get_featured_user():
     featured_user.pop("password", None)
     return UserResponse(**featured_user)
 
+# Profile endpoints
+@api_router.post("/profiles", response_model=ProfileResponse)
+async def create_profile(profile_data: ProfileCreate, current_user: dict = Depends(get_current_user)):
+    # Check if user already has a profile
+    existing_profile = await db.profiles.find_one({"user_id": current_user["id"]})
+    if existing_profile:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Profile already exists"
+        )
+    
+    profile_dict = profile_data.dict()
+    profile_dict["id"] = str(uuid.uuid4())
+    profile_dict["user_id"] = current_user["id"]
+    profile_dict["created_at"] = datetime.utcnow()
+    profile_dict["updated_at"] = datetime.utcnow()
+    
+    await db.profiles.insert_one(profile_dict)
+    return ProfileResponse(**profile_dict)
+
+@api_router.get("/profiles/me", response_model=Optional[ProfileResponse])
+async def get_my_profile(current_user: dict = Depends(get_current_user)):
+    profile = await db.profiles.find_one({"user_id": current_user["id"]})
+    if not profile:
+        return None
+    return ProfileResponse(**profile)
+
+@api_router.put("/profiles/me", response_model=ProfileResponse)
+async def update_my_profile(profile_data: ProfileCreate, current_user: dict = Depends(get_current_user)):
+    profile_dict = profile_data.dict()
+    profile_dict["updated_at"] = datetime.utcnow()
+    
+    result = await db.profiles.update_one(
+        {"user_id": current_user["id"]},
+        {"$set": profile_dict}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Profile not found"
+        )
+    
+    updated_profile = await db.profiles.find_one({"user_id": current_user["id"]})
+    return ProfileResponse(**updated_profile)
+
+@api_router.get("/profiles/{profile_id}", response_model=ProfileResponse)
+async def get_profile(profile_id: str, current_user: dict = Depends(get_current_user)):
+    profile = await db.profiles.find_one({"id": profile_id})
+    if not profile:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Profile not found"
+        )
+    return ProfileResponse(**profile)
+
+# Document endpoints
+@api_router.post("/documents", response_model=DocumentResponse)
+async def upload_document(document_data: DocumentCreate, current_user: dict = Depends(get_current_user)):
+    document_dict = document_data.dict()
+    document_dict["id"] = str(uuid.uuid4())
+    document_dict["user_id"] = current_user["id"]
+    document_dict["status"] = DocumentStatus.PENDING
+    document_dict["created_at"] = datetime.utcnow()
+    document_dict["updated_at"] = datetime.utcnow()
+    
+    await db.documents.insert_one(document_dict)
+    return DocumentResponse(**document_dict)
+
+@api_router.get("/documents/me", response_model=List[DocumentResponse])
+async def get_my_documents(current_user: dict = Depends(get_current_user)):
+    documents = await db.documents.find({"user_id": current_user["id"]}).to_list(100)
+    return [DocumentResponse(**doc) for doc in documents]
+
+# Swipe endpoints
+@api_router.post("/swipes", response_model=SwipeResponse)
+async def create_swipe(swipe_data: SwipeCreate, current_user: dict = Depends(get_current_user)):
+    # Check if user already swiped this profile
+    existing_swipe = await db.swipes.find_one({
+        "user_id": current_user["id"],
+        "target_user_id": swipe_data.target_user_id
+    })
+    if existing_swipe:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Already swiped this profile"
+        )
+    
+    swipe_dict = swipe_data.dict()
+    swipe_dict["id"] = str(uuid.uuid4())
+    swipe_dict["user_id"] = current_user["id"]
+    swipe_dict["created_at"] = datetime.utcnow()
+    
+    await db.swipes.insert_one(swipe_dict)
+    
+    # Check for mutual match if it's a LIKE
+    if swipe_data.action == SwipeAction.LIKE:
+        mutual_swipe = await db.swipes.find_one({
+            "user_id": swipe_data.target_user_id,
+            "target_user_id": current_user["id"],
+            "action": SwipeAction.LIKE
+        })
+        
+        if mutual_swipe:
+            # Create match
+            match_dict = {
+                "id": str(uuid.uuid4()),
+                "user1_id": current_user["id"],
+                "user2_id": swipe_data.target_user_id,
+                "created_at": datetime.utcnow(),
+                "is_chat_unlocked": False
+            }
+            await db.matches.insert_one(match_dict)
+    
+    return SwipeResponse(**swipe_dict)
+
+@api_router.get("/swipes/candidates", response_model=List[UserResponse])
+async def get_swipe_candidates(current_user: dict = Depends(get_current_user)):
+    # Get users that haven't been swiped yet
+    swiped_user_ids = await db.swipes.find(
+        {"user_id": current_user["id"]},
+        {"target_user_id": 1}
+    ).to_list(1000)
+    swiped_ids = [swipe["target_user_id"] for swipe in swiped_user_ids]
+    swiped_ids.append(current_user["id"])  # Exclude self
+    
+    candidates = await db.users.find({
+        "id": {"$nin": swiped_ids},
+        "status": UserStatus.VALIDATED
+    }).to_list(50)
+    
+    return [UserResponse(**{k: v for k, v in user.items() if k != "password"}) for user in candidates]
+
+# Match endpoints
+@api_router.get("/matches", response_model=List[MatchResponse])
+async def get_my_matches(current_user: dict = Depends(get_current_user)):
+    matches = await db.matches.find({
+        "$or": [
+            {"user1_id": current_user["id"]},
+            {"user2_id": current_user["id"]}
+        ]
+    }).to_list(100)
+    return [MatchResponse(**match) for match in matches]
+
+@api_router.post("/matches/{match_id}/unlock", response_model=MatchResponse)
+async def unlock_match_chat(match_id: str, current_user: dict = Depends(get_current_user)):
+    match = await db.matches.find_one({"id": match_id})
+    if not match:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Match not found"
+        )
+    
+    # Check if user is part of this match
+    if current_user["id"] not in [match["user1_id"], match["user2_id"]]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not your match"
+        )
+    
+    # Here you would integrate with Stripe for payment
+    # For now, just unlock the chat
+    await db.matches.update_one(
+        {"id": match_id},
+        {"$set": {
+            "is_chat_unlocked": True,
+            "unlocked_by": current_user["id"]
+        }}
+    )
+    
+    updated_match = await db.matches.find_one({"id": match_id})
+    return MatchResponse(**updated_match)
+
+# Message endpoints
+@api_router.post("/messages", response_model=MessageResponse)
+async def send_message(message_data: MessageCreate, current_user: dict = Depends(get_current_user)):
+    # Check if match exists and chat is unlocked
+    match = await db.matches.find_one({"id": message_data.match_id})
+    if not match:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Match not found"
+        )
+    
+    if not match["is_chat_unlocked"]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Chat is locked. Payment required."
+        )
+    
+    # Check if user is part of this match
+    if current_user["id"] not in [match["user1_id"], match["user2_id"]]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not your match"
+        )
+    
+    message_dict = message_data.dict()
+    message_dict["id"] = str(uuid.uuid4())
+    message_dict["sender_id"] = current_user["id"]
+    message_dict["created_at"] = datetime.utcnow()
+    message_dict["is_read"] = False
+    
+    await db.messages.insert_one(message_dict)
+    return MessageResponse(**message_dict)
+
+@api_router.get("/messages/{match_id}", response_model=List[MessageResponse])
+async def get_match_messages(match_id: str, current_user: dict = Depends(get_current_user)):
+    # Check if match exists and user is part of it
+    match = await db.matches.find_one({"id": match_id})
+    if not match:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Match not found"
+        )
+    
+    if current_user["id"] not in [match["user1_id"], match["user2_id"]]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not your match"
+        )
+    
+    messages = await db.messages.find({"match_id": match_id}).sort("created_at", 1).to_list(100)
+    return [MessageResponse(**msg) for msg in messages]
+
+# Admin endpoints
+@api_router.get("/admin/users", response_model=List[UserResponse])
+async def get_all_users(admin_user: dict = Depends(get_admin_user)):
+    users = await db.users.find({}).to_list(1000)
+    return [UserResponse(**{k: v for k, v in user.items() if k != "password"}) for user in users]
+
+@api_router.put("/admin/users/{user_id}/validate", response_model=UserResponse)
+async def validate_user(user_id: str, admin_user: dict = Depends(get_admin_user)):
+    result = await db.users.update_one(
+        {"id": user_id},
+        {"$set": {"status": UserStatus.VALIDATED, "updated_at": datetime.utcnow()}}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    
+    updated_user = await db.users.find_one({"id": user_id})
+    updated_user.pop("password", None)
+    return UserResponse(**updated_user)
+
+@api_router.put("/admin/users/{user_id}/feature", response_model=UserResponse)
+async def set_featured_user(user_id: str, admin_user: dict = Depends(get_admin_user)):
+    # Remove featured status from all users
+    await db.users.update_many({}, {"$set": {"is_featured": False}})
+    
+    # Set featured status for the specified user
+    result = await db.users.update_one(
+        {"id": user_id},
+        {"$set": {"is_featured": True, "updated_at": datetime.utcnow()}}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    
+    updated_user = await db.users.find_one({"id": user_id})
+    updated_user.pop("password", None)
+    return UserResponse(**updated_user)
+
+@api_router.get("/admin/documents", response_model=List[DocumentResponse])
+async def get_pending_documents(admin_user: dict = Depends(get_admin_user)):
+    documents = await db.documents.find({"status": DocumentStatus.PENDING}).to_list(100)
+    return [DocumentResponse(**doc) for doc in documents]
+
+@api_router.put("/admin/documents/{document_id}/approve", response_model=DocumentResponse)
+async def approve_document(document_id: str, admin_comment: Optional[str] = None, admin_user: dict = Depends(get_admin_user)):
+    result = await db.documents.update_one(
+        {"id": document_id},
+        {"$set": {
+            "status": DocumentStatus.APPROVED,
+            "admin_comment": admin_comment,
+            "updated_at": datetime.utcnow()
+        }}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Document not found"
+        )
+    
+    updated_document = await db.documents.find_one({"id": document_id})
+    return DocumentResponse(**updated_document)
+
+@api_router.put("/admin/documents/{document_id}/reject", response_model=DocumentResponse)
+async def reject_document(document_id: str, admin_comment: str, admin_user: dict = Depends(get_admin_user)):
+    result = await db.documents.update_one(
+        {"id": document_id},
+        {"$set": {
+            "status": DocumentStatus.REJECTED,
+            "admin_comment": admin_comment,
+            "updated_at": datetime.utcnow()
+        }}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Document not found"
+        )
+    
+    updated_document = await db.documents.find_one({"id": document_id})
+    return DocumentResponse(**updated_document)
+
 # Include the router in the main app
 app.include_router(api_router)
 
