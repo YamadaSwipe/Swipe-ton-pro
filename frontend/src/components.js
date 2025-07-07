@@ -3420,7 +3420,7 @@ const SwipeInterface = ({ user, onBack }) => {
                 transformOrigin: 'center',
               }}
             >
-              <div className={`bg-slate-800 rounded-3xl overflow-hidden border-2 shadow-2xl transition-all ${
+              <div className={`bg-slate-800 rounded-3xl overflow-hidden border-2 shadow-2xl transition-all flex flex-col h-full ${
                 swipeDirection === 'up' ? 'border-emerald-500 shadow-emerald-500/20' :
                 swipeDirection === 'down' ? 'border-red-500 shadow-red-500/20' :
                 'border-slate-700'
