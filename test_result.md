@@ -173,8 +173,7 @@
   current_focus:
     - "Modèles User, Profile, Swipe, Match"
     - "APIs de matching (profils, swipes, matches)"
-  stuck_tasks: 
-    - "APIs de matching (profils, swipes, matches)"
+  stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
