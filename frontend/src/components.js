@@ -1278,6 +1278,7 @@ const Dashboard = ({ user, onLogout }) => {
             {isAdmin && activeTab === 'overview' && <AdminOverview />}
             {isAdmin && activeTab === 'users' && <UserManagement />}
             {isAdmin && activeTab === 'pending' && <PendingValidations />}
+            {isAdmin && activeTab === 'admins' && <AdminManagement user={user} />}
             {isAdmin && activeTab === 'analytics' && <AdminAnalytics />}
             
             {!isAdmin && activeTab === 'overview' && (
