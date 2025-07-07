@@ -197,6 +197,16 @@ async def send_invitation_email(email: str, token: str, invited_by: str):
     print(f"Invited by: {invited_by}")
     # In production, integrate with services like SendGrid, SES, etc.
     return True
+@app.on_event("startup")
+async def startup_event():
+    # Print all registered routes
+    for route in app.routes:
+        print(f"Route: {route.path}, Methods: {route.methods}")
+    
+    # Print all registered routes in the API router
+    for route in api_router.routes:
+        print(f"API Router Route: {route.path}, Methods: {route.methods}")
+
 @api_router.get("/test")
 async def test_route():
     return {"message": "Test route works!"}
