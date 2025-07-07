@@ -3910,7 +3910,7 @@ const PricingPlans = () => {
       badge: "30 demandes incluses",
       features: [
         "Profil vérifié",
-        "30 demandes/mois",
+        "50 demandes/mois",
         "Facturation devis 30€",
         "Analytics basiques",
         "Support email"
