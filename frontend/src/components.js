@@ -1161,7 +1161,7 @@ const AuthModal = ({ isOpen, onClose, authType, onAuth }) => {
       period: '/mois',
       features: [
         'Profil vérifié',
-        '30 demandes/mois',
+        '50 demandes/mois',
         'Facturation devis 30€',
         'Analytics basiques',
         'Support email'
