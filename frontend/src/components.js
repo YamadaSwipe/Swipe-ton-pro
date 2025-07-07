@@ -634,7 +634,7 @@ const Hero = ({ onShowAuth, setAuthType }) => {
                 />
               </div>
               <h3 className="text-white text-xl font-semibold mb-2">Match parfait !</h3>
-              <p className="text-emerald-400 mb-1">Thomas, Électricien</p>
+              <p className="text-emerald-400 mb-1">Ishak S., Électricien</p>
               <div className="flex items-center justify-center mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
