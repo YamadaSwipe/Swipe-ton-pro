@@ -134,31 +134,38 @@ async def check_for_match(swiper_id: str, swiped_id: str) -> Optional[Match]:
 
 async def get_potential_matches(user_id: str, limit: int = 10) -> List[Dict[str, Any]]:
     """Get potential profiles to swipe on"""
-    # Get user's previous swipes to exclude them
-    previous_swipes = await db.swipes.find({"swiper_id": user_id}).to_list(1000)
-    swiped_ids = [swipe["swiped_id"] for swipe in previous_swipes]
-    
-    # Get user's profile to determine matching logic
-    user_profile = await db.profiles.find_one({"user_id": user_id})
-    if not user_profile:
+    try:
+        # Get user's previous swipes to exclude them
+        previous_swipes = await db.swipes.find({"swiper_id": user_id}).to_list(1000)
+        swiped_ids = [swipe["swiped_id"] for swipe in previous_swipes] if previous_swipes else []
+        
+        # Get user's profile to determine matching logic
+        user_profile = await db.profiles.find_one({"user_id": user_id})
+        if not user_profile:
+            return []
+        
+        # Build query to exclude already swiped profiles and same user
+        exclude_ids = swiped_ids + [user_id]
+        query = {
+            "user_id": {"$nin": exclude_ids},
+            "availability": True
+        }
+        
+        # Get potential matches
+        potential_matches = await db.profiles.find(query).limit(limit).to_list(limit)
+        
+        # Convert ObjectId to string for JSON serialization and clean up
+        cleaned_matches = []
+        for match in potential_matches:
+            # Remove MongoDB internal _id field
+            if '_id' in match:
+                del match['_id']
+            cleaned_matches.append(match)
+        
+        return cleaned_matches
+    except Exception as e:
+        logger.error(f"Error getting potential matches: {str(e)}")
         return []
-    
-    # Build query to exclude already swiped profiles and same user
-    exclude_ids = swiped_ids + [user_id]
-    query = {
-        "user_id": {"$nin": exclude_ids},
-        "availability": True
-    }
-    
-    # Get potential matches
-    potential_matches = await db.profiles.find(query).limit(limit).to_list(limit)
-    
-    # Convert ObjectId to string for JSON serialization
-    for match in potential_matches:
-        if '_id' in match:
-            match['_id'] = str(match['_id'])
-    
-    return potential_matches
 
 
 # API Routes
