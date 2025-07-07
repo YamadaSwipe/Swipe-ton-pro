@@ -346,6 +346,193 @@ const NotificationsManagement = ({ user }) => {
   );
 };
 
+// Stripe Payment Modal Component
+const StripePaymentModal = ({ request, user, onClose, onSuccess }) => {
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isPolling, setIsPolling] = useState(false);
+
+  const handlePayment = async () => {
+    setIsProcessing(true);
+    
+    try {
+      // Appeler l'API backend pour créer une session de paiement
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/payments/checkout/session`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: user.id,
+          user_type: user.type,
+          match_id: request.id.toString(),
+          origin_url: window.location.origin
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de la création de la session de paiement');
+      }
+
+      const data = await response.json();
+      
+      // Rediriger vers Stripe Checkout
+      window.location.href = data.checkout_url;
+      
+    } catch (error) {
+      console.error('Erreur paiement:', error);
+      alert('Erreur lors du paiement: ' + error.message);
+      setIsProcessing(false);
+    }
+  };
+
+  // Fonction de polling pour vérifier le statut du paiement
+  const pollPaymentStatus = async (sessionId, attempts = 0) => {
+    const maxAttempts = 10;
+    const pollInterval = 3000; // 3 secondes
+
+    if (attempts >= maxAttempts) {
+      alert('Vérification du paiement expirée. Veuillez vérifier votre email.');
+      setIsPolling(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/payments/checkout/status/${sessionId}`);
+      
+      if (!response.ok) {
+        throw new Error('Erreur lors de la vérification du paiement');
+      }
+
+      const data = await response.json();
+      
+      if (data.payment_status === 'paid') {
+        alert('✅ Paiement réussi ! La messagerie est maintenant débloquée.');
+        setIsPolling(false);
+        onSuccess();
+        return;
+      } else if (data.status === 'expired') {
+        alert('❌ Session de paiement expirée.');
+        setIsPolling(false);
+        return;
+      }
+
+      // Continuer le polling si le paiement est toujours en cours
+      setTimeout(() => pollPaymentStatus(sessionId, attempts + 1), pollInterval);
+    } catch (error) {
+      console.error('Erreur lors de la vérification:', error);
+      setTimeout(() => pollPaymentStatus(sessionId, attempts + 1), pollInterval);
+    }
+  };
+
+  // Vérifier si on revient d'un paiement
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get('session_id');
+    
+    if (sessionId && !isPolling) {
+      setIsPolling(true);
+      pollPaymentStatus(sessionId);
+      
+      // Nettoyer l'URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
+
+  return (
+    <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        className="bg-slate-800 rounded-2xl p-6 max-w-md w-full border-2 border-emerald-500"
+      >
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-2xl font-bold text-white">Paiement Stripe</h3>
+          <button onClick={onClose} className="text-gray-400 hover:text-white">
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+
+        <div className="space-y-6">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <DollarSign className="w-8 h-8 text-white" />
+            </div>
+            <h4 className="text-xl font-semibold text-white mb-2">Mise en relation</h4>
+            <p className="text-gray-300">
+              Débloquez la conversation avec{' '}
+              <span className="text-emerald-400 font-semibold">
+                {request.fromUserName}
+              </span>
+            </p>
+          </div>
+
+          <div className="bg-slate-700 rounded-lg p-4">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-gray-300">Frais de mise en relation</span>
+              <span className="text-white font-bold text-xl">70,00 €</span>
+            </div>
+            <div className="text-xs text-gray-400">
+              Paiement sécurisé par Stripe
+            </div>
+          </div>
+
+          <div className="bg-blue-500/20 border border-blue-500/30 rounded-lg p-4">
+            <div className="flex items-start">
+              <MessageCircle className="w-5 h-5 text-blue-400 mr-3 mt-0.5" />
+              <div className="text-sm">
+                <p className="text-blue-400 font-medium">Une fois le paiement validé :</p>
+                <ul className="text-blue-300 mt-1 space-y-1">
+                  <li>• Messagerie instantanément débloquée</li>
+                  <li>• Communication libre avec le client</li>
+                  <li>• Système d'agenda intégré</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {isPolling ? (
+            <div className="text-center py-4">
+              <div className="animate-spin w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full mx-auto mb-2"></div>
+              <p className="text-emerald-400">Vérification du paiement en cours...</p>
+            </div>
+          ) : (
+            <div className="flex space-x-3">
+              <button
+                onClick={onClose}
+                disabled={isProcessing}
+                className="flex-1 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-semibold transition-colors"
+              >
+                Annuler
+              </button>
+              <button
+                onClick={handlePayment}
+                disabled={isProcessing}
+                className={`flex-1 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center ${
+                  isProcessing 
+                    ? 'bg-gray-600 text-gray-400 cursor-not-allowed' 
+                    : 'bg-emerald-500 hover:bg-emerald-600 text-white'
+                }`}
+              >
+                {isProcessing ? (
+                  <>
+                    <div className="animate-spin w-5 h-5 border-2 border-gray-400 border-t-transparent rounded-full mr-2"></div>
+                    Traitement...
+                  </>
+                ) : (
+                  <>
+                    <DollarSign className="w-5 h-5 mr-2" />
+                    Payer 70€
+                  </>
+                )}
+              </button>
+            </div>
+          )}
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
 // Hero Component
 const Hero = ({ onShowAuth, setAuthType }) => {
   return (
