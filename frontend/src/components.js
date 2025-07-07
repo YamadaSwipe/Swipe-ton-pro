@@ -3626,7 +3626,7 @@ const ProfessionalCard = ({ professional, onSwipe, hideButtons = false, isPrevie
       </div>
 
       {/* Professional Info */}
-      <div className="p-6 space-y-4">
+      <div className="p-6 space-y-4 flex-1">
         <div>
           <h3 className="text-xl font-bold text-white mb-1">
             {professional.firstName} {professional.lastName}
