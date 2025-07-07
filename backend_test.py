@@ -4,6 +4,10 @@ import json
 import time
 from datetime import datetime
 import sys
+from pymongo import MongoClient
+import os
+from passlib.context import CryptContext
+import uuid
 
 # Base URL for the API
 BASE_URL = "https://c5d2d6b0-9f85-4474-b5d4-b3e1bc77006d.preview.emergentagent.com/api"
@@ -14,6 +18,16 @@ ADMIN_PASSWORD = "admin123"
 
 # Test invitation email
 TEST_INVITATION_EMAIL = "test@example.com"
+
+# MongoDB setup
+MONGO_URL = "mongodb://localhost:27017"
+DB_NAME = "test_database"
+
+# Password hashing
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
 
 # Colors for terminal output
 class Colors:
