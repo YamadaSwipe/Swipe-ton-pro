@@ -3133,10 +3133,12 @@ const SwipeInterface = ({ user, onBack }) => {
       fromUserType: fromUser.type,
       toProfileId: toProfile.id,
       toProfileType: profileType,
+      toProfile: toProfile, // Sauvegarder l'objet complet pour référence
       timestamp: new Date().toISOString()
     };
     likes.push(newLike);
     localStorage.setItem('swipe_ton_pro_likes', JSON.stringify(likes));
+    console.log('👍 Like sauvegardé:', newLike);
     return newLike;
   };
 
