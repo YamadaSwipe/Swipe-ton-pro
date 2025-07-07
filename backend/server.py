@@ -243,9 +243,16 @@ async def get_user_matches(user_id: str):
     # Get profile info for each match
     enriched_matches = []
     for match in matches:
+        # Convert ObjectId to string for JSON serialization
+        if '_id' in match:
+            match['_id'] = str(match['_id'])
+            
         other_user_id = match["user2_id"] if match["user1_id"] == user_id else match["user1_id"]
         other_profile = await db.profiles.find_one({"user_id": other_user_id})
         if other_profile:
+            # Convert ObjectId to string for JSON serialization
+            if '_id' in other_profile:
+                other_profile['_id'] = str(other_profile['_id'])
             enriched_matches.append({
                 "match": match,
                 "profile": other_profile
