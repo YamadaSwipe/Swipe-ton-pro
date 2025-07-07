@@ -415,7 +415,7 @@ async def accept_invitation(accept_data: AdminAcceptInvitation):
     
     return {"message": "Account created successfully", "admin_id": admin.id}
 
-@api_router.get("/admin/list")
+@admin_router.get("/list")
 async def list_admins(current_admin: Admin = Depends(get_current_admin)):
     if not check_permission(current_admin, "view_admins"):
         raise HTTPException(
