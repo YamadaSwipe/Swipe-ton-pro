@@ -150,64 +150,163 @@ async def seed_data():
         {
             "id": str(uuid.uuid4()),
             "user_id": artisan_users[0]["id"],
-            "profession": "electricien",
-            "description": "Électricien expérimenté spécialisé dans les installations résidentielles et commerciales. Intervention rapide et travail soigné garantis.",
+            "professions": ["electricien", "domotique"],  # Multi-choix
+            "description": "Électricien expérimenté spécialisé dans les installations résidentielles et commerciales. Expert en domotique et systèmes intelligents. Intervention rapide et travail soigné garantis.",
             "experience_years": 8,
             "rating": 4.8,
             "reviews_count": 127,
-            "hourly_rate": 45.0,
+            "hourly_rate_min": 40.0,
+            "hourly_rate_max": 60.0,
             "location": "Paris",
+            "radius_km": 25,
             "portfolio_images": [],
-            "certifications": ["Habilitation électrique", "Certification RGE"],
+            "certifications": ["Habilitation électrique", "Certification RGE", "Formation domotique"],
             "availability": True,
+            "company_info": {
+                "company_name": "ElectriPro SARL",
+                "siret": "12345678901234",
+                "company_type": "sarl",
+                "address": "123 Avenue des Électriciens",
+                "city": "Paris",
+                "postal_code": "75001",
+                "insurance_number": "INS123456789",
+                "website": "www.electripro.fr"
+            },
+            "documents": [
+                {
+                    "id": str(uuid.uuid4()),
+                    "name": "Kbis ElectriPro",
+                    "type": "kbis",
+                    "file_data": "base64_encoded_kbis_data",
+                    "uploaded_at": datetime.utcnow(),
+                    "validated": True
+                },
+                {
+                    "id": str(uuid.uuid4()),
+                    "name": "Assurance Responsabilité Civile",
+                    "type": "insurance",
+                    "file_data": "base64_encoded_insurance_data",
+                    "uploaded_at": datetime.utcnow(),
+                    "validated": True
+                }
+            ],
+            "validation_status": "validated",
+            "validated_at": datetime.utcnow(),
+            "rejected_reason": None,
             "created_at": datetime.utcnow(),
             "updated_at": datetime.utcnow()
         },
         {
             "id": str(uuid.uuid4()),
             "user_id": artisan_users[1]["id"],
-            "profession": "menuisier",
-            "description": "Menuisier passionné créant des meubles sur mesure et réalisant tous types d'aménagements intérieurs. Matériaux de qualité et finitions parfaites.",
+            "professions": ["menuisier", "ebenisterie"],  # Multi-choix
+            "description": "Menuisier passionné créant des meubles sur mesure et réalisant tous types d'aménagements intérieurs. Spécialiste en ébénisterie fine. Matériaux de qualité et finitions parfaites.",
             "experience_years": 12,
             "rating": 4.9,
             "reviews_count": 89,
-            "hourly_rate": 40.0,
+            "hourly_rate_min": 35.0,
+            "hourly_rate_max": 50.0,
             "location": "Lyon",
+            "radius_km": 30,
             "portfolio_images": [],
-            "certifications": ["CAP Menuiserie", "Certification Éco-artisan"],
+            "certifications": ["CAP Menuiserie", "Certification Éco-artisan", "Formation ébénisterie"],
             "availability": True,
+            "company_info": {
+                "company_name": "Bois & Style",
+                "siret": "98765432109876",
+                "company_type": "micro_entreprise",
+                "address": "456 Rue du Bois",
+                "city": "Lyon",
+                "postal_code": "69001",
+                "insurance_number": "INS987654321",
+                "website": "www.bois-style.fr"
+            },
+            "documents": [
+                {
+                    "id": str(uuid.uuid4()),
+                    "name": "Certification Artisan",
+                    "type": "certification",
+                    "file_data": "base64_encoded_cert_data",
+                    "uploaded_at": datetime.utcnow(),
+                    "validated": True
+                }
+            ],
+            "validation_status": "validated",
+            "validated_at": datetime.utcnow(),
+            "rejected_reason": None,
             "created_at": datetime.utcnow(),
             "updated_at": datetime.utcnow()
         },
         {
             "id": str(uuid.uuid4()),
             "user_id": artisan_users[2]["id"],
-            "profession": "chauffagiste",
-            "description": "Chauffagiste certifié spécialisé dans les systèmes de chauffage modernes et écologiques. Installation, dépannage et maintenance.",
+            "professions": ["chauffagiste", "plombier"],  # Multi-choix
+            "description": "Chauffagiste certifié spécialisé dans les systèmes de chauffage modernes et écologiques. Expert en plomberie générale. Installation, dépannage et maintenance.",
             "experience_years": 15,
             "rating": 4.7,
             "reviews_count": 156,
-            "hourly_rate": 55.0,
+            "hourly_rate_min": 50.0,
+            "hourly_rate_max": 70.0,
             "location": "Marseille",
+            "radius_km": 40,
             "portfolio_images": [],
-            "certifications": ["Certification RGE", "Qualification PG"],
+            "certifications": ["Certification RGE", "Qualification PG", "Formation pompe à chaleur"],
             "availability": True,
+            "company_info": {
+                "company_name": "ThermoPro SAS",
+                "siret": "11111111111111",
+                "company_type": "sas",
+                "address": "789 Boulevard du Chauffage",
+                "city": "Marseille",
+                "postal_code": "13001",
+                "insurance_number": "INS111111111",
+                "website": "www.thermopro.fr"
+            },
+            "documents": [
+                {
+                    "id": str(uuid.uuid4()),
+                    "name": "Certification RGE",
+                    "type": "rge",
+                    "file_data": "base64_encoded_rge_data",
+                    "uploaded_at": datetime.utcnow(),
+                    "validated": True
+                }
+            ],
+            "validation_status": "validated",
+            "validated_at": datetime.utcnow(),
+            "rejected_reason": None,
             "created_at": datetime.utcnow(),
             "updated_at": datetime.utcnow()
         },
         {
             "id": str(uuid.uuid4()),
             "user_id": artisan_users[3]["id"],
-            "profession": "carreleur",
+            "professions": ["carreleur"],
             "description": "Carreleur expert en pose de carrelage, faïence et revêtements. Travail précis et soigné pour salles de bains, cuisines et terrasses.",
             "experience_years": 10,
             "rating": 4.6,
             "reviews_count": 73,
-            "hourly_rate": 38.0,
+            "hourly_rate_min": 35.0,
+            "hourly_rate_max": 45.0,
             "location": "Toulouse",
+            "radius_km": 35,
             "portfolio_images": [],
             "certifications": ["CAP Carrelage", "Formation pose naturelle"],
             "availability": True,
+            "company_info": {
+                "company_name": "Carrelage Expert",
+                "siret": "22222222222222",
+                "company_type": "entreprise_individuelle",
+                "address": "321 Allée des Carreaux",
+                "city": "Toulouse",
+                "postal_code": "31000",
+                "insurance_number": "INS222222222",
+                "website": None
+            },
+            "documents": [],
+            "validation_status": "pending",  # En attente de validation
+            "validated_at": None,
+            "rejected_reason": None,
             "created_at": datetime.utcnow(),
             "updated_at": datetime.utcnow()
         }
