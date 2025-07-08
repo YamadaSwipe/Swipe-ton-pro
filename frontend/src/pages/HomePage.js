@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import axios from 'axios';
 
 const HomePage = () => {
   const { user } = useAuth();
+  const [subscriptionPacks, setSubscriptionPacks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const API_URL = process.env.REACT_APP_BACKEND_URL + '/api';
+
+  useEffect(() => {
+    fetchSubscriptionPacks();
+  }, []);
+
+  const fetchSubscriptionPacks = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/subscription/packs`);
+      setSubscriptionPacks(response.data);
+    } catch (error) {
+      console.error('Error fetching subscription packs:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const professions = [
     { name: 'Électricien', count: '250+', icon: '⚡' },
@@ -122,6 +142,73 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Subscription Packs for Professionals */}
+      {!loading && subscriptionPacks.length > 0 && (
+        <section className="py-16 bg-slate-800/30 rounded-3xl mx-8 mb-16">
+          <div className="container mx-auto px-4">
+            <h2 className="text-4xl font-bold text-white text-center mb-4">Packs Professionnels</h2>
+            <p className="text-gray-300 text-center mb-12">
+              Choisissez le pack qui correspond à vos besoins pour maximiser vos opportunités
+            </p>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {subscriptionPacks.map((pack, index) => (
+                <div
+                  key={index}
+                  className={`relative bg-slate-700/50 rounded-xl p-6 border-2 transition-all hover:scale-105 ${
+                    pack.popular 
+                      ? 'border-yellow-400 bg-gradient-to-br from-yellow-500/10 to-orange-600/10' 
+                      : 'border-slate-600 hover:border-blue-400'
+                  }`}
+                >
+                  {pack.popular && (
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                      <span className="bg-yellow-400 text-black px-3 py-1 rounded-full text-sm font-bold">
+                        POPULAIRE
+                      </span>
+                    </div>
+                  )}
+                  
+                  <div className="text-center">
+                    <h3 className="text-2xl font-bold text-white mb-2">{pack.name}</h3>
+                    <div className="text-4xl font-bold text-blue-400 mb-1">{pack.price}€</div>
+                    <p className="text-gray-400 mb-4">
+                      {pack.credits === 999999 ? 'Crédits illimités' : `${pack.credits} crédits`}
+                    </p>
+                    
+                    <ul className="space-y-2 mb-6 text-left">
+                      {pack.features.map((feature, i) => (
+                        <li key={i} className="flex items-start space-x-2">
+                          <span className="text-green-400 text-sm">✓</span>
+                          <span className="text-gray-300 text-sm">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    
+                    <Link
+                      to="/register?type=artisan"
+                      className={`w-full py-3 px-4 rounded-lg font-semibold transition-all block text-center ${
+                        pack.popular
+                          ? 'bg-gradient-to-r from-yellow-500 to-orange-600 text-white hover:from-yellow-600 hover:to-orange-700'
+                          : 'bg-blue-600 text-white hover:bg-blue-700'
+                      }`}
+                    >
+                      Commencer
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="text-center mt-8">
+              <p className="text-gray-400 text-sm">
+                * Particuliers : utilisation 100% gratuite • Artisans : payez uniquement pour matcher
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Call to Action */}
       <section className="text-center py-12">
         <p className="text-gray-300 text-lg mb-8">
@@ -136,26 +223,26 @@ const HomePage = () => {
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
               <div className="text-6xl mb-4">1️⃣</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Décris ton projet</h3>
+              <h3 className="text-2xl font-bold text-white mb-4">Créez votre profil</h3>
               <p className="text-gray-300">
-                Décris ton projet en quelques clics et laisse notre algorithme intelligent 
-                te proposer les meilleurs profils.
+                Particuliers : créez votre compte gratuitement et décrivez vos projets.
+                Artisans : choisissez votre pack et complétez votre profil professionnel.
               </p>
             </div>
             <div className="text-center">
               <div className="text-6xl mb-4">2️⃣</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Swipe les profils</h3>
+              <h3 className="text-2xl font-bold text-white mb-4">Swipez et matchez</h3>
               <p className="text-gray-300">
-                Parcours les profils de professionnels qualifiés et swipe vers la droite 
-                pour ceux qui t'intéressent.
+                Découvrez les profils correspondants et swipez pour montrer votre intérêt. 
+                Chaque like d'artisan utilise un crédit.
               </p>
             </div>
             <div className="text-center">
               <div className="text-6xl mb-4">3️⃣</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Reçois des devis</h3>
+              <h3 className="text-2xl font-bold text-white mb-4">Collaborez</h3>
               <p className="text-gray-300">
-                Recevez rapidement des devis personnalisés et échangez directement 
-                avec les professionnels.
+                En cas de match mutuel, échangez directement et concrétisez vos projets 
+                en toute confiance.
               </p>
             </div>
           </div>
