@@ -94,14 +94,24 @@ def print_separator():
 
 def test_health_check():
     print("Testing Health Check Endpoint...")
-    response = requests.get(f"{BACKEND_URL}/health")
-    print(f"Status Code: {response.status_code}")
-    print(f"Response: {response.json()}")
-    
-    assert response.status_code == 200
-    assert response.json()["status"] == "healthy"
-    print("✅ Health Check Test Passed")
-    return True
+    try:
+        response = requests.get(f"{BACKEND_URL}/health", timeout=10)
+        print(f"Status Code: {response.status_code}")
+        
+        try:
+            response_data = response.json()
+            print(f"Response: {response_data}")
+            
+            assert response.status_code == 200
+            assert response_data["status"] == "healthy"
+            print("✅ Health Check Test Passed")
+            return True
+        except json.JSONDecodeError:
+            print(f"❌ Health Check Test Failed - Invalid JSON response: {response.text}")
+            return False
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Health Check Test Failed - Connection error: {str(e)}")
+        return False
 
 def test_register(user_type="particulier"):
     print(f"Testing Register Endpoint for {user_type}...")
