@@ -131,15 +131,18 @@ backend:
 
   - task: "Authentication - Login"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "testing"
         comment: "Login endpoint works for some users but fails with 504 timeout errors for others. Successfully logged in with artisan credentials but failed with particulier and admin credentials."
+      - working: true
+        agent: "testing"
+        comment: "Login endpoint is now working correctly for all user types (particulier, artisan, and admin). The previous timeout issues appear to have been temporary."
 
   - task: "Authentication - Get Current User"
     implemented: true
