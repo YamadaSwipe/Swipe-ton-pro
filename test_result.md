@@ -276,15 +276,18 @@ frontend:
 
   - task: "Fonctionnalité de swipe"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/SwipePage.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "testing"
         comment: "Vérification des cartes d'artisans, animations de swipe et boutons like/pass."
+      - working: true
+        agent: "testing"
+        comment: "La fonctionnalité de swipe fonctionne parfaitement. Les cartes d'artisans s'affichent avec toutes les informations nécessaires (nom, profession, rating, localisation, expérience, tarif horaire, description, certifications, disponibilité). Les boutons like (💚) et pass (❌) sont fonctionnels. La notification de match s'affiche correctement lorsqu'on like un artisan compatible. Le compteur de profils (1/4, 2/4, etc.) s'affiche en bas de l'écran."
 
   - task: "Dashboard utilisateur"
     implemented: true
