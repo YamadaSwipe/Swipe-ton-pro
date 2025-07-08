@@ -108,10 +108,16 @@ class User(BaseModel):
     name: str
     phone: Optional[str] = None
     status: UserStatus = UserStatus.ACTIVE
-    is_professional: bool = False
+    user_type: UserType = UserType.PARTICULIER
+    subscription_plan: SubscriptionPlan = SubscriptionPlan.PARTICULIER_FREE
     profile_data: Optional[Dict[str, Any]] = None
+    location: Optional[Dict[str, str]] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
     last_login: Optional[datetime] = None
+    total_matches: int = 0
+    total_projects: int = 0
+    rating: Optional[float] = None
+    verified: bool = False
 
 class Admin(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
@@ -124,6 +130,55 @@ class Admin(BaseModel):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     last_login: Optional[datetime] = None
     is_active: bool = True
+    profile_picture: Optional[str] = None
+
+class SupportTicket(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    title: str
+    description: str
+    category: str
+    priority: TicketPriority = TicketPriority.MEDIUM
+    status: TicketStatus = TicketStatus.OPEN
+    assigned_to: Optional[str] = None
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    resolved_at: Optional[datetime] = None
+    messages: List[Dict[str, Any]] = []
+
+class Payment(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    amount: float
+    currency: str = "EUR"
+    payment_method: str
+    status: PaymentStatus = PaymentStatus.PENDING
+    transaction_id: Optional[str] = None
+    subscription_plan: Optional[SubscriptionPlan] = None
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    paid_at: Optional[datetime] = None
+
+class Match(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    particulier_id: str
+    artisan_id: str
+    project_details: Dict[str, Any]
+    status: str = "active"
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    unlocked: bool = False
+    unlock_payment_id: Optional[str] = None
+
+class Project(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    title: str
+    description: str
+    category: str
+    budget_range: Optional[Dict[str, float]] = None
+    location: Optional[Dict[str, str]] = None
+    status: str = "open"
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    proposals: List[Dict[str, Any]] = []
 
 class Invitation(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
@@ -146,6 +201,18 @@ class Report(BaseModel):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     resolved_by: Optional[str] = None
     resolved_at: Optional[datetime] = None
+
+class Analytics(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    date: datetime = Field(default_factory=datetime.utcnow)
+    total_users: int = 0
+    total_artisans: int = 0
+    total_particuliers: int = 0
+    total_matches: int = 0
+    total_payments: float = 0.0
+    new_users_today: int = 0
+    active_users: int = 0
+    conversion_rate: float = 0.0
 
 # Request Models
 class AdminLogin(BaseModel):
