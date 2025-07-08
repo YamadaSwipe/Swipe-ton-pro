@@ -24,7 +24,9 @@ const RegisterPage = () => {
     address: '',
     city: '',
     postalCode: '',
-    propertyType: 'appartement'
+    propertyType: 'appartement',
+    acceptPrivacyPolicy: false,
+    acceptMeetingRequest: true  // Par défaut cochée, à décocher si refus
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
