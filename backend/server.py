@@ -531,6 +531,23 @@ async def swipe(
     if not artisan_profile:
         raise HTTPException(status_code=404, detail="Artisan profile not found or not validated")
     
+    # For LIKE swipes from ARTISANS, check credits
+    if swipe_data.action == SwipeAction.LIKE:
+        artisan_user = await db.users.find_one({"id": artisan_profile["user_id"]})
+        if artisan_user and artisan_user["user_type"] == UserType.ARTISAN:
+            credits = artisan_user.get("credits", 0)
+            if credits <= 0:
+                raise HTTPException(
+                    status_code=402, 
+                    detail="Insufficient credits. Please purchase a subscription pack to continue liking profiles."
+                )
+            
+            # Deduct credit
+            await db.users.update_one(
+                {"id": artisan_profile["user_id"]},
+                {"$inc": {"credits": -1}}
+            )
+    
     # Create swipe record
     swipe_record = SwipeRecord(
         user_id=current_user["id"],
@@ -557,6 +574,227 @@ async def swipe(
         return {"message": "It's a match!", "match_id": match.id}
     
     return {"message": "Swipe recorded"}
+
+@api_router.get("/artisan/swipe")
+async def artisan_swipe(
+    current_user: dict = Depends(get_current_user)
+):
+    """Endpoint pour que les artisans puissent swiper sur les projets"""
+    if current_user["user_type"] != UserType.ARTISAN:
+        raise HTTPException(status_code=403, detail="Only artisans can use this endpoint")
+    
+    # Vérifier que l'artisan est validé
+    artisan_profile = await db.artisan_profiles.find_one({
+        "user_id": current_user["id"],
+        "validation_status": ValidationStatus.VALIDATED
+    })
+    if not artisan_profile:
+        raise HTTPException(status_code=403, detail="Artisan profile not validated")
+    
+    # Récupérer les projets non swipés correspondant aux métiers de l'artisan
+    swiped_projects = await db.swipes.find({"user_id": current_user["id"]}).to_list(1000)
+    swiped_project_ids = [swipe["target_id"] for swipe in swiped_projects]
+    
+    query = {
+        "status": "active",
+        "professions_needed": {"$in": artisan_profile["professions"]},
+        "id": {"$nin": swiped_project_ids}
+    }
+    
+    projects = await db.projects.find(query).to_list(50)
+    return [Project(**project) for project in projects]
+
+@api_router.post("/artisan/swipe-project")
+async def artisan_swipe_project(
+    project_id: str,
+    action: SwipeAction,
+    current_user: dict = Depends(get_current_user)
+):
+    """Endpoint pour qu'un artisan swipe sur un projet"""
+    if current_user["user_type"] != UserType.ARTISAN:
+        raise HTTPException(status_code=403, detail="Only artisans can swipe on projects")
+    
+    # Vérifier que l'artisan est validé
+    artisan_profile = await db.artisan_profiles.find_one({
+        "user_id": current_user["id"],
+        "validation_status": ValidationStatus.VALIDATED
+    })
+    if not artisan_profile:
+        raise HTTPException(status_code=403, detail="Artisan profile not validated")
+    
+    # Pour les LIKE, vérifier les crédits
+    if action == SwipeAction.LIKE:
+        credits = current_user.get("credits", 0)
+        if credits <= 0:
+            raise HTTPException(
+                status_code=402, 
+                detail="Insufficient credits. Please purchase a subscription pack to continue liking projects."
+            )
+        
+        # Déduire un crédit
+        await db.users.update_one(
+            {"id": current_user["id"]},
+            {"$inc": {"credits": -1}}
+        )
+    
+    # Vérifier que le projet existe
+    project = await db.projects.find_one({"id": project_id})
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    # Créer le swipe
+    swipe_record = SwipeRecord(
+        user_id=current_user["id"],
+        target_id=project_id,
+        action=action
+    )
+    
+    await db.swipes.insert_one(swipe_record.dict())
+    
+    # Si c'est un like, créer un match
+    if action == SwipeAction.LIKE:
+        match = Match(
+            particulier_id=project["user_id"],
+            artisan_id=current_user["id"],
+            project_details_shared=True
+        )
+        await db.matches.insert_one(match.dict())
+        
+        return {"message": "It's a match!", "match_id": match.id}
+    
+    return {"message": "Swipe recorded"}
+
+# Subscription endpoints
+@api_router.get("/subscription/packs", response_model=List[PackInfo])
+async def get_subscription_packs():
+    """Récupérer tous les packs d'abonnement disponibles"""
+    packs = [
+        PackInfo(
+            pack=SubscriptionPack.STARTER,
+            name="Starter",
+            credits=10,
+            price=49.0,
+            features=[
+                "10 crédits de matching",
+                "Profil standard",
+                "Support email",
+                "Valable 30 jours"
+            ]
+        ),
+        PackInfo(
+            pack=SubscriptionPack.PROFESSIONAL,
+            name="Professionnel",
+            credits=50,
+            price=149.0,
+            features=[
+                "50 crédits de matching",
+                "Profil mis en avant",
+                "Support prioritaire",
+                "Statistiques avancées",
+                "Valable 60 jours"
+            ],
+            popular=True
+        ),
+        PackInfo(
+            pack=SubscriptionPack.PREMIUM,
+            name="Premium",
+            credits=150,
+            price=299.0,
+            features=[
+                "150 crédits de matching",
+                "Profil premium",
+                "Support téléphonique",
+                "Recommandations personnalisées",
+                "Badge premium",
+                "Valable 90 jours"
+            ]
+        ),
+        PackInfo(
+            pack=SubscriptionPack.UNLIMITED,
+            name="Illimité",
+            credits=999999,
+            price=499.0,
+            features=[
+                "Crédits illimités",
+                "Tous les avantages premium",
+                "Manager dédié",
+                "Formation personnalisée",
+                "Priorité absolue",
+                "Valable 365 jours"
+            ]
+        )
+    ]
+    return packs
+
+@api_router.post("/subscription/purchase")
+async def purchase_subscription(
+    subscription_data: SubscriptionCreate,
+    current_user: dict = Depends(get_current_user)
+):
+    """Acheter un pack d'abonnement"""
+    if current_user["user_type"] != UserType.ARTISAN:
+        raise HTTPException(status_code=403, detail="Only artisans can purchase subscriptions")
+    
+    # Définir les détails des packs
+    pack_details = {
+        SubscriptionPack.STARTER: {"credits": 10, "price": 49.0, "days": 30},
+        SubscriptionPack.PROFESSIONAL: {"credits": 50, "price": 149.0, "days": 60},
+        SubscriptionPack.PREMIUM: {"credits": 150, "price": 299.0, "days": 90},
+        SubscriptionPack.UNLIMITED: {"credits": 999999, "price": 499.0, "days": 365}
+    }
+    
+    pack_info = pack_details.get(subscription_data.pack)
+    if not pack_info:
+        raise HTTPException(status_code=400, detail="Invalid subscription pack")
+    
+    # Créer l'abonnement
+    subscription = Subscription(
+        user_id=current_user["id"],
+        pack=subscription_data.pack,
+        credits_included=pack_info["credits"],
+        price=pack_info["price"],
+        expires_at=datetime.utcnow() + timedelta(days=pack_info["days"])
+    )
+    
+    await db.subscriptions.insert_one(subscription.dict())
+    
+    # Ajouter les crédits à l'utilisateur
+    await db.users.update_one(
+        {"id": current_user["id"]},
+        {
+            "$inc": {"credits": pack_info["credits"]},
+            "$set": {
+                "subscription_pack": subscription_data.pack,
+                "subscription_expires": subscription.expires_at
+            }
+        }
+    )
+    
+    return {
+        "message": "Subscription purchased successfully",
+        "subscription_id": subscription.id,
+        "credits_added": pack_info["credits"]
+    }
+
+@api_router.get("/subscription/current")
+async def get_current_subscription(current_user: dict = Depends(get_current_user)):
+    """Récupérer l'abonnement actuel de l'utilisateur"""
+    if current_user["user_type"] != UserType.ARTISAN:
+        raise HTTPException(status_code=403, detail="Only artisans have subscriptions")
+    
+    subscription = await db.subscriptions.find_one({
+        "user_id": current_user["id"],
+        "is_active": True
+    }, sort=[("purchased_at", -1)])
+    
+    user_credits = current_user.get("credits", 0)
+    
+    return {
+        "subscription": Subscription(**subscription) if subscription else None,
+        "current_credits": user_credits,
+        "subscription_pack": current_user.get("subscription_pack"),
+        "subscription_expires": current_user.get("subscription_expires")
+    }
 
 @api_router.get("/matches")
 async def get_matches(current_user: dict = Depends(get_current_user)):
