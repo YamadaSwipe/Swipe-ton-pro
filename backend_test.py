@@ -340,6 +340,8 @@ def run_all_tests():
     # Artisan Profiles
     results["create_artisan_profile"] = test_create_artisan_profile()
     print_separator()
+    results["create_artisan_profile_new_user"] = test_create_artisan_profile(use_new_artisan=True)
+    print_separator()
     results["get_artisan_profiles"] = test_get_artisan_profiles("particulier")
     print_separator()
     
