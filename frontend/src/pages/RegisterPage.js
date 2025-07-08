@@ -574,6 +574,10 @@ const RegisterPage = () => {
                 <strong>Note importante :</strong> Votre profil sera en mode "fantôme" jusqu'à validation 
                 par nos équipes. Vous devrez uploader vos documents (Kbis, assurance, etc.) pour être visible.
               </p>
+              <p className="text-sm mt-2">
+                <strong>💰 Système de validation :</strong> Chaque demande de devis/RDV que vous faites 
+                nécessite un paiement de 60€ qui garantit votre sérieux et filtre les demandes qualifiées.
+              </p>
             </div>
           )}
         </form>
