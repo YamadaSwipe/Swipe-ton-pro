@@ -236,6 +236,39 @@ class AdminAcceptInvitation(BaseModel):
     name: str
     password: str
 
+class UserCreate(BaseModel):
+    email: EmailStr
+    name: str
+    phone: Optional[str] = None
+    user_type: UserType = UserType.PARTICULIER
+    password: str
+
+class UserUpdate(BaseModel):
+    name: Optional[str] = None
+    phone: Optional[str] = None
+    status: Optional[UserStatus] = None
+    subscription_plan: Optional[SubscriptionPlan] = None
+    verified: Optional[bool] = None
+
+class TicketCreate(BaseModel):
+    title: str
+    description: str
+    category: str
+    priority: TicketPriority = TicketPriority.MEDIUM
+
+class TicketUpdate(BaseModel):
+    status: Optional[TicketStatus] = None
+    assigned_to: Optional[str] = None
+    priority: Optional[TicketPriority] = None
+
+class TicketMessage(BaseModel):
+    message: str
+    sender_id: str
+    sender_type: str  # "admin" or "user"
+
+class PasswordReset(BaseModel):
+    email: EmailStr
+
 class StatusCheck(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     client_name: str
@@ -243,10 +276,6 @@ class StatusCheck(BaseModel):
 
 class StatusCheckCreate(BaseModel):
     client_name: str
-
-class UserUpdate(BaseModel):
-    name: Optional[str] = None
-    phone: Optional[str] = None
     status: Optional[UserStatus] = None
 
 # Utility functions
