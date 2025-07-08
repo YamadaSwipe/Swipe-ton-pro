@@ -424,73 +424,132 @@ const RegisterPage = () => {
 
           {/* Particulier-specific fields */}
           {formData.userType === 'particulier' && (
-            <div className="bg-slate-800/50 rounded-lg p-6">
-              <h3 className="text-white font-bold mb-4">Informations du logement</h3>
-              
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
-                    Ville
-                  </label>
-                  <input
-                    type="text"
-                    name="city"
-                    required
-                    value={formData.city}
-                    onChange={handleChange}
-                    className="w-full p-3 bg-slate-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Paris"
-                  />
+            <>
+              <div className="bg-slate-800/50 rounded-lg p-6">
+                <h3 className="text-white font-bold mb-4">Informations du logement</h3>
+                
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                      Ville
+                    </label>
+                    <input
+                      type="text"
+                      name="city"
+                      required
+                      value={formData.city}
+                      onChange={handleChange}
+                      className="w-full p-3 bg-slate-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="Paris"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                      Code postal
+                    </label>
+                    <input
+                      type="text"
+                      name="postalCode"
+                      required
+                      value={formData.postalCode}
+                      onChange={handleChange}
+                      className="w-full p-3 bg-slate-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="75001"
+                    />
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
-                    Code postal
-                  </label>
-                  <input
-                    type="text"
-                    name="postalCode"
-                    required
-                    value={formData.postalCode}
-                    onChange={handleChange}
-                    className="w-full p-3 bg-slate-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="75001"
-                  />
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                      Adresse
+                    </label>
+                    <input
+                      type="text"
+                      name="address"
+                      required
+                      value={formData.address}
+                      onChange={handleChange}
+                      className="w-full p-3 bg-slate-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="123 Rue de la Paix"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                      Type de logement
+                    </label>
+                    <select
+                      name="propertyType"
+                      value={formData.propertyType}
+                      onChange={handleChange}
+                      className="w-full p-3 bg-slate-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="appartement">Appartement</option>
+                      <option value="maison">Maison</option>
+                      <option value="local_commercial">Local commercial</option>
+                      <option value="autre">Autre</option>
+                    </select>
+                  </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
-                    Adresse
-                  </label>
-                  <input
-                    type="text"
-                    name="address"
-                    required
-                    value={formData.address}
-                    onChange={handleChange}
-                    className="w-full p-3 bg-slate-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="123 Rue de la Paix"
-                  />
+              {/* Informations confidentialité et conditions */}
+              <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-6">
+                <h3 className="text-white font-bold mb-4 flex items-center">
+                  <span className="text-blue-400 mr-2">🔒</span>
+                  Confidentialité et conditions
+                </h3>
+                
+                <div className="space-y-4 mb-4">
+                  <div className="bg-slate-800/50 rounded-lg p-4">
+                    <h4 className="text-yellow-400 font-semibold mb-2">🛡️ Protection de vos données</h4>
+                    <p className="text-gray-300 text-sm leading-relaxed">
+                      Vos informations personnelles (nom, téléphone, adresse) ne seront <strong>jamais visibles</strong> 
+                      par les artisans tant qu'il n'y a pas de match confirmé des deux côtés.
+                    </p>
+                  </div>
+                  
+                  <div className="bg-slate-800/50 rounded-lg p-4">
+                    <h4 className="text-green-400 font-semibold mb-2">💰 Système de paiement sécurisé</h4>
+                    <p className="text-gray-300 text-sm leading-relaxed">
+                      Toute demande de devis ou RDV doit être validée par le professionnel avec un paiement de 
+                      <strong className="text-yellow-400"> 60€</strong> qui garantit son sérieux et sa disponibilité.
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
-                    Type de logement
-                  </label>
-                  <select
-                    name="propertyType"
-                    value={formData.propertyType}
-                    onChange={handleChange}
-                    className="w-full p-3 bg-slate-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="appartement">Appartement</option>
-                    <option value="maison">Maison</option>
-                    <option value="local_commercial">Local commercial</option>
-                    <option value="autre">Autre</option>
-                  </select>
+
+                {/* Cases à cocher */}
+                <div className="space-y-3">
+                  <div className="flex items-start space-x-3">
+                    <input
+                      type="checkbox"
+                      id="acceptPrivacyPolicy"
+                      checked={formData.acceptPrivacyPolicy}
+                      onChange={(e) => setFormData({...formData, acceptPrivacyPolicy: e.target.checked})}
+                      className="mt-1 w-4 h-4 text-blue-600 bg-slate-700 border-gray-600 rounded focus:ring-blue-500"
+                    />
+                    <label htmlFor="acceptPrivacyPolicy" className="text-sm text-gray-300">
+                      J'accepte les conditions de confidentialité et comprends que mes informations personnelles 
+                      ne seront partagées qu'après un match mutuel validé.
+                    </label>
+                  </div>
+                  
+                  <div className="flex items-start space-x-3">
+                    <input
+                      type="checkbox"
+                      id="acceptMeetingRequest"
+                      checked={formData.acceptMeetingRequest}
+                      onChange={(e) => setFormData({...formData, acceptMeetingRequest: e.target.checked})}
+                      className="mt-1 w-4 h-4 text-blue-600 bg-slate-700 border-gray-600 rounded focus:ring-blue-500"
+                    />
+                    <label htmlFor="acceptMeetingRequest" className="text-sm text-gray-300">
+                      J'accepte de recevoir des demandes de devis/RDV de la part des artisans 
+                      (décochez si vous ne souhaitez pas être contacté directement).
+                    </label>
+                  </div>
                 </div>
               </div>
-            </div>
+            </>
           )}
 
           {error && (
