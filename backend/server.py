@@ -276,6 +276,40 @@ class DocumentUpload(BaseModel):
     type: str
     file_data: str  # base64
 
+class QuoteRequest(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    artisan_id: str
+    client_id: str
+    project_id: Optional[str] = None
+    message: str
+    requested_at: datetime = Field(default_factory=datetime.utcnow)
+    status: str = "pending"  # pending, validated, rejected, completed
+    validation_fee_paid: bool = False
+    validation_fee_amount: float = 60.0
+    payment_reference: Optional[str] = None
+
+class QuoteRequestCreate(BaseModel):
+    client_id: str
+    project_id: Optional[str] = None
+    message: str
+
+class MeetingRequest(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    artisan_id: str
+    client_id: str
+    requested_date: datetime
+    message: str
+    status: str = "pending"  # pending, validated, rejected, completed
+    validation_fee_paid: bool = False
+    validation_fee_amount: float = 60.0
+    payment_reference: Optional[str] = None
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+class MeetingRequestCreate(BaseModel):
+    client_id: str
+    requested_date: datetime
+    message: str
+
 # Utility functions
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
