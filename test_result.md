@@ -146,11 +146,11 @@ backend:
 
   - task: "Authentication - Get Current User"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "testing"
@@ -158,6 +158,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "Get current user endpoint works for particulier users but fails with 504 timeout for artisan users. This appears to be an intermittent issue with the server."
+      - working: true
+        agent: "testing"
+        comment: "Get current user endpoint is now working correctly for both particulier and artisan users. The previous timeout issues appear to have been temporary."
 
   - task: "Artisan Profiles - Create Profile"
     implemented: true
