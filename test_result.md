@@ -164,15 +164,18 @@ backend:
 
   - task: "Artisan Profiles - Create Profile"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "testing"
         comment: "Create artisan profile endpoint returns 400 error with message 'Profile already exists'. This is expected behavior if the artisan already has a profile, but we need to test with a new artisan account."
+      - working: true
+        agent: "testing"
+        comment: "Create artisan profile endpoint works correctly when tested with a newly registered artisan account. The previous failure was due to trying to create a profile for an artisan that already had one, which is the expected behavior."
 
   - task: "Artisan Profiles - Get Profiles"
     implemented: true
