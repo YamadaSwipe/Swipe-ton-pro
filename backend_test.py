@@ -6,7 +6,10 @@ import base64
 from datetime import datetime
 
 # Backend URL from frontend/.env
-BACKEND_URL = "https://50d2463b-8540-4634-be7d-c4da33d09e2d.preview.emergentagent.com/api"
+# External URL (currently not accessible)
+# BACKEND_URL = "https://50d2463b-8540-4634-be7d-c4da33d09e2d.preview.emergentagent.com/api"
+# Local URL
+BACKEND_URL = "http://localhost:8001/api"
 
 # Test data
 TEST_USERS = {
