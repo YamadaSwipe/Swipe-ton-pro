@@ -494,18 +494,8 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus: 
-    - "Subscription System - Get Packs"
-    - "Subscription System - Purchase Pack"
-    - "Subscription System - Get Current Subscription"
-    - "Document Upload"
-    - "Admin - Get Pending Artisans"
-    - "Admin - Validate Artisan"
-    - "Artisan - Swipe on Projects"
-    - "Multi-Profession Search"
-    - "Credit Consumption on Swipe"
-  stuck_tasks: 
-    - "Multi-Profession Search"
+  current_focus: []
+  stuck_tasks: []
   test_all: true
   test_priority: "high_first"
 
