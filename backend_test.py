@@ -584,7 +584,7 @@ def test_multi_profession_search():
     
     # Search with multiple professions
     professions = ["electricien", "plombier"]
-    params = {"professions": ",".join(professions)}
+    params = {"professions": professions}  # FastAPI will handle this correctly
     
     response = requests.get(f"{BACKEND_URL}/artisan/profiles", params=params, headers=headers)
     print(f"Status Code: {response.status_code}")
