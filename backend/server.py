@@ -59,12 +59,42 @@ admin_router = APIRouter()
 class AdminRole(str, Enum):
     SUPER_ADMIN = "super_admin"
     ADMIN = "admin"
+    SUPPORT = "support"
     MODERATOR = "moderator"
 
 class UserStatus(str, Enum):
     ACTIVE = "active"
     SUSPENDED = "suspended"
     BANNED = "banned"
+    PENDING_VERIFICATION = "pending_verification"
+
+class UserType(str, Enum):
+    PARTICULIER = "particulier"
+    ARTISAN = "artisan"
+
+class TicketStatus(str, Enum):
+    OPEN = "open"
+    IN_PROGRESS = "in_progress"
+    RESOLVED = "resolved"
+    CLOSED = "closed"
+
+class TicketPriority(str, Enum):
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    URGENT = "urgent"
+
+class PaymentStatus(str, Enum):
+    PENDING = "pending"
+    COMPLETED = "completed"
+    FAILED = "failed"
+    REFUNDED = "refunded"
+
+class SubscriptionPlan(str, Enum):
+    PARTICULIER_FREE = "particulier_free"
+    PRO_STARTER = "pro_starter"
+    PRO_BUSINESS = "pro_business"
+    PRO_PREMIUM = "pro_premium"
 
 class InvitationStatus(str, Enum):
     PENDING = "pending"
