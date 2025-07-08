@@ -246,15 +246,18 @@ backend:
 frontend:
   - task: "Page d'accueil"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/HomePage.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "testing"
         comment: "Vérification de l'interface SwipeTonPro, navigation, boutons et design professionnel."
+      - working: true
+        agent: "testing"
+        comment: "La page d'accueil s'affiche correctement avec le logo SwipeTonPro, les boutons de navigation (Accueil, Grand compte, Enseignes, Connexion, Inscription), le titre 'Ton prochain CRUSH professionnel en un SWIPE', et les cartes d'artisans (Électricien Pro, Plombier Expert). Le design est professionnel avec un gradient de couleur et une mise en page attrayante."
 
   - task: "Authentification"
     implemented: true
