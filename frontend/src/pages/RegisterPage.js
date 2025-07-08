@@ -105,6 +105,15 @@ const RegisterPage = () => {
       }
     }
 
+    // Validation spécifique aux particuliers
+    if (formData.userType === 'particulier') {
+      if (!formData.acceptPrivacyPolicy) {
+        setError('Vous devez accepter les conditions de confidentialité');
+        setLoading(false);
+        return;
+      }
+    }
+
     const userData = {
       email: formData.email,
       password: formData.password,
