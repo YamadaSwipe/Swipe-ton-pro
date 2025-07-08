@@ -639,184 +639,316 @@
                     
                     <div style="
                         display: grid;
-                        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                        gap: 1.5rem;
+                        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                        gap: 1rem;
                         margin-bottom: 3rem;
                     ">
+                        <!-- Électricien -->
                         <div style="
                             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-                            border-radius: 1rem;
-                            padding: 2rem;
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
                             text-align: center;
                             transition: all 0.3s;
                             cursor: pointer;
                         ">
-                            <img src="https://images.unsplash.com/photo-1584677191047-38f48d0db64e" alt="Électricien" style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 1rem;">
-                            <h3 style="
-                                color: white;
-                                font-size: 1.125rem;
-                                font-weight: 600;
-                                margin-bottom: 0.5rem;
-                            ">Électricien</h3>
-                            <p style="
-                                color: rgba(255, 255, 255, 0.8);
-                                font-size: 0.875rem;
-                                margin: 0;
-                            ">524 pros</p>
+                            <img src="https://images.unsplash.com/photo-1584677191047-38f48d0db64e" alt="Électricien" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Électricien</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">524 pros</p>
                         </div>
                         
+                        <!-- Plombier -->
                         <div style="
                             background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-                            border-radius: 1rem;
-                            padding: 2rem;
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
                             text-align: center;
                             transition: all 0.3s;
                             cursor: pointer;
                         ">
-                            <img src="https://images.pexels.com/photos/7519895/pexels-photo-7519895.jpeg" alt="Plombier" style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 1rem;">
-                            <h3 style="
-                                color: white;
-                                font-size: 1.125rem;
-                                font-weight: 600;
-                                margin-bottom: 0.5rem;
-                            ">Plombier</h3>
-                            <p style="
-                                color: rgba(255, 255, 255, 0.8);
-                                font-size: 0.875rem;
-                                margin: 0;
-                            ">387 pros</p>
+                            <img src="https://images.pexels.com/photos/7519895/pexels-photo-7519895.jpeg" alt="Plombier" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Plombier</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">387 pros</p>
                         </div>
                         
+                        <!-- Menuisier -->
                         <div style="
                             background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
-                            border-radius: 1rem;
-                            padding: 2rem;
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
                             text-align: center;
                             transition: all 0.3s;
                             cursor: pointer;
                         ">
-                            <img src="https://images.pexels.com/photos/8487333/pexels-photo-8487333.jpeg" alt="Menuisier" style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 1rem;">
-                            <h3 style="
-                                color: white;
-                                font-size: 1.125rem;
-                                font-weight: 600;
-                                margin-bottom: 0.5rem;
-                            ">Menuisier</h3>
-                            <p style="
-                                color: rgba(255, 255, 255, 0.8);
-                                font-size: 0.875rem;
-                                margin: 0;
-                            ">291 pros</p>
+                            <img src="https://images.pexels.com/photos/8487333/pexels-photo-8487333.jpeg" alt="Menuisier" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Menuisier</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">291 pros</p>
                         </div>
                         
+                        <!-- Maçon -->
                         <div style="
                             background: linear-gradient(135deg, #475569 0%, #334155 100%);
-                            border-radius: 1rem;
-                            padding: 2rem;
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
                             text-align: center;
                             transition: all 0.3s;
                             cursor: pointer;
                         ">
-                            <img src="https://images.pexels.com/photos/8487770/pexels-photo-8487770.jpeg" alt="Maçon" style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 1rem;">
-                            <h3 style="
-                                color: white;
-                                font-size: 1.125rem;
-                                font-weight: 600;
-                                margin-bottom: 0.5rem;
-                            ">Maçon</h3>
-                            <p style="
-                                color: rgba(255, 255, 255, 0.8);
-                                font-size: 0.875rem;
-                                margin: 0;
-                            ">213 pros</p>
+                            <img src="https://images.pexels.com/photos/8487770/pexels-photo-8487770.jpeg" alt="Maçon" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Maçon</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">213 pros</p>
                         </div>
                         
+                        <!-- Peintre -->
                         <div style="
                             background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
-                            border-radius: 1rem;
-                            padding: 2rem;
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
                             text-align: center;
                             transition: all 0.3s;
                             cursor: pointer;
                         ">
-                            <img src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643" alt="Peintre" style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 1rem;">
-                            <h3 style="
-                                color: white;
-                                font-size: 1.125rem;
-                                font-weight: 600;
-                                margin-bottom: 0.5rem;
-                            ">Peintre</h3>
-                            <p style="
-                                color: rgba(255, 255, 255, 0.8);
-                                font-size: 0.875rem;
-                                margin: 0;
-                            ">156 pros</p>
+                            <img src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643" alt="Peintre" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Peintre</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">156 pros</p>
                         </div>
                         
+                        <!-- Carreleur -->
                         <div style="
                             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-                            border-radius: 1rem;
-                            padding: 2rem;
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
                             text-align: center;
                             transition: all 0.3s;
                             cursor: pointer;
                         ">
-                            <img src="https://images.pexels.com/photos/7616608/pexels-photo-7616608.jpeg" alt="Carreleur" style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 1rem;">
-                            <h3 style="
-                                color: white;
-                                font-size: 1.125rem;
-                                font-weight: 600;
-                                margin-bottom: 0.5rem;
-                            ">Carreleur</h3>
-                            <p style="
-                                color: rgba(255, 255, 255, 0.8);
-                                font-size: 0.875rem;
-                                margin: 0;
-                            ">143 pros</p>
+                            <img src="https://images.pexels.com/photos/7616608/pexels-photo-7616608.jpeg" alt="Carreleur" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Carreleur</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">143 pros</p>
                         </div>
                         
+                        <!-- Charpentier -->
                         <div style="
                             background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
-                            border-radius: 1rem;
-                            padding: 2rem;
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
                             text-align: center;
                             transition: all 0.3s;
                             cursor: pointer;
                         ">
-                            <img src="https://images.unsplash.com/photo-1584677191047-38f48d0db64e" alt="Charpentier" style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 1rem;">
-                            <h3 style="
-                                color: white;
-                                font-size: 1.125rem;
-                                font-weight: 600;
-                                margin-bottom: 0.5rem;
-                            ">Charpentier</h3>
-                            <p style="
-                                color: rgba(255, 255, 255, 0.8);
-                                font-size: 0.875rem;
-                                margin: 0;
-                            ">98 pros</p>
+                            <img src="https://images.unsplash.com/photo-1584677191047-38f48d0db64e" alt="Charpentier" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Charpentier</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">98 pros</p>
                         </div>
                         
+                        <!-- Couvreur -->
                         <div style="
                             background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
-                            border-radius: 1rem;
-                            padding: 2rem;
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
                             text-align: center;
                             transition: all 0.3s;
                             cursor: pointer;
                         ">
-                            <img src="https://images.pexels.com/photos/7519895/pexels-photo-7519895.jpeg" alt="Couvreur" style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 1rem;">
-                            <h3 style="
-                                color: white;
-                                font-size: 1.125rem;
-                                font-weight: 600;
-                                margin-bottom: 0.5rem;
-                            ">Couvreur</h3>
-                            <p style="
-                                color: rgba(255, 255, 255, 0.8);
-                                font-size: 0.875rem;
-                                margin: 0;
-                            ">76 pros</p>
+                            <img src="https://images.pexels.com/photos/7519895/pexels-photo-7519895.jpeg" alt="Couvreur" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Couvreur</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">76 pros</p>
+                        </div>
+                        
+                        <!-- Chauffagiste -->
+                        <div style="
+                            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.pexels.com/photos/8487333/pexels-photo-8487333.jpeg" alt="Chauffagiste" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Chauffagiste</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">89 pros</p>
+                        </div>
+                        
+                        <!-- Serrurier -->
+                        <div style="
+                            background: linear-gradient(135deg, #475569 0%, #334155 100%);
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.pexels.com/photos/8487770/pexels-photo-8487770.jpeg" alt="Serrurier" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Serrurier</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">67 pros</p>
+                        </div>
+                        
+                        <!-- Carrossier -->
+                        <div style="
+                            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643" alt="Carrossier" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Carrossier</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">45 pros</p>
+                        </div>
+                        
+                        <!-- Mécanicien -->
+                        <div style="
+                            background: linear-gradient(135deg, #475569 0%, #334155 100%);
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.pexels.com/photos/7616608/pexels-photo-7616608.jpeg" alt="Mécanicien" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Mécanicien</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">134 pros</p>
+                        </div>
+                        
+                        <!-- Jardinier -->
+                        <div style="
+                            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.pexels.com/photos/8487333/pexels-photo-8487333.jpeg" alt="Jardinier" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Jardinier</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">178 pros</p>
+                        </div>
+                        
+                        <!-- Paysagiste -->
+                        <div style="
+                            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.pexels.com/photos/7519895/pexels-photo-7519895.jpeg" alt="Paysagiste" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Paysagiste</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">92 pros</p>
+                        </div>
+                        
+                        <!-- Vitrier -->
+                        <div style="
+                            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.pexels.com/photos/8487770/pexels-photo-8487770.jpeg" alt="Vitrier" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Vitrier</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">34 pros</p>
+                        </div>
+                        
+                        <!-- Soudeur -->
+                        <div style="
+                            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643" alt="Soudeur" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Soudeur</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">56 pros</p>
+                        </div>
+                        
+                        <!-- Climatisation -->
+                        <div style="
+                            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.pexels.com/photos/7616608/pexels-photo-7616608.jpeg" alt="Climatisation" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Climatisation</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">71 pros</p>
+                        </div>
+                        
+                        <!-- Étanchéité -->
+                        <div style="
+                            background: linear-gradient(135deg, #475569 0%, #334155 100%);
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.pexels.com/photos/8487333/pexels-photo-8487333.jpeg" alt="Étanchéité" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Étanchéité</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">29 pros</p>
+                        </div>
+                        
+                        <!-- Isolation -->
+                        <div style="
+                            background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.pexels.com/photos/8487770/pexels-photo-8487770.jpeg" alt="Isolation" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Isolation</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">41 pros</p>
+                        </div>
+                        
+                        <!-- Dépannage -->
+                        <div style="
+                            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.pexels.com/photos/7519895/pexels-photo-7519895.jpeg" alt="Dépannage" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Dépannage</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">187 pros</p>
+                        </div>
+                        
+                        <!-- Nettoyage -->
+                        <div style="
+                            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643" alt="Nettoyage" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Nettoyage</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">123 pros</p>
+                        </div>
+                        
+                        <!-- Déménagement -->
+                        <div style="
+                            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+                            border-radius: 0.75rem;
+                            padding: 1.5rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.pexels.com/photos/7616608/pexels-photo-7616608.jpeg" alt="Déménagement" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 0.75rem;">
+                            <h3 style="color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">Déménagement</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.75rem; margin: 0;">78 pros</p>
                         </div>
                     </div>
                     
@@ -825,21 +957,6 @@
                         font-size: 1rem;
                         margin-bottom: 2rem;
                     ">Et bien d'autres spécialités...</p>
-                    
-                    <button style="
-                        background: linear-gradient(45deg, #3b82f6, #8b5cf6);
-                        color: white;
-                        border: none;
-                        padding: 1rem 2rem;
-                        border-radius: 0.75rem;
-                        font-size: 1rem;
-                        font-weight: 600;
-                        cursor: pointer;
-                        transition: all 0.3s;
-                        box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
-                    ">
-                        Voir tous les métiers
-                    </button>
                 </div>
             </section>
 
