@@ -486,6 +486,17 @@ async def create_particulier_profile(
     await db.particulier_profiles.insert_one(profile_dict)
     return ParticulierProfile(**profile_dict)
 
+@api_router.get("/particulier/profile", response_model=ParticulierProfile)
+async def get_particulier_profile(current_user: dict = Depends(get_current_user)):
+    if current_user["user_type"] != UserType.PARTICULIER:
+        raise HTTPException(status_code=403, detail="Only particuliers can access this endpoint")
+    
+    profile = await db.particulier_profiles.find_one({"user_id": current_user["id"]})
+    if not profile:
+        raise HTTPException(status_code=404, detail="Profile not found")
+    
+    return ParticulierProfile(**profile)
+
 @api_router.put("/particulier/profile/project-details")
 async def update_project_details(
     project_details: Dict[str, Any],
