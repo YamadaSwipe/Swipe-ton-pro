@@ -85,6 +85,8 @@ tokens = {}
 user_ids = {}
 artisan_profile_ids = {}
 project_ids = {}
+document_ids = {}
+subscription_ids = {}
 
 def print_separator():
     print("\n" + "="*80 + "\n")
