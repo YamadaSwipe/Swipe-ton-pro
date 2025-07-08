@@ -70,11 +70,14 @@ ARTISAN_PROFILE = {
 PROJECT = {
     "title": "Rénovation électrique",
     "description": "Rénovation complète de l'installation électrique d'une maison",
-    "budget": 5000.0,
-    "profession_needed": "electricien",
+    "budget_range": "1500_5000",
+    "professions_needed": ["electricien", "plombier"],  # Multi-profession support
     "location": "Paris",
     "urgency": "normal",
-    "images": ["https://example.com/project1.jpg"]
+    "images": ["https://example.com/project1.jpg"],
+    "technical_details": {"surface": 120, "age_installation": "plus_15_ans"},
+    "preferred_timeline": "1_mois",
+    "access_constraints": "Accès difficile, 3ème étage sans ascenseur"
 }
 
 # Store tokens and user IDs
