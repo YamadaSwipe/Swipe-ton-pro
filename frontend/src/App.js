@@ -12,6 +12,7 @@ import ProfilePage from './pages/ProfilePage';
 import AdminPage from './pages/AdminPage';
 import MatchesPage from './pages/MatchesPage';
 import ProjectsPage from './pages/ProjectsPage';
+import SubscriptionPage from './pages/SubscriptionPage';
 
 function App() {
   return (
