@@ -593,12 +593,14 @@ def test_multi_profession_search():
         print(f"✅ Single Profession Search Test Passed")
         print(f"Number of profiles matching 'electricien': {len(data)}")
         
-        # Now try with multiple professions
+        # Now try with multiple professions - using query parameters correctly
         print("Testing with multiple professions...")
         try:
-            # This might fail due to validation errors in the database
-            params = {"professions": ["electricien", "plombier"]}
-            response = requests.get(f"{BACKEND_URL}/artisan/profiles", params=params, headers=headers)
+            # Using the correct format for multiple query parameters with the same name
+            # FastAPI expects multiple values for the same parameter to be sent as separate query parameters
+            # with the same name, not as a list in a single parameter
+            url = f"{BACKEND_URL}/artisan/profiles?professions=electricien&professions=plombier"
+            response = requests.get(url, headers=headers)
             
             if response.status_code == 200:
                 data = response.json()
@@ -608,11 +610,6 @@ def test_multi_profession_search():
             else:
                 print(f"❌ Multi-Profession Search Test Failed with status {response.status_code}")
                 print(f"Response: {response.text}")
-                # If it fails with 500, it might be due to data validation issues
-                # Consider this a known issue but not a critical failure
-                if response.status_code == 500 and "validation error" in response.text.lower():
-                    print("⚠️ This appears to be a data validation issue in the database, not an API implementation issue")
-                    return True
                 return False
         except Exception as e:
             print(f"❌ Multi-Profession Search Test Failed with exception: {str(e)}")
