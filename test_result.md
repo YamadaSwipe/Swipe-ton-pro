@@ -330,15 +330,18 @@ frontend:
 
   - task: "Pages fonctionnelles - Projets"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/ProjectsPage.js"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "testing"
         comment: "Test de création et d'affichage des projets."
+      - working: true
+        agent: "testing"
+        comment: "La page des projets fonctionne correctement. L'état vide est bien affiché avec le message 'Aucun projet créé' et un bouton pour créer un projet. Le formulaire de création de projet s'ouvre correctement et permet de saisir tous les détails nécessaires (titre, description, profession requise, urgence, localisation, budget). L'interface est cohérente avec le reste de l'application."
 
   - task: "Pages fonctionnelles - Profil"
     implemented: true
