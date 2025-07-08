@@ -5,7 +5,7 @@ import time
 from datetime import datetime
 
 # Backend URL from frontend/.env
-BACKEND_URL = "https://cc81e210-0f11-414c-b4d2-6e8c4907016b.preview.emergentagent.com/api"
+BACKEND_URL = "https://50d2463b-8540-4634-be7d-c4da33d09e2d.preview.emergentagent.com/api"
 
 # Test data
 TEST_USERS = {
