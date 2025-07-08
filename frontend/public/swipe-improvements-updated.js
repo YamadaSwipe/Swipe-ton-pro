@@ -2189,54 +2189,8 @@
     }
 
     function addUserTypeSelector() {
-        // Ajouter un sélecteur de type d'utilisateur (mode test)
-        const selector = document.createElement('div');
-        selector.style.cssText = `
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: rgba(15, 23, 42, 0.95);
-            color: white;
-            padding: 15px;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            border: 2px solid #22c55e;
-            backdrop-filter: blur(10px);
-        `;
-        
-        selector.innerHTML = `
-            <div style="font-size: 12px; color: #94a3b8; margin-bottom: 8px; font-weight: bold;">Mode de test</div>
-            <select onchange="changeUserType(this.value)" style="
-                border: 2px solid #22c55e;
-                border-radius: 8px;
-                padding: 5px 10px;
-                font-size: 14px;
-                color: #333;
-                background: white;
-                width: 100%;
-            ">
-                <option value="particulier">🏠 Particulier</option>
-                <option value="professionnel">🔧 Professionnel</option>
-            </select>
-            <div id="userTypeInfo" style="font-size: 11px; color: #94a3b8; margin-top: 8px;">
-                Vous êtes un particulier cherchant un professionnel
-            </div>
-        `;
-        
-        document.body.appendChild(selector);
-        
-        // Fonction globale pour changer le type d'utilisateur
-        window.changeUserType = function(type) {
-            swipeData.currentUser.type = type;
-            const info = document.getElementById('userTypeInfo');
-            if (info) {
-                info.textContent = type === 'particulier' ? 
-                    'Vous cherchez un professionnel' : 
-                    'Vous êtes un professionnel';
-            }
-            console.log('👤 Type d\'utilisateur changé:', type);
-        };
+        // Mode test supprimé pour version professionnelle
+        console.log('🎯 Mode professionnel activé - Pas de sélecteur de test');
     }
 
     function addAnimationStyles() {
