@@ -782,6 +782,372 @@ async def resolve_report(
     
     return {"message": "Report resolved successfully"}
 
+# Dashboard & Analytics Routes
+@api_router.get("/admin/dashboard")
+async def get_admin_dashboard(current_admin: Admin = Depends(get_current_admin)):
+    """Get complete admin dashboard data"""
+    if not check_permission(current_admin, "view_dashboard"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not enough permissions"
+        )
+    
+    # Get current statistics
+    total_users = await db.users.count_documents({})
+    total_artisans = await db.users.count_documents({"user_type": "artisan"})
+    total_particuliers = await db.users.count_documents({"user_type": "particulier"})
+    active_users = await db.users.count_documents({"status": "active"})
+    new_users_today = await db.users.count_documents({
+        "created_at": {"$gte": datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)}
+    })
+    
+    total_matches = await db.matches.count_documents({})
+    total_projects = await db.projects.count_documents({})
+    total_tickets = await db.support_tickets.count_documents({})
+    open_tickets = await db.support_tickets.count_documents({"status": "open"})
+    
+    total_payments = await db.payments.aggregate([
+        {"$match": {"status": "completed"}},
+        {"$group": {"_id": None, "total": {"$sum": "$amount"}}}
+    ]).to_list(1)
+    
+    revenue_today = await db.payments.aggregate([
+        {"$match": {
+            "status": "completed",
+            "paid_at": {"$gte": datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)}
+        }},
+        {"$group": {"_id": None, "total": {"$sum": "$amount"}}}
+    ]).to_list(1)
+    
+    return {
+        "users": {
+            "total": total_users,
+            "artisans": total_artisans,
+            "particuliers": total_particuliers,
+            "active": active_users,
+            "new_today": new_users_today
+        },
+        "business": {
+            "total_matches": total_matches,
+            "total_projects": total_projects,
+            "total_revenue": total_payments[0]["total"] if total_payments else 0,
+            "revenue_today": revenue_today[0]["total"] if revenue_today else 0
+        },
+        "support": {
+            "total_tickets": total_tickets,
+            "open_tickets": open_tickets
+        },
+        "updated_at": datetime.utcnow()
+    }
+
+# Support Ticket Management
+@api_router.get("/admin/tickets")
+async def get_support_tickets(
+    page: int = 1,
+    limit: int = 20,
+    status: Optional[str] = None,
+    priority: Optional[str] = None,
+    current_admin: Admin = Depends(get_current_admin)
+):
+    """Get support tickets with filtering"""
+    if not check_permission(current_admin, "view_tickets"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not enough permissions"
+        )
+    
+    query = {}
+    if status:
+        query["status"] = status
+    if priority:
+        query["priority"] = priority
+    
+    skip = (page - 1) * limit
+    tickets = await db.support_tickets.find(query).skip(skip).limit(limit).to_list(limit)
+    total = await db.support_tickets.count_documents(query)
+    
+    return {
+        "tickets": tickets,
+        "total": total,
+        "page": page,
+        "limit": limit
+    }
+
+@api_router.post("/admin/tickets/{ticket_id}/assign")
+async def assign_ticket(
+    ticket_id: str,
+    assigned_to: str,
+    current_admin: Admin = Depends(get_current_admin)
+):
+    """Assign ticket to admin"""
+    if not check_permission(current_admin, "assign_tickets"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not enough permissions"
+        )
+    
+    await db.support_tickets.update_one(
+        {"id": ticket_id},
+        {"$set": {"assigned_to": assigned_to, "updated_at": datetime.utcnow()}}
+    )
+    
+    return {"message": "Ticket assigned successfully"}
+
+@api_router.post("/admin/tickets/{ticket_id}/messages")
+async def add_ticket_message(
+    ticket_id: str,
+    message_data: TicketMessage,
+    current_admin: Admin = Depends(get_current_admin)
+):
+    """Add message to support ticket"""
+    if not check_permission(current_admin, "respond_tickets"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not enough permissions"
+        )
+    
+    message = {
+        "id": str(uuid.uuid4()),
+        "message": message_data.message,
+        "sender_id": current_admin.id,
+        "sender_type": "admin",
+        "sender_name": current_admin.name,
+        "created_at": datetime.utcnow()
+    }
+    
+    await db.support_tickets.update_one(
+        {"id": ticket_id},
+        {
+            "$push": {"messages": message},
+            "$set": {"updated_at": datetime.utcnow()}
+        }
+    )
+    
+    return {"message": "Message added successfully"}
+
+# User Management Extended
+@api_router.post("/admin/users")
+async def create_user(
+    user_data: UserCreate,
+    current_admin: Admin = Depends(get_current_admin)
+):
+    """Create new user account"""
+    if not check_permission(current_admin, "create_users"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not enough permissions"
+        )
+    
+    # Check if email already exists
+    existing_user = await db.users.find_one({"email": user_data.email})
+    if existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="User with this email already exists"
+        )
+    
+    user = User(
+        email=user_data.email,
+        name=user_data.name,
+        phone=user_data.phone,
+        user_type=user_data.user_type,
+        verified=True  # Admin-created users are auto-verified
+    )
+    
+    await db.users.insert_one(user.dict())
+    
+    return {"message": "User created successfully", "user_id": user.id}
+
+@api_router.post("/admin/users/{user_id}/reset-password")
+async def reset_user_password(
+    user_id: str,
+    current_admin: Admin = Depends(get_current_admin)
+):
+    """Reset user password and send new temporary password"""
+    if not check_permission(current_admin, "reset_passwords"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not enough permissions"
+        )
+    
+    user = await db.users.find_one({"id": user_id})
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    
+    # Generate temporary password
+    temp_password = ''.join(random.choices(string.ascii_letters + string.digits, k=12))
+    
+    # In real implementation, you would:
+    # 1. Hash the temporary password
+    # 2. Update user's password
+    # 3. Send email with temporary password
+    # 4. Force password change on next login
+    
+    # Mock implementation
+    print(f"Temporary password for {user['email']}: {temp_password}")
+    
+    return {"message": "Password reset successfully", "temporary_password": temp_password}
+
+# Analytics Routes
+@api_router.get("/admin/analytics/users")
+async def get_user_analytics(
+    period: str = "week",  # week, month, year
+    current_admin: Admin = Depends(get_current_admin)
+):
+    """Get user registration analytics"""
+    if not check_permission(current_admin, "view_analytics"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not enough permissions"
+        )
+    
+    # Calculate date range based on period
+    now = datetime.utcnow()
+    if period == "week":
+        start_date = now - timedelta(days=7)
+    elif period == "month":
+        start_date = now - timedelta(days=30)
+    elif period == "year":
+        start_date = now - timedelta(days=365)
+    else:
+        start_date = now - timedelta(days=7)
+    
+    # Get user registrations by date
+    pipeline = [
+        {"$match": {"created_at": {"$gte": start_date}}},
+        {"$group": {
+            "_id": {
+                "date": {"$dateToString": {"format": "%Y-%m-%d", "date": "$created_at"}},
+                "user_type": "$user_type"
+            },
+            "count": {"$sum": 1}
+        }},
+        {"$sort": {"_id.date": 1}}
+    ]
+    
+    registrations = await db.users.aggregate(pipeline).to_list(1000)
+    
+    return {
+        "period": period,
+        "registrations": registrations,
+        "generated_at": datetime.utcnow()
+    }
+
+@api_router.get("/admin/analytics/revenue")
+async def get_revenue_analytics(
+    period: str = "month",
+    current_admin: Admin = Depends(get_current_admin)
+):
+    """Get revenue analytics"""
+    if not check_permission(current_admin, "view_analytics"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not enough permissions"
+        )
+    
+    # Calculate date range
+    now = datetime.utcnow()
+    if period == "week":
+        start_date = now - timedelta(days=7)
+    elif period == "month":
+        start_date = now - timedelta(days=30)
+    elif period == "year":
+        start_date = now - timedelta(days=365)
+    else:
+        start_date = now - timedelta(days=30)
+    
+    # Get revenue by date
+    pipeline = [
+        {"$match": {
+            "status": "completed",
+            "paid_at": {"$gte": start_date}
+        }},
+        {"$group": {
+            "_id": {"$dateToString": {"format": "%Y-%m-%d", "date": "$paid_at"}},
+            "total_amount": {"$sum": "$amount"},
+            "transaction_count": {"$sum": 1}
+        }},
+        {"$sort": {"_id": 1}}
+    ]
+    
+    revenue_data = await db.payments.aggregate(pipeline).to_list(1000)
+    
+    return {
+        "period": period,
+        "revenue_data": revenue_data,
+        "generated_at": datetime.utcnow()
+    }
+
+# System Management
+@api_router.get("/admin/system/health")
+async def system_health_check(current_admin: Admin = Depends(get_current_admin)):
+    """Get system health status"""
+    if not check_permission(current_admin, "view_system"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not enough permissions"
+        )
+    
+    try:
+        # Test database connection
+        await db.admin.command('ping')
+        db_status = "healthy"
+    except Exception as e:
+        db_status = f"error: {str(e)}"
+    
+    return {
+        "database": db_status,
+        "uptime": "System running",
+        "timestamp": datetime.utcnow(),
+        "version": "1.0.0"
+    }
+
+# Permission management helper
+def get_default_permissions(role: AdminRole) -> List[str]:
+    """Get default permissions for each role"""
+    permissions = {
+        AdminRole.SUPER_ADMIN: [
+            "view_dashboard", "view_users", "create_users", "modify_users", "delete_users",
+            "view_admins", "invite_admins", "view_invitations", "view_tickets", "assign_tickets",
+            "respond_tickets", "view_reports", "resolve_reports", "view_analytics", "view_system",
+            "reset_passwords", "view_stats"
+        ],
+        AdminRole.ADMIN: [
+            "view_dashboard", "view_users", "create_users", "modify_users",
+            "view_tickets", "assign_tickets", "respond_tickets", "view_reports",
+            "resolve_reports", "view_analytics", "reset_passwords", "view_stats"
+        ],
+        AdminRole.SUPPORT: [
+            "view_dashboard", "view_users", "view_tickets", "assign_tickets",
+            "respond_tickets", "view_reports"
+        ],
+        AdminRole.MODERATOR: [
+            "view_dashboard", "view_users", "modify_users", "view_reports", "resolve_reports"
+        ]
+    }
+    return permissions.get(role, [])
+
+# Initialize default super admin if none exists
+@app.on_event("startup")
+async def create_default_admin():
+    """Create default super admin if none exists"""
+    super_admin_count = await db.admins.count_documents({"role": "super_admin"})
+    
+    if super_admin_count == 0:
+        default_admin = Admin(
+            email="admin@swipetonpro.fr",
+            name="Super Admin",
+            password_hash=get_password_hash("admin123"),
+            role=AdminRole.SUPER_ADMIN,
+            permissions=get_default_permissions(AdminRole.SUPER_ADMIN)
+        )
+        
+        await db.admins.insert_one(default_admin.dict())
+        print("✅ Default super admin created: admin@swipetonpro.fr / admin123")
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
