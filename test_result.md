@@ -261,15 +261,18 @@ frontend:
 
   - task: "Authentification"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/LoginPage.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "testing"
         comment: "Test de connexion avec différents types d'utilisateurs et vérification de la fonctionnalité du bouton œil pour les mots de passe."
+      - working: true
+        agent: "testing"
+        comment: "L'authentification fonctionne correctement. La connexion avec le compte particulier (part1@gmail.com/pat1pat1) redirige vers le dashboard avec le nom d'utilisateur 'Marie'. Le bouton œil pour afficher/masquer le mot de passe fonctionne correctement. La page de connexion affiche les comptes de test disponibles."
 
   - task: "Fonctionnalité de swipe"
     implemented: true
