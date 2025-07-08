@@ -344,15 +344,18 @@ backend:
 
   - task: "Credit Consumption on Swipe"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "testing"
         comment: "Could not fully test credit consumption on swipe as no profiles were available for swiping. The implementation appears to be correct in the code, but needs to be verified with actual profiles."
+      - working: true
+        agent: "testing"
+        comment: "Credit consumption on swipe is now working correctly. The test has been improved to handle both project swipes and profile swipes. It also ensures that the artisan has credits by purchasing a subscription if needed. The test successfully verified that credits are deducted when an artisan likes a project, and credits remain unchanged when passing on a project. The implementation correctly prevents artisans with zero credits from liking projects."
 
 frontend:
   - task: "Page d'accueil"
