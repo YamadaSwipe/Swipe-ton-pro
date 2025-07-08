@@ -950,6 +950,125 @@ async def validate_artisan(
     
     return {"message": f"Artisan {action}d successfully"}
 
+# Quote and Meeting Request endpoints
+@api_router.post("/artisan/quote-request", response_model=QuoteRequest)
+async def create_quote_request(
+    request: QuoteRequestCreate,
+    current_user: dict = Depends(get_current_user)
+):
+    """Créer une demande de devis (nécessite paiement 60€)"""
+    if current_user["user_type"] != UserType.ARTISAN:
+        raise HTTPException(status_code=403, detail="Only artisans can create quote requests")
+    
+    # Vérifier que l'artisan est validé
+    artisan_profile = await db.artisan_profiles.find_one({
+        "user_id": current_user["id"],
+        "validation_status": ValidationStatus.VALIDATED
+    })
+    if not artisan_profile:
+        raise HTTPException(status_code=403, detail="Artisan profile not validated")
+    
+    # Créer la demande de devis
+    quote_request = QuoteRequest(
+        artisan_id=current_user["id"],
+        client_id=request.client_id,
+        project_id=request.project_id,
+        message=request.message
+    )
+    
+    await db.quote_requests.insert_one(quote_request.dict())
+    
+    return quote_request
+
+@api_router.post("/artisan/meeting-request", response_model=MeetingRequest)
+async def create_meeting_request(
+    request: MeetingRequestCreate,
+    current_user: dict = Depends(get_current_user)
+):
+    """Créer une demande de RDV (nécessite paiement 60€)"""
+    if current_user["user_type"] != UserType.ARTISAN:
+        raise HTTPException(status_code=403, detail="Only artisans can create meeting requests")
+    
+    # Vérifier que l'artisan est validé
+    artisan_profile = await db.artisan_profiles.find_one({
+        "user_id": current_user["id"],
+        "validation_status": ValidationStatus.VALIDATED
+    })
+    if not artisan_profile:
+        raise HTTPException(status_code=403, detail="Artisan profile not validated")
+    
+    # Créer la demande de RDV
+    meeting_request = MeetingRequest(
+        artisan_id=current_user["id"],
+        client_id=request.client_id,
+        requested_date=request.requested_date,
+        message=request.message
+    )
+    
+    await db.meeting_requests.insert_one(meeting_request.dict())
+    
+    return meeting_request
+
+@api_router.post("/artisan/validate-request/{request_id}")
+async def validate_request(
+    request_id: str,
+    request_type: str,  # "quote" or "meeting"
+    payment_reference: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """Valider une demande avec paiement 60€"""
+    if current_user["user_type"] != UserType.ARTISAN:
+        raise HTTPException(status_code=403, detail="Only artisans can validate requests")
+    
+    collection = "quote_requests" if request_type == "quote" else "meeting_requests"
+    
+    # Mettre à jour le statut de la demande
+    result = await db[collection].update_one(
+        {"id": request_id, "artisan_id": current_user["id"]},
+        {
+            "$set": {
+                "status": "validated",
+                "validation_fee_paid": True,
+                "payment_reference": payment_reference
+            }
+        }
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Request not found")
+    
+    return {"message": "Request validated successfully", "fee_amount": 60.0}
+
+@api_router.get("/particulier/requests")
+async def get_client_requests(current_user: dict = Depends(get_current_user)):
+    """Récupérer les demandes reçues pour un particulier"""
+    if current_user["user_type"] != UserType.PARTICULIER:
+        raise HTTPException(status_code=403, detail="Only particuliers can access this endpoint")
+    
+    # Récupérer les demandes de devis et RDV
+    quote_requests = await db.quote_requests.find({"client_id": current_user["id"]}).to_list(100)
+    meeting_requests = await db.meeting_requests.find({"client_id": current_user["id"]}).to_list(100)
+    
+    return {
+        "quote_requests": [QuoteRequest(**req) for req in quote_requests],
+        "meeting_requests": [MeetingRequest(**req) for req in meeting_requests]
+    }
+
+@api_router.get("/artisan/requests")
+async def get_artisan_requests(current_user: dict = Depends(get_current_user)):
+    """Récupérer les demandes créées par un artisan"""
+    if current_user["user_type"] != UserType.ARTISAN:
+        raise HTTPException(status_code=403, detail="Only artisans can access this endpoint")
+    
+    # Récupérer les demandes de devis et RDV
+    quote_requests = await db.quote_requests.find({"artisan_id": current_user["id"]}).to_list(100)
+    meeting_requests = await db.meeting_requests.find({"artisan_id": current_user["id"]}).to_list(100)
+    
+    return {
+        "quote_requests": [QuoteRequest(**req) for req in quote_requests],
+        "meeting_requests": [MeetingRequest(**req) for req in meeting_requests]
+    }
+
 # Health check
 @api_router.get("/health")
 async def health_check():
