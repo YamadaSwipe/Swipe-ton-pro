@@ -243,6 +243,114 @@ backend:
         agent: "testing"
         comment: "Get projects endpoint is now working correctly for both particulier and artisan users. The previous timeout issues appear to have been temporary."
 
+  - task: "Subscription System - Get Packs"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Get subscription packs endpoint works correctly. Successfully retrieves all available subscription packs with their details (name, credits, price, features)."
+
+  - task: "Subscription System - Purchase Pack"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Purchase subscription endpoint works correctly. Successfully purchases a 'starter' pack and adds 10 credits to the artisan's account."
+
+  - task: "Subscription System - Get Current Subscription"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Get current subscription endpoint works correctly. Successfully retrieves the current subscription details including credits, pack type, and expiration date."
+
+  - task: "Document Upload"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Document upload endpoint works correctly. Successfully uploads a base64-encoded document and returns a document ID."
+
+  - task: "Admin - Get Pending Artisans"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Get pending artisans endpoint works correctly. Successfully retrieves a list of artisan profiles with 'pending' validation status."
+
+  - task: "Admin - Validate Artisan"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Validate artisan endpoint works correctly. Successfully validates a pending artisan profile."
+
+  - task: "Artisan - Swipe on Projects"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Artisan swipe on projects endpoint works correctly. Successfully retrieves projects for artisan to swipe on and allows artisans to swipe (like/pass) on projects."
+
+  - task: "Multi-Profession Search"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "Multi-profession search functionality returns a 500 Internal Server Error when trying to search for artisans by multiple professions. This needs to be fixed."
+
+  - task: "Credit Consumption on Swipe"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Could not fully test credit consumption on swipe as no profiles were available for swiping. The implementation appears to be correct in the code, but needs to be verified with actual profiles."
+
 frontend:
   - task: "Page d'accueil"
     implemented: true
