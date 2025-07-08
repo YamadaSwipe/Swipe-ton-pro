@@ -963,7 +963,7 @@
             <!-- Section Formules d'abonnement -->
             <section style="
                 background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-                padding: 4rem 2rem;
+                padding: 3rem 2rem;
             ">
                 <div style="
                     max-width: 1200px;
@@ -979,21 +979,21 @@
                     <p style="
                         color: #94a3b8;
                         font-size: 1.125rem;
-                        margin-bottom: 3rem;
+                        margin-bottom: 2rem;
                     ">Pour tous les besoins et tous les budgets</p>
                     
                     <div style="
                         display: grid;
-                        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                        gap: 2rem;
-                        margin-bottom: 3rem;
+                        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                        gap: 1.5rem;
+                        margin-bottom: 2rem;
                     ">
                         <!-- Pack 1 - Particuliers GRATUIT -->
                         <div style="
                             background: rgba(15, 23, 42, 0.8);
                             border: 2px solid #22c55e;
-                            border-radius: 1.5rem;
-                            padding: 2rem;
+                            border-radius: 1rem;
+                            padding: 1.5rem;
                             text-align: center;
                             position: relative;
                             transition: all 0.3s;
@@ -1001,9 +1001,9 @@
                             <div style="
                                 background: #dc2626;
                                 color: white;
-                                padding: 0.5rem 1rem;
+                                padding: 0.25rem 0.75rem;
                                 border-radius: 0.5rem;
-                                font-size: 0.875rem;
+                                font-size: 0.75rem;
                                 font-weight: 600;
                                 margin-bottom: 1rem;
                                 display: inline-block;
@@ -1011,62 +1011,66 @@
                             
                             <h3 style="
                                 color: white;
-                                font-size: 1.5rem;
+                                font-size: 1.25rem;
                                 font-weight: 700;
                                 margin-bottom: 0.5rem;
                             ">Particuliers</h3>
                             
                             <div style="
                                 color: #22c55e;
-                                font-size: 2.5rem;
+                                font-size: 2rem;
                                 font-weight: 900;
                                 margin-bottom: 0.5rem;
                             ">GRATUIT</div>
                             
                             <p style="
                                 color: #94a3b8;
-                                font-size: 0.875rem;
-                                margin-bottom: 2rem;
+                                font-size: 0.75rem;
+                                margin-bottom: 1.5rem;
                             ">100% gratuit 🔥</p>
                             
                             <ul style="
                                 list-style: none;
                                 padding: 0;
-                                margin: 0 0 2rem 0;
+                                margin: 0 0 1.5rem 0;
                                 text-align: left;
                             ">
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #22c55e; margin-right: 0.5rem;">✓</span>
                                     Swipe illimité
                                 </li>
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #22c55e; margin-right: 0.5rem;">✓</span>
                                     Chat avec artisans
                                 </li>
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #22c55e; margin-right: 0.5rem;">✓</span>
                                     Demande de devis
                                 </li>
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #22c55e; margin-right: 0.5rem;">✓</span>
                                     Support client
@@ -1077,9 +1081,9 @@
                                 background: linear-gradient(45deg, #22c55e, #16a34a);
                                 color: white;
                                 border: none;
-                                padding: 1rem 2rem;
-                                border-radius: 0.75rem;
-                                font-size: 1rem;
+                                padding: 0.75rem 1.5rem;
+                                border-radius: 0.5rem;
+                                font-size: 0.875rem;
                                 font-weight: 600;
                                 cursor: pointer;
                                 width: 100%;
@@ -1094,8 +1098,8 @@
                         <div style="
                             background: rgba(15, 23, 42, 0.8);
                             border: 2px solid #3b82f6;
-                            border-radius: 1.5rem;
-                            padding: 2rem;
+                            border-radius: 1rem;
+                            padding: 1.5rem;
                             text-align: center;
                             position: relative;
                             transition: all 0.3s;
@@ -1103,9 +1107,9 @@
                             <div style="
                                 background: #1d4ed8;
                                 color: white;
-                                padding: 0.5rem 1rem;
+                                padding: 0.25rem 0.75rem;
                                 border-radius: 0.5rem;
-                                font-size: 0.875rem;
+                                font-size: 0.75rem;
                                 font-weight: 600;
                                 margin-bottom: 1rem;
                                 display: inline-block;
@@ -1113,71 +1117,76 @@
                             
                             <h3 style="
                                 color: white;
-                                font-size: 1.5rem;
+                                font-size: 1.25rem;
                                 font-weight: 700;
                                 margin-bottom: 0.5rem;
                             ">Pro Starter</h3>
                             
                             <div style="
                                 color: white;
-                                font-size: 2.5rem;
+                                font-size: 2rem;
                                 font-weight: 900;
                                 margin-bottom: 0.5rem;
-                            ">49€<span style="font-size: 1rem; font-weight: 500; color: #94a3b8;">/mois</span></div>
+                            ">49€<span style="font-size: 0.875rem; font-weight: 500; color: #94a3b8;">/mois</span></div>
                             
                             <p style="
                                 color: #94a3b8;
-                                font-size: 0.875rem;
-                                margin-bottom: 2rem;
+                                font-size: 0.75rem;
+                                margin-bottom: 1.5rem;
                             ">30 demandes incluses</p>
                             
                             <ul style="
                                 list-style: none;
                                 padding: 0;
-                                margin: 0 0 2rem 0;
+                                margin: 0 0 1.5rem 0;
                                 text-align: left;
                             ">
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
                                     Profil vérifié
                                 </li>
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
                                     50 demandes/mois
                                 </li>
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
                                     Facturation devis 60€
                                 </li>
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
                                     Analytics basiques
                                 </li>
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
                                     Support email
@@ -1188,9 +1197,9 @@
                                 background: linear-gradient(45deg, #3b82f6, #2563eb);
                                 color: white;
                                 border: none;
-                                padding: 1rem 2rem;
-                                border-radius: 0.75rem;
-                                font-size: 1rem;
+                                padding: 0.75rem 1.5rem;
+                                border-radius: 0.5rem;
+                                font-size: 0.875rem;
                                 font-weight: 600;
                                 cursor: pointer;
                                 width: 100%;
@@ -1205,8 +1214,8 @@
                         <div style="
                             background: rgba(15, 23, 42, 0.8);
                             border: 2px solid #3b82f6;
-                            border-radius: 1.5rem;
-                            padding: 2rem;
+                            border-radius: 1rem;
+                            padding: 1.5rem;
                             text-align: center;
                             position: relative;
                             transition: all 0.3s;
@@ -1214,9 +1223,9 @@
                             <div style="
                                 background: #3b82f6;
                                 color: white;
-                                padding: 0.5rem 1rem;
+                                padding: 0.25rem 0.75rem;
                                 border-radius: 0.5rem;
-                                font-size: 0.875rem;
+                                font-size: 0.75rem;
                                 font-weight: 600;
                                 margin-bottom: 1rem;
                                 display: inline-block;
@@ -1224,80 +1233,86 @@
                             
                             <h3 style="
                                 color: white;
-                                font-size: 1.5rem;
+                                font-size: 1.25rem;
                                 font-weight: 700;
                                 margin-bottom: 0.5rem;
                             ">Pro Business</h3>
                             
                             <div style="
                                 color: white;
-                                font-size: 2.5rem;
+                                font-size: 2rem;
                                 font-weight: 900;
                                 margin-bottom: 0.5rem;
-                            ">99€<span style="font-size: 1rem; font-weight: 500; color: #94a3b8;">/mois</span></div>
+                            ">99€<span style="font-size: 0.875rem; font-weight: 500; color: #94a3b8;">/mois</span></div>
                             
                             <p style="
                                 color: #94a3b8;
-                                font-size: 0.875rem;
-                                margin-bottom: 2rem;
+                                font-size: 0.75rem;
+                                margin-bottom: 1.5rem;
                             ">100 demandes incluses</p>
                             
                             <ul style="
                                 list-style: none;
                                 padding: 0;
-                                margin: 0 0 2rem 0;
+                                margin: 0 0 1.5rem 0;
                                 text-align: left;
                             ">
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
                                     Profil premium
                                 </li>
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
                                     100 demandes/mois
                                 </li>
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
                                     Facturation devis 60€
                                 </li>
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
                                     Analytics avancées
                                 </li>
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
                                     Support chat
                                 </li>
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
                                     Badge "Pro Business"
@@ -1308,9 +1323,9 @@
                                 background: linear-gradient(45deg, #3b82f6, #2563eb);
                                 color: white;
                                 border: none;
-                                padding: 1rem 2rem;
-                                border-radius: 0.75rem;
-                                font-size: 1rem;
+                                padding: 0.75rem 1.5rem;
+                                border-radius: 0.5rem;
+                                font-size: 0.875rem;
                                 font-weight: 600;
                                 cursor: pointer;
                                 width: 100%;
@@ -1325,8 +1340,8 @@
                         <div style="
                             background: rgba(15, 23, 42, 0.8);
                             border: 2px solid #f59e0b;
-                            border-radius: 1.5rem;
-                            padding: 2rem;
+                            border-radius: 1rem;
+                            padding: 1.5rem;
                             text-align: center;
                             position: relative;
                             transition: all 0.3s;
@@ -1334,9 +1349,9 @@
                             <div style="
                                 background: #f59e0b;
                                 color: white;
-                                padding: 0.5rem 1rem;
+                                padding: 0.25rem 0.75rem;
                                 border-radius: 0.5rem;
-                                font-size: 0.875rem;
+                                font-size: 0.75rem;
                                 font-weight: 600;
                                 margin-bottom: 1rem;
                                 display: inline-block;
@@ -1344,89 +1359,96 @@
                             
                             <h3 style="
                                 color: white;
-                                font-size: 1.5rem;
+                                font-size: 1.25rem;
                                 font-weight: 700;
                                 margin-bottom: 0.5rem;
                             ">Pro Premium</h3>
                             
                             <div style="
                                 color: white;
-                                font-size: 2.5rem;
+                                font-size: 2rem;
                                 font-weight: 900;
                                 margin-bottom: 0.5rem;
-                            ">149€<span style="font-size: 1rem; font-weight: 500; color: #94a3b8;">/mois</span></div>
+                            ">149€<span style="font-size: 0.875rem; font-weight: 500; color: #94a3b8;">/mois</span></div>
                             
                             <p style="
                                 color: #94a3b8;
-                                font-size: 0.875rem;
-                                margin-bottom: 2rem;
+                                font-size: 0.75rem;
+                                margin-bottom: 1.5rem;
                             ">200 demandes incluses</p>
                             
                             <ul style="
                                 list-style: none;
                                 padding: 0;
-                                margin: 0 0 2rem 0;
+                                margin: 0 0 1.5rem 0;
                                 text-align: left;
                             ">
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #f59e0b; margin-right: 0.5rem;">✓</span>
                                     Profil premium+
                                 </li>
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #f59e0b; margin-right: 0.5rem;">✓</span>
                                     250 demandes/mois
                                 </li>
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #f59e0b; margin-right: 0.5rem;">✓</span>
                                     Facturation devis 60€
                                 </li>
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #f59e0b; margin-right: 0.5rem;">✓</span>
                                     Projets complexes
                                 </li>
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #f59e0b; margin-right: 0.5rem;">✓</span>
                                     Support chat
                                 </li>
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #f59e0b; margin-right: 0.5rem;">✓</span>
                                     Option "être rappelé"
                                 </li>
                                 <li style="
                                     color: #94a3b8;
-                                    margin-bottom: 0.75rem;
+                                    margin-bottom: 0.5rem;
                                     display: flex;
                                     align-items: center;
+                                    font-size: 0.875rem;
                                 ">
                                     <span style="color: #f59e0b; margin-right: 0.5rem;">✓</span>
                                     Badge "Expert"
@@ -1437,9 +1459,9 @@
                                 background: linear-gradient(45deg, #f59e0b, #d97706);
                                 color: white;
                                 border: none;
-                                padding: 1rem 2rem;
-                                border-radius: 0.75rem;
-                                font-size: 1rem;
+                                padding: 0.75rem 1.5rem;
+                                border-radius: 0.5rem;
+                                font-size: 0.875rem;
                                 font-weight: 600;
                                 cursor: pointer;
                                 width: 100%;
