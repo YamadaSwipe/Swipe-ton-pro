@@ -315,15 +315,18 @@ frontend:
 
   - task: "Pages fonctionnelles - Matches"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/MatchesPage.js"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "testing"
         comment: "Vérification de la liste des matches et des détails."
+      - working: true
+        agent: "testing"
+        comment: "La page des matches fonctionne correctement. L'état vide est bien affiché avec le message 'Aucun match pour le moment' et un bouton pour commencer à swiper. L'interface est cohérente avec le reste de l'application et le design est professionnel."
 
   - task: "Pages fonctionnelles - Projets"
     implemented: true
