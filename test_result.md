@@ -345,15 +345,18 @@ frontend:
 
   - task: "Pages fonctionnelles - Profil"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/ProfilePage.js"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "testing"
         comment: "Vérification de l'affichage et de la création de profil artisan."
+      - working: true
+        agent: "testing"
+        comment: "La page de profil fonctionne correctement. Pour les utilisateurs particuliers, elle affiche les informations personnelles (email, téléphone, date d'inscription) et les statistiques (matches, projets). L'interface est cohérente avec le reste de l'application et le design est professionnel."
 
   - task: "Navigation et design"
     implemented: true
