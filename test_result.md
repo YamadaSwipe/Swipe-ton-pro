@@ -329,15 +329,18 @@ backend:
 
   - task: "Multi-Profession Search"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "testing"
         comment: "Multi-profession search functionality returns a 500 Internal Server Error when trying to search for artisans by multiple professions. This needs to be fixed."
+      - working: true
+        agent: "testing"
+        comment: "Multi-profession search is now working correctly. The issue was with how the query parameters were being sent. When using multiple values for the same parameter, they need to be sent as separate query parameters with the same name (e.g., ?professions=electricien&professions=plombier) rather than as a list in a single parameter. The test has been updated to use the correct format and now passes successfully."
 
   - task: "Credit Consumption on Swipe"
     implemented: true
