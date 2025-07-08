@@ -45,13 +45,25 @@ NEW_USERS = {
 
 # Test data for artisan profile
 ARTISAN_PROFILE = {
-    "profession": "electricien",
+    "professions": ["electricien", "plombier"],  # Multi-profession support
     "description": "Électricien professionnel avec 10 ans d'expérience",
     "experience_years": 10,
-    "hourly_rate": 50.0,
+    "hourly_rate_min": 40.0,
+    "hourly_rate_max": 60.0,
     "location": "Paris",
+    "radius_km": 50,
     "portfolio_images": ["https://example.com/image1.jpg"],
-    "certifications": ["Certification Électricien"]
+    "certifications": ["Certification Électricien"],
+    "company_info": {
+        "company_name": "Électricité Pro",
+        "siret": "12345678901234",
+        "company_type": "auto_entrepreneur",
+        "address": "123 Rue de l'Électricité",
+        "city": "Paris",
+        "postal_code": "75001",
+        "insurance_number": "INS123456",
+        "website": "https://electricite-pro.fr"
+    }
 }
 
 # Test data for project
