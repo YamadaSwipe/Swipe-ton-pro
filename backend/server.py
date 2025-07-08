@@ -337,6 +337,9 @@ async def register(user: UserCreate):
         "password_hash": hashed_password,
         "is_active": True,
         "validation_status": ValidationStatus.PENDING if user.user_type == UserType.ARTISAN else None,
+        "credits": 0,  # Initialiser avec 0 crédits
+        "subscription_pack": None,
+        "subscription_expires": None,
         "created_at": datetime.utcnow(),
         "updated_at": datetime.utcnow()
     }
