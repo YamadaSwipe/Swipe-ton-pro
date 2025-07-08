@@ -113,6 +113,9 @@ class UserResponse(UserBase):
     created_at: datetime
     updated_at: datetime
     validation_status: Optional[ValidationStatus] = None
+    credits: int = 0  # Crédits pour les artisans
+    subscription_pack: Optional[SubscriptionPack] = None
+    subscription_expires: Optional[datetime] = None
 
 class UserLogin(BaseModel):
     email: EmailStr
@@ -122,6 +125,27 @@ class Token(BaseModel):
     access_token: str
     token_type: str
     user: UserResponse
+
+class Subscription(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    pack: SubscriptionPack
+    credits_included: int
+    price: float
+    purchased_at: datetime = Field(default_factory=datetime.utcnow)
+    expires_at: Optional[datetime] = None
+    is_active: bool = True
+
+class SubscriptionCreate(BaseModel):
+    pack: SubscriptionPack
+
+class PackInfo(BaseModel):
+    pack: SubscriptionPack
+    name: str
+    credits: int
+    price: float
+    features: List[str]
+    popular: bool = False
 
 class CompanyInfo(BaseModel):
     company_name: str
