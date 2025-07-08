@@ -858,20 +858,20 @@
                         font-weight: 800;
                         color: white;
                         margin-bottom: 1rem;
-                    ">Nos formules artisans</h2>
+                    ">Nos formules artisans 💎</h2>
                     <p style="
                         color: #94a3b8;
                         font-size: 1.125rem;
                         margin-bottom: 3rem;
-                    ">Des solutions adaptées à tous vos besoins et budgets</p>
+                    ">Pour tous les besoins et tous les budgets</p>
                     
                     <div style="
                         display: grid;
-                        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
                         gap: 2rem;
                         margin-bottom: 3rem;
                     ">
-                        <!-- Pack 1 - Pro Starter -->
+                        <!-- Pack 1 - Particuliers GRATUIT -->
                         <div style="
                             background: rgba(15, 23, 42, 0.8);
                             border: 2px solid #22c55e;
@@ -882,7 +882,7 @@
                             transition: all 0.3s;
                         ">
                             <div style="
-                                background: #22c55e;
+                                background: #dc2626;
                                 color: white;
                                 padding: 0.5rem 1rem;
                                 border-radius: 0.5rem;
@@ -890,27 +890,27 @@
                                 font-weight: 600;
                                 margin-bottom: 1rem;
                                 display: inline-block;
-                            ">STARTER</div>
+                            ">🎁</div>
                             
                             <h3 style="
                                 color: white;
                                 font-size: 1.5rem;
                                 font-weight: 700;
                                 margin-bottom: 0.5rem;
-                            ">PRO STARTER</h3>
+                            ">Particuliers</h3>
                             
                             <div style="
-                                color: white;
+                                color: #22c55e;
                                 font-size: 2.5rem;
                                 font-weight: 900;
                                 margin-bottom: 0.5rem;
-                            ">49€<span style="font-size: 1rem; font-weight: 500; color: #94a3b8;">/mois</span></div>
+                            ">GRATUIT</div>
                             
                             <p style="
                                 color: #94a3b8;
                                 font-size: 0.875rem;
                                 margin-bottom: 2rem;
-                            ">Idéal pour débuter sur la plateforme</p>
+                            ">100% gratuit 🔥</p>
                             
                             <ul style="
                                 list-style: none;
@@ -925,7 +925,7 @@
                                     align-items: center;
                                 ">
                                     <span style="color: #22c55e; margin-right: 0.5rem;">✓</span>
-                                    Profil vérifié
+                                    Swipe illimité
                                 </li>
                                 <li style="
                                     color: #94a3b8;
@@ -934,7 +934,7 @@
                                     align-items: center;
                                 ">
                                     <span style="color: #22c55e; margin-right: 0.5rem;">✓</span>
-                                    65 demandes/mois
+                                    Chat avec artisans
                                 </li>
                                 <li style="
                                     color: #94a3b8;
@@ -943,7 +943,7 @@
                                     align-items: center;
                                 ">
                                     <span style="color: #22c55e; margin-right: 0.5rem;">✓</span>
-                                    Facturation devis 60€
+                                    Demande de devis
                                 </li>
                                 <li style="
                                     color: #94a3b8;
@@ -952,16 +952,7 @@
                                     align-items: center;
                                 ">
                                     <span style="color: #22c55e; margin-right: 0.5rem;">✓</span>
-                                    Analytics basiques
-                                </li>
-                                <li style="
-                                    color: #94a3b8;
-                                    margin-bottom: 0.75rem;
-                                    display: flex;
-                                    align-items: center;
-                                ">
-                                    <span style="color: #22c55e; margin-right: 0.5rem;">✓</span>
-                                    Support email
+                                    Support client
                                 </li>
                             </ul>
                             
@@ -978,11 +969,122 @@
                                 transition: all 0.3s;
                                 box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
                             ">
-                                Choisir ce plan
+                                Commencer gratuitement
                             </button>
                         </div>
                         
-                        <!-- Pack 2 - Pro Business -->
+                        <!-- Pack 2 - Pro Starter -->
+                        <div style="
+                            background: rgba(15, 23, 42, 0.8);
+                            border: 2px solid #3b82f6;
+                            border-radius: 1.5rem;
+                            padding: 2rem;
+                            text-align: center;
+                            position: relative;
+                            transition: all 0.3s;
+                        ">
+                            <div style="
+                                background: #1d4ed8;
+                                color: white;
+                                padding: 0.5rem 1rem;
+                                border-radius: 0.5rem;
+                                font-size: 0.875rem;
+                                font-weight: 600;
+                                margin-bottom: 1rem;
+                                display: inline-block;
+                            ">⚡</div>
+                            
+                            <h3 style="
+                                color: white;
+                                font-size: 1.5rem;
+                                font-weight: 700;
+                                margin-bottom: 0.5rem;
+                            ">Pro Starter</h3>
+                            
+                            <div style="
+                                color: white;
+                                font-size: 2.5rem;
+                                font-weight: 900;
+                                margin-bottom: 0.5rem;
+                            ">49€<span style="font-size: 1rem; font-weight: 500; color: #94a3b8;">/mois</span></div>
+                            
+                            <p style="
+                                color: #94a3b8;
+                                font-size: 0.875rem;
+                                margin-bottom: 2rem;
+                            ">30 demandes incluses</p>
+                            
+                            <ul style="
+                                list-style: none;
+                                padding: 0;
+                                margin: 0 0 2rem 0;
+                                text-align: left;
+                            ">
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
+                                    Profil vérifié
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
+                                    50 demandes/mois
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
+                                    Facturation devis 60€
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
+                                    Analytics basiques
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
+                                    Support email
+                                </li>
+                            </ul>
+                            
+                            <button style="
+                                background: linear-gradient(45deg, #3b82f6, #2563eb);
+                                color: white;
+                                border: none;
+                                padding: 1rem 2rem;
+                                border-radius: 0.75rem;
+                                font-size: 1rem;
+                                font-weight: 600;
+                                cursor: pointer;
+                                width: 100%;
+                                transition: all 0.3s;
+                                box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+                            ">
+                                Essayer gratuitement
+                            </button>
+                        </div>
+                        
+                        <!-- Pack 3 - Pro Business -->
                         <div style="
                             background: rgba(15, 23, 42, 0.8);
                             border: 2px solid #3b82f6;
@@ -1008,7 +1110,7 @@
                                 font-size: 1.5rem;
                                 font-weight: 700;
                                 margin-bottom: 0.5rem;
-                            ">PRO BUSINESS</h3>
+                            ">Pro Business</h3>
                             
                             <div style="
                                 color: white;
@@ -1021,7 +1123,7 @@
                                 color: #94a3b8;
                                 font-size: 0.875rem;
                                 margin-bottom: 2rem;
-                            ">Pour les professionnels actifs</p>
+                            ">100 demandes incluses</p>
                             
                             <ul style="
                                 list-style: none;
@@ -1029,15 +1131,6 @@
                                 margin: 0 0 2rem 0;
                                 text-align: left;
                             ">
-                                <li style="
-                                    color: #94a3b8;
-                                    margin-bottom: 0.75rem;
-                                    display: flex;
-                                    align-items: center;
-                                ">
-                                    <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
-                                    100 demandes incluses
-                                </li>
                                 <li style="
                                     color: #94a3b8;
                                     margin-bottom: 0.75rem;
@@ -1107,11 +1200,11 @@
                                 transition: all 0.3s;
                                 box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
                             ">
-                                Choisir ce plan
+                                Commencer l'essai
                             </button>
                         </div>
                         
-                        <!-- Pack 3 - Pro Premium -->
+                        <!-- Pack 4 - Pro Premium -->
                         <div style="
                             background: rgba(15, 23, 42, 0.8);
                             border: 2px solid #f59e0b;
@@ -1137,7 +1230,7 @@
                                 font-size: 1.5rem;
                                 font-weight: 700;
                                 margin-bottom: 0.5rem;
-                            ">PRO PREMIUM</h3>
+                            ">Pro Premium</h3>
                             
                             <div style="
                                 color: white;
@@ -1150,7 +1243,7 @@
                                 color: #94a3b8;
                                 font-size: 0.875rem;
                                 margin-bottom: 2rem;
-                            ">Pour les experts reconnus</p>
+                            ">200 demandes incluses</p>
                             
                             <ul style="
                                 list-style: none;
@@ -1158,15 +1251,6 @@
                                 margin: 0 0 2rem 0;
                                 text-align: left;
                             ">
-                                <li style="
-                                    color: #94a3b8;
-                                    margin-bottom: 0.75rem;
-                                    display: flex;
-                                    align-items: center;
-                                ">
-                                    <span style="color: #f59e0b; margin-right: 0.5rem;">✓</span>
-                                    250 demandes incluses
-                                </li>
                                 <li style="
                                     color: #94a3b8;
                                     margin-bottom: 0.75rem;
@@ -1245,16 +1329,16 @@
                                 transition: all 0.3s;
                                 box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
                             ">
-                                Choisir ce plan
+                                Contactez-nous
                             </button>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Section CTA finale -->
+            <!-- Section CTA finale - "On swipe pour toi" -->
             <section style="
-                background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+                background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
                 padding: 4rem 2rem;
                 text-align: center;
                 position: relative;
@@ -1270,7 +1354,7 @@
                         font-size: 4rem;
                         margin-bottom: 1rem;
                         animation: bounce 2s ease-in-out infinite;
-                    ">⭐</div>
+                    ">💖</div>
                     
                     <h2 style="
                         font-size: 2.5rem;
@@ -1278,7 +1362,7 @@
                         color: white;
                         margin-bottom: 1rem;
                         line-height: 1.2;
-                    ">"On swipe pour vous"</h2>
+                    ">"On swipe pour toi"</h2>
                     
                     <div style="
                         font-size: 3rem;
@@ -1286,7 +1370,7 @@
                         color: white;
                         margin-bottom: 1rem;
                         text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-                    ">295€<span style="font-size: 1.5rem; font-weight: 600; opacity: 0.8;">/mois</span></div>
+                    ">299€<span style="font-size: 1.5rem; font-weight: 600; opacity: 0.8;">/mois</span></div>
                     
                     <p style="
                         font-size: 1.25rem;
@@ -1294,7 +1378,7 @@
                         margin-bottom: 2rem;
                         line-height: 1.6;
                     ">
-                        Notre équipe gère votre profil et swipe les clients idéaux automatiquement.
+                        Notre équipe d'experts sélectionne et présente vos profils aux clients potentiels, maximisant vos chances de décrocher de nouveaux projets sans effort de votre part.
                     </p>
                     
                     <div style="
@@ -1304,21 +1388,7 @@
                         flex-wrap: wrap;
                     ">
                         <button style="
-                            background: white;
-                            color: #7c3aed;
-                            border: none;
-                            padding: 1rem 2rem;
-                            border-radius: 0.75rem;
-                            font-size: 1.125rem;
-                            font-weight: 600;
-                            cursor: pointer;
-                            transition: all 0.3s;
-                            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
-                        ">
-                            Découvrir ce service
-                        </button>
-                        <button style="
-                            background: rgba(255, 255, 255, 0.1);
+                            background: rgba(255, 255, 255, 0.2);
                             color: white;
                             border: 2px solid white;
                             padding: 1rem 2rem;
@@ -1327,9 +1397,192 @@
                             font-weight: 600;
                             cursor: pointer;
                             transition: all 0.3s;
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
                         ">
-                            En savoir plus
+                            💖 Découvrir ce service
                         </button>
+                        <button style="
+                            background: rgba(255, 255, 255, 0.1);
+                            color: white;
+                            border: 2px solid rgba(255, 255, 255, 0.3);
+                            padding: 1rem 2rem;
+                            border-radius: 0.75rem;
+                            font-size: 1.125rem;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.3s;
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                        ">
+                            📋 Demander plus d'infos
+                        </button>
+                        <button style="
+                            background: rgba(59, 130, 246, 0.8);
+                            color: white;
+                            border: 2px solid #3b82f6;
+                            padding: 1rem 2rem;
+                            border-radius: 0.75rem;
+                            font-size: 1.125rem;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.3s;
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                        ">
+                            🎯 Réserver votre place
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section Témoignages -->
+            <section style="
+                background: #0f172a;
+                padding: 4rem 2rem;
+            ">
+                <div style="
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    text-align: center;
+                ">
+                    <h2 style="
+                        font-size: 2.5rem;
+                        font-weight: 800;
+                        color: white;
+                        margin-bottom: 1rem;
+                    ">Ils nous font confiance</h2>
+                    <p style="
+                        color: #94a3b8;
+                        font-size: 1.125rem;
+                        margin-bottom: 3rem;
+                    ">Encore des milliers de projets à réaliser ensemble</p>
+                    
+                    <div style="
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                        gap: 2rem;
+                        margin-bottom: 3rem;
+                    ">
+                        <!-- Témoignage 1 -->
+                        <div style="
+                            background: rgba(15, 23, 42, 0.5);
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                            border-radius: 1rem;
+                            padding: 2rem;
+                            text-align: left;
+                        ">
+                            <div style="
+                                color: #facc15;
+                                font-size: 1.2rem;
+                                margin-bottom: 1rem;
+                            ">⭐⭐⭐⭐⭐</div>
+                            <p style="
+                                color: #94a3b8;
+                                line-height: 1.6;
+                                margin-bottom: 1.5rem;
+                                font-style: italic;
+                            ">
+                                "J'ai trouvé mon électricien en 5 minutes ! Le service est incroyable."
+                            </p>
+                            <div style="
+                                display: flex;
+                                align-items: center;
+                                gap: 1rem;
+                            ">
+                                <div style="
+                                    width: 50px;
+                                    height: 50px;
+                                    background: url('https://images.pexels.com/photos/7616608/pexels-photo-7616608.jpeg') center/cover;
+                                    border-radius: 50%;
+                                "></div>
+                                <div>
+                                    <div style="color: white; font-weight: 600;">Marie-Claire L.</div>
+                                    <div style="color: #94a3b8; font-size: 0.875rem;">Propriétaire d'une maison</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Témoignage 2 -->
+                        <div style="
+                            background: rgba(15, 23, 42, 0.5);
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                            border-radius: 1rem;
+                            padding: 2rem;
+                            text-align: left;
+                        ">
+                            <div style="
+                                color: #facc15;
+                                font-size: 1.2rem;
+                                margin-bottom: 1rem;
+                            ">⭐⭐⭐⭐⭐</div>
+                            <p style="
+                                color: #94a3b8;
+                                line-height: 1.6;
+                                margin-bottom: 1.5rem;
+                                font-style: italic;
+                            ">
+                                "Grâce à Swipe Ton Pro, j'ai doublé mon chiffre d'affaires en 3 mois seulement !"
+                            </p>
+                            <div style="
+                                display: flex;
+                                align-items: center;
+                                gap: 1rem;
+                            ">
+                                <div style="
+                                    width: 50px;
+                                    height: 50px;
+                                    background: url('https://images.pexels.com/photos/8487333/pexels-photo-8487333.jpeg') center/cover;
+                                    border-radius: 50%;
+                                "></div>
+                                <div>
+                                    <div style="color: white; font-weight: 600;">Jean-Pierre M.</div>
+                                    <div style="color: #94a3b8; font-size: 0.875rem;">Plombier indépendant</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Témoignage 3 -->
+                        <div style="
+                            background: rgba(15, 23, 42, 0.5);
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                            border-radius: 1rem;
+                            padding: 2rem;
+                            text-align: left;
+                        ">
+                            <div style="
+                                color: #facc15;
+                                font-size: 1.2rem;
+                                margin-bottom: 1rem;
+                            ">⭐⭐⭐⭐⭐</div>
+                            <p style="
+                                color: #94a3b8;
+                                line-height: 1.6;
+                                margin-bottom: 1.5rem;
+                                font-style: italic;
+                            ">
+                                "La plateforme parfaite pour trouver des artisans qualifiés rapidement !"
+                            </p>
+                            <div style="
+                                display: flex;
+                                align-items: center;
+                                gap: 1rem;
+                            ">
+                                <div style="
+                                    width: 50px;
+                                    height: 50px;
+                                    background: url('https://images.unsplash.com/photo-1544717297-fa95b6ee9643') center/cover;
+                                    border-radius: 50%;
+                                "></div>
+                                <div>
+                                    <div style="color: white; font-weight: 600;">Sophie R.</div>
+                                    <div style="color: #94a3b8; font-size: 0.875rem;">Architecte d'intérieur</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
