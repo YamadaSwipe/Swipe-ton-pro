@@ -200,6 +200,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "Swipe endpoint works correctly for 'like' action. Successfully creates a match. The 'pass' action failed with 'Already swiped on this profile' which is expected behavior if we've already swiped on that profile."
+      - working: true
+        agent: "testing"
+        comment: "Swipe endpoint is working as expected. The 'Already swiped on this profile' error is the correct behavior when trying to swipe on a profile that has already been swiped on. This is a validation check in the API to prevent duplicate swipes."
 
   - task: "Swipe System - Get Matches"
     implemented: true
