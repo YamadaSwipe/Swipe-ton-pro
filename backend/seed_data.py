@@ -319,31 +319,120 @@ async def seed_data():
     # Get particulier IDs
     particulier_users = [u for u in users if u["user_type"] == "particulier"]
     
-    # Create test projects
+    # Create particulier profiles
+    particulier_profiles = [
+        {
+            "id": str(uuid.uuid4()),
+            "user_id": particulier_users[0]["id"],
+            "address": "45 Rue de la République",
+            "city": "Paris",
+            "postal_code": "75011",
+            "property_type": "appartement",
+            "property_size": 80,
+            "preferred_contact": "both",
+            "availability_schedule": "apres_midi",
+            "project_details": {
+                "current_project": "Rénovation électrique complète",
+                "budget_estimation": "3000-4000€",
+                "timeline": "Dans les 2 mois",
+                "specific_needs": "Remise aux normes, ajout prises, éclairage LED",
+                "access_info": "Appartement 3ème étage, ascenseur disponible",
+                "availability": "Lundi au vendredi après 14h"
+            },
+            "created_at": datetime.utcnow(),
+            "updated_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "user_id": particulier_users[1]["id"],
+            "address": "12 Avenue des Platanes",
+            "city": "Lyon",
+            "postal_code": "69003",
+            "property_type": "maison",
+            "property_size": 120,
+            "preferred_contact": "phone",
+            "availability_schedule": "weekend",
+            "project_details": {
+                "current_project": "Cuisine sur mesure",
+                "budget_estimation": "7000-9000€",
+                "timeline": "Flexible, idéalement avant l'été",
+                "specific_needs": "Cuisine ouverte, îlot central, bois massif",
+                "access_info": "Maison individuelle, parking disponible",
+                "availability": "Weekends et soirées"
+            },
+            "created_at": datetime.utcnow(),
+            "updated_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "user_id": particulier_users[2]["id"],
+            "address": "78 Chemin des Oliviers",
+            "city": "Marseille",
+            "postal_code": "13008",
+            "property_type": "maison",
+            "property_size": 150,
+            "preferred_contact": "email",
+            "availability_schedule": "flexible",
+            "project_details": {
+                "current_project": "Installation pompe à chaleur",
+                "budget_estimation": "10000-15000€",
+                "timeline": "Urgent - avant l'hiver",
+                "specific_needs": "Remplacement chaudière fioul, pompe à chaleur air-eau",
+                "access_info": "Maison avec jardin, accès facile local technique",
+                "availability": "Très flexible, télétravail"
+            },
+            "created_at": datetime.utcnow(),
+            "updated_at": datetime.utcnow()
+        }
+    ]
+    
+    # Insert particulier profiles
+    await db.particulier_profiles.insert_many(particulier_profiles)
+    print(f"✅ Created {len(particulier_profiles)} particulier profiles")
+    
+    # Create test projects with multi-choice professions
     projects = [
         {
             "id": str(uuid.uuid4()),
             "user_id": particulier_users[0]["id"],
             "title": "Rénovation électrique complète",
-            "description": "Refaire l'installation électrique de mon appartement de 80m². Tableaux à changer, nouvelles prises, éclairage LED.",
-            "budget": 3500.0,
-            "profession_needed": "electricien",
+            "description": "Refaire l'installation électrique de mon appartement de 80m². Tableaux à changer, nouvelles prises, éclairage LED, domotique basique.",
+            "budget_range": "1500_5000",
+            "professions_needed": ["electricien"],
             "location": "Paris 11ème",
             "urgency": "normal",
             "images": [],
+            "technical_details": {
+                "surface": "80m²",
+                "nb_pieces": 4,
+                "tableau_actuel": "Ancien, à remplacer",
+                "souhaits_specifiques": "Prises USB, éclairage LED, préparation domotique",
+                "contraintes": "Appartement occupé, travaux par étapes possibles"
+            },
+            "preferred_timeline": "1_mois",
+            "access_constraints": "Accès après 14h en semaine, weekend libre",
             "created_at": datetime.utcnow(),
             "status": "active"
         },
         {
             "id": str(uuid.uuid4()),
             "user_id": particulier_users[1]["id"],
-            "title": "Cuisine sur mesure",
-            "description": "Création d'une cuisine sur mesure avec îlot central. Bois massif, finitions haut de gamme.",
-            "budget": 8000.0,
-            "profession_needed": "menuisier",
+            "title": "Cuisine sur mesure avec îlot",
+            "description": "Création d'une cuisine sur mesure avec îlot central. Bois massif, finitions haut de gamme, style moderne épuré.",
+            "budget_range": "5000_15000",
+            "professions_needed": ["menuisier", "electricien"],  # Multi-choix
             "location": "Lyon 3ème",
             "urgency": "flexible",
             "images": [],
+            "technical_details": {
+                "surface": "25m²",
+                "style": "Moderne épuré",
+                "materiaux": "Bois massif chêne",
+                "equipements": "Îlot central, plan de travail quartz",
+                "contraintes": "Cuisine ouverte sur salon"
+            },
+            "preferred_timeline": "3_mois",
+            "access_constraints": "Weekends principalement, quelques soirées",
             "created_at": datetime.utcnow(),
             "status": "active"
         },
@@ -351,12 +440,21 @@ async def seed_data():
             "id": str(uuid.uuid4()),
             "user_id": particulier_users[2]["id"],
             "title": "Installation chauffage pompe à chaleur",
-            "description": "Remplacement de l'ancienne chaudière par une pompe à chaleur air-eau. Maison 120m².",
-            "budget": 12000.0,
-            "profession_needed": "chauffagiste",
+            "description": "Remplacement de l'ancienne chaudière fioul par une pompe à chaleur air-eau. Maison 150m², aide financière obtenue.",
+            "budget_range": "plus_15000",
+            "professions_needed": ["chauffagiste", "plombier"],  # Multi-choix
             "location": "Marseille 8ème",
             "urgency": "urgent",
             "images": [],
+            "technical_details": {
+                "surface": "150m²",
+                "chauffage_actuel": "Chaudière fioul ancienne",
+                "isolation": "Récente (2020)",
+                "radiateurs": "Fonte, à conserver",
+                "contraintes": "Accès local technique facile"
+            },
+            "preferred_timeline": "1_semaine",
+            "access_constraints": "Très flexible, télétravail",
             "created_at": datetime.utcnow(),
             "status": "active"
         }
