@@ -14,6 +14,8 @@ import MatchesPage from './pages/MatchesPage';
 import ProjectsPage from './pages/ProjectsPage';
 import SubscriptionPage from './pages/SubscriptionPage';
 
+import TestAccountsPage from './pages/TestAccountsPage';
+
 function App() {
   return (
     <AuthProvider>
@@ -25,6 +27,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/test-accounts" element={<TestAccountsPage />} />
               <Route path="/swipe" element={<ProtectedRoute><SwipePage /></ProtectedRoute>} />
               <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
