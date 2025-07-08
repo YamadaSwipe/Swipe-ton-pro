@@ -221,15 +221,18 @@ backend:
 
   - task: "Projects - Get Projects"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "testing"
         comment: "Get projects endpoint works for particulier users but fails with 504 timeout for artisan users. Successfully retrieves projects for particulier but times out for artisan."
+      - working: true
+        agent: "testing"
+        comment: "Get projects endpoint is now working correctly for both particulier and artisan users. The previous timeout issues appear to have been temporary."
 
 frontend:
   - task: "Frontend Testing"
