@@ -258,12 +258,15 @@ frontend:
       - working: true
         agent: "testing"
         comment: "La page d'accueil s'affiche correctement avec le logo SwipeTonPro, les boutons de navigation (Accueil, Grand compte, Enseignes, Connexion, Inscription), le titre 'Ton prochain CRUSH professionnel en un SWIPE', et les cartes d'artisans (Électricien Pro, Plombier Expert). Le design est professionnel avec un gradient de couleur et une mise en page attrayante."
+      - working: true
+        agent: "testing"
+        comment: "Confirmation que la page d'accueil fonctionne parfaitement. Les modales de contact pour 'Grand compte' et 'Enseignes' s'ouvrent correctement. Les cartes professionnelles sont bien affichées avec leurs informations (profession, rating, localisation, tarifs vérifiés)."
 
   - task: "Authentification"
     implemented: true
     working: true
     file: "/app/frontend/src/pages/LoginPage.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
@@ -273,6 +276,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "L'authentification fonctionne correctement. La connexion avec le compte particulier (part1@gmail.com/pat1pat1) redirige vers le dashboard avec le nom d'utilisateur 'Marie'. Le bouton œil pour afficher/masquer le mot de passe fonctionne correctement. La page de connexion affiche les comptes de test disponibles."
+      - working: false
+        agent: "testing"
+        comment: "Le formulaire de connexion fonctionne correctement et le bouton œil pour afficher/masquer le mot de passe fonctionne parfaitement. Cependant, il y a un problème de connexion avec le backend. La connexion échoue probablement en raison d'un problème avec l'URL du backend dans le fichier .env (REACT_APP_BACKEND_URL=https://cc81e210-0f11-414c-b4d2-6e8c4907016b.preview.emergentagent.com) qui ne correspond pas à l'URL fournie dans la demande de test (https://50d2463b-8540-4634-be7d-c4da33d09e2d.preview.emergentagent.com)."
 
   - task: "Fonctionnalité de swipe"
     implemented: true
