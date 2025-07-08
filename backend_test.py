@@ -535,42 +535,145 @@ def test_swipe_with_credit_check(user_type="artisan", action="like"):
     initial_credits = response.json().get("current_credits", 0)
     print(f"Initial credits: {initial_credits}")
     
-    # Get a profile to swipe on
-    response = requests.get(f"{BACKEND_URL}/artisan/profiles", headers=headers)
-    if response.status_code != 200 or len(response.json()) == 0:
-        print("❌ No profiles found to swipe on")
-        return False
+    # If no credits, purchase a subscription
+    if initial_credits <= 0:
+        print("No credits available. Purchasing a subscription pack...")
+        purchase_result = test_purchase_subscription(user_type, "starter")
+        if not purchase_result:
+            print("❌ Failed to purchase subscription")
+            return False
+        
+        # Get updated credits
+        response = requests.get(f"{BACKEND_URL}/subscription/current", headers=headers)
+        if response.status_code != 200:
+            print("❌ Failed to get updated credits after purchase")
+            return False
+        
+        initial_credits = response.json().get("current_credits", 0)
+        print(f"Updated credits after purchase: {initial_credits}")
     
-    target_id = response.json()[0]["id"]
+    # Try to swipe on a project instead of a profile
+    # Get available projects to swipe on
+    response = requests.get(f"{BACKEND_URL}/artisan/swipe", headers=headers)
     
-    # Perform swipe
-    swipe_data = {
-        "target_id": target_id,
-        "action": action
-    }
-    
-    response = requests.post(f"{BACKEND_URL}/swipe", json=swipe_data, headers=headers)
-    print(f"Swipe Status Code: {response.status_code}")
-    
-    # Check credits after swipe
-    response = requests.get(f"{BACKEND_URL}/subscription/current", headers=headers)
-    
-    if response.status_code != 200:
-        print("❌ Failed to get updated credits")
-        return False
-    
-    final_credits = response.json().get("current_credits", 0)
-    print(f"Final credits: {final_credits}")
-    
-    if action == "like" and final_credits < initial_credits:
-        print(f"✅ Credit consumption verified: {initial_credits} -> {final_credits}")
-        return True
-    elif action == "pass" and final_credits == initial_credits:
-        print(f"✅ No credit consumed for pass action: {initial_credits} -> {final_credits}")
-        return True
+    if response.status_code == 200 and len(response.json()) > 0:
+        project_id = response.json()[0]["id"]
+        print(f"Found project to swipe on: {project_id}")
+        
+        # Perform project swipe
+        params = {
+            "project_id": project_id,
+            "action": action
+        }
+        
+        response = requests.post(f"{BACKEND_URL}/artisan/swipe-project", params=params, headers=headers)
+        print(f"Project Swipe Status Code: {response.status_code}")
+        print(f"Response: {response.text}")
+        
+        # Check credits after swipe
+        response = requests.get(f"{BACKEND_URL}/subscription/current", headers=headers)
+        
+        if response.status_code != 200:
+            print("❌ Failed to get updated credits after project swipe")
+            return False
+        
+        final_credits = response.json().get("current_credits", 0)
+        print(f"Final credits after project swipe: {final_credits}")
+        
+        if action == "like" and final_credits < initial_credits:
+            print(f"✅ Credit consumption verified for project swipe: {initial_credits} -> {final_credits}")
+            return True
+        elif action == "pass" and final_credits == initial_credits:
+            print(f"✅ No credit consumed for pass action on project: {initial_credits} -> {final_credits}")
+            return True
+        else:
+            print(f"❌ Credit consumption test failed for project swipe. Expected: {initial_credits-1 if action=='like' else initial_credits}, Got: {final_credits}")
+            return False
     else:
-        print(f"❌ Credit consumption test failed. Expected: {initial_credits-1 if action=='like' else initial_credits}, Got: {final_credits}")
-        return False
+        print("No projects available for swiping. Testing with profile swipe instead...")
+        
+        # Create a new artisan profile for testing if needed
+        if "new_artisan" not in tokens:
+            # Register a new artisan
+            new_artisan = {
+                "email": f"new_art_{int(time.time())}@example.com",
+                "password": "testpassword",
+                "first_name": "New",
+                "last_name": "Artisan",
+                "phone": "0123456789",
+                "user_type": "artisan"
+            }
+            
+            response = requests.post(f"{BACKEND_URL}/auth/register", json=new_artisan)
+            if response.status_code == 200:
+                data = response.json()
+                tokens["new_artisan"] = data["access_token"]
+                user_ids["new_artisan"] = data["user"]["id"]
+                print(f"✅ Registered new artisan for testing")
+                
+                # Create profile for the new artisan
+                headers_new = {"Authorization": f"Bearer {tokens['new_artisan']}"}
+                response = requests.post(f"{BACKEND_URL}/artisan/profile", json=ARTISAN_PROFILE, headers=headers_new)
+                if response.status_code == 200:
+                    data = response.json()
+                    artisan_profile_ids["new_artisan"] = data["id"]
+                    print(f"✅ Created profile for new artisan")
+                    
+                    # Validate the artisan profile using admin
+                    if "admin" in tokens:
+                        admin_headers = {"Authorization": f"Bearer {tokens['admin']}"}
+                        params = {"action": "validate"}
+                        response = requests.post(
+                            f"{BACKEND_URL}/admin/validate-artisan/{artisan_profile_ids['new_artisan']}", 
+                            params=params, 
+                            headers=admin_headers
+                        )
+                        if response.status_code == 200:
+                            print(f"✅ Validated new artisan profile")
+                        else:
+                            print(f"❌ Failed to validate new artisan profile")
+                else:
+                    print(f"❌ Failed to create profile for new artisan")
+            else:
+                print(f"❌ Failed to register new artisan for testing")
+        
+        # Get a profile to swipe on
+        response = requests.get(f"{BACKEND_URL}/artisan/profiles", headers=headers)
+        if response.status_code != 200 or len(response.json()) == 0:
+            print("❌ No profiles found to swipe on")
+            return False
+        
+        target_id = response.json()[0]["id"]
+        
+        # Perform swipe
+        swipe_data = {
+            "target_id": target_id,
+            "action": action
+        }
+        
+        response = requests.post(f"{BACKEND_URL}/swipe", json=swipe_data, headers=headers)
+        print(f"Profile Swipe Status Code: {response.status_code}")
+        print(f"Response: {response.text}")
+        
+        # Check credits after swipe
+        response = requests.get(f"{BACKEND_URL}/subscription/current", headers=headers)
+        
+        if response.status_code != 200:
+            print("❌ Failed to get updated credits after profile swipe")
+            return False
+        
+        final_credits = response.json().get("current_credits", 0)
+        print(f"Final credits after profile swipe: {final_credits}")
+        
+        if action == "like" and final_credits < initial_credits:
+            print(f"✅ Credit consumption verified for profile swipe: {initial_credits} -> {final_credits}")
+            return True
+        elif action == "pass" and final_credits == initial_credits:
+            print(f"✅ No credit consumed for pass action on profile: {initial_credits} -> {final_credits}")
+            return True
+        else:
+            print(f"❌ Credit consumption test failed for profile swipe. Expected: {initial_credits-1 if action=='like' else initial_credits}, Got: {final_credits}")
+            return False
 
 def test_multi_profession_search():
     """Test searching artisans by multiple professions"""
