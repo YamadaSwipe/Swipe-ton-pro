@@ -291,15 +291,18 @@ frontend:
 
   - task: "Dashboard utilisateur"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/DashboardPage.js"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "testing"
         comment: "Vérification du dashboard pour différents types d'utilisateurs et des statistiques affichées."
+      - working: true
+        agent: "testing"
+        comment: "Le dashboard utilisateur fonctionne correctement. Pour les particuliers, il affiche les statistiques (Matches, Projets, Messages), les actions rapides (Swiper, Mes Matches, Mes Projets, Mon Profil), les matches récents, les projets récents, et des conseils spécifiques aux particuliers. Le design est cohérent avec le reste de l'application."
 
   - task: "Pages fonctionnelles - Matches"
     implemented: true
