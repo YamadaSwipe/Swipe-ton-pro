@@ -604,47 +604,61 @@ def run_new_feature_tests():
     print(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print_separator()
     
+    # Health check
+    results["health_check"] = test_health_check()
+    print_separator()
+    
     # Login with existing users
     results["login_existing_particulier"] = test_login("particulier", use_existing=True)
     print_separator()
     results["login_existing_artisan"] = test_login("artisan", use_existing=True)
     print_separator()
-    results["login_admin"] = test_login("admin", use_existing=True)
+    results["login_existing_admin"] = test_login("admin", use_existing=True)
     print_separator()
+    
+    # Create a project for artisan swipe tests
+    if "particulier" in tokens:
+        results["create_project"] = test_create_project("particulier")
+        print_separator()
     
     # 1. Subscription System
     results["get_subscription_packs"] = test_get_subscription_packs()
     print_separator()
-    results["purchase_subscription"] = test_purchase_subscription("artisan", "starter")
-    print_separator()
-    results["get_current_subscription"] = test_get_current_subscription("artisan")
-    print_separator()
     
-    # 2. Document Upload
-    results["upload_document"] = test_upload_document("artisan", "kbis")
-    print_separator()
+    if "artisan" in tokens:
+        results["purchase_subscription"] = test_purchase_subscription("artisan", "starter")
+        print_separator()
+        results["get_current_subscription"] = test_get_current_subscription("artisan")
+        print_separator()
+    
+        # 2. Document Upload
+        results["upload_document"] = test_upload_document("artisan", "kbis")
+        print_separator()
     
     # 3. Artisan Validation
-    results["get_pending_artisans"] = test_get_pending_artisans("admin")
-    print_separator()
-    if "pending" in artisan_profile_ids:
-        results["validate_artisan"] = test_validate_artisan("admin", "validate")
+    if "admin" in tokens:
+        results["get_pending_artisans"] = test_get_pending_artisans("admin")
         print_separator()
+        if "pending" in artisan_profile_ids:
+            results["validate_artisan"] = test_validate_artisan("admin", "validate")
+            print_separator()
     
     # 4. Swipe with Credit Consumption
-    results["swipe_with_credit_check"] = test_swipe_with_credit_check("artisan", "like")
-    print_separator()
-    
-    # 5. Artisan Swipe on Projects
-    results["artisan_swipe_endpoint"] = test_artisan_swipe_endpoint("artisan")
-    print_separator()
-    if "to_swipe" in project_ids:
-        results["artisan_swipe_project"] = test_artisan_swipe_project("artisan", "like")
+    if "artisan" in tokens:
+        results["swipe_with_credit_check"] = test_swipe_with_credit_check("artisan", "like")
         print_separator()
     
+        # 5. Artisan Swipe on Projects
+        results["artisan_swipe_endpoint"] = test_artisan_swipe_endpoint("artisan")
+        print_separator()
+        if "to_swipe" in project_ids:
+            results["artisan_swipe_project"] = test_artisan_swipe_project("artisan", "like")
+            print_separator()
+    
     # 6. Multi-Profession Support
-    results["multi_profession_search"] = test_multi_profession_search()
-    print_separator()
+    if "particulier" in tokens:
+        results["multi_profession_search"] = test_multi_profession_search()
+        print_separator()
     
     # Summary
     print("TEST SUMMARY")
