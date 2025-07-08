@@ -448,9 +448,1072 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Section Pourquoi choisir -->
+            <section style="
+                background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+                padding: 4rem 2rem;
+            ">
+                <div style="
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    text-align: center;
+                ">
+                    <h2 style="
+                        font-size: 2.5rem;
+                        font-weight: 800;
+                        color: white;
+                        margin-bottom: 3rem;
+                    ">Pourquoi choisir Swipe Ton Pro ?</h2>
+                    
+                    <div style="
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                        gap: 2rem;
+                        margin-bottom: 3rem;
+                    ">
+                        <div style="
+                            background: rgba(15, 23, 42, 0.5);
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                            border-radius: 1rem;
+                            padding: 2rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                        ">
+                            <div style="
+                                width: 80px;
+                                height: 80px;
+                                background: linear-gradient(45deg, #22c55e, #84cc16);
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                margin: 0 auto 1rem auto;
+                            ">
+                                <img src="https://images.unsplash.com/photo-1584677191047-38f48d0db64e" alt="Speed icon" style="width: 40px; height: 40px; border-radius: 50%;">
+                            </div>
+                            <h3 style="
+                                color: white;
+                                font-size: 1.25rem;
+                                font-weight: 600;
+                                margin-bottom: 1rem;
+                            ">Rapidité</h3>
+                            <p style="
+                                color: #94a3b8;
+                                line-height: 1.6;
+                                margin: 0;
+                            ">
+                                Trouvez le bon professionnel en quelques swipes seulement.
+                            </p>
+                        </div>
+                        
+                        <div style="
+                            background: rgba(15, 23, 42, 0.5);
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                            border-radius: 1rem;
+                            padding: 2rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                        ">
+                            <div style="
+                                width: 80px;
+                                height: 80px;
+                                background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                margin: 0 auto 1rem auto;
+                            ">
+                                <img src="https://images.pexels.com/photos/7519895/pexels-photo-7519895.jpeg" alt="Precision icon" style="width: 40px; height: 40px; border-radius: 50%;">
+                            </div>
+                            <h3 style="
+                                color: white;
+                                font-size: 1.25rem;
+                                font-weight: 600;
+                                margin-bottom: 1rem;
+                            ">Précision</h3>
+                            <p style="
+                                color: #94a3b8;
+                                line-height: 1.6;
+                                margin: 0;
+                            ">
+                                Notre algorithme vous propose des profils sur mesure selon vos critères.
+                            </p>
+                        </div>
+                        
+                        <div style="
+                            background: rgba(15, 23, 42, 0.5);
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                            border-radius: 1rem;
+                            padding: 2rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                        ">
+                            <div style="
+                                width: 80px;
+                                height: 80px;
+                                background: linear-gradient(45deg, #eab308, #f59e0b);
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                margin: 0 auto 1rem auto;
+                            ">
+                                <img src="https://images.pexels.com/photos/8487770/pexels-photo-8487770.jpeg" alt="Security icon" style="width: 40px; height: 40px; border-radius: 50%;">
+                            </div>
+                            <h3 style="
+                                color: white;
+                                font-size: 1.25rem;
+                                font-weight: 600;
+                                margin-bottom: 1rem;
+                            ">Sécurité</h3>
+                            <p style="
+                                color: #94a3b8;
+                                line-height: 1.6;
+                                margin: 0;
+                            ">
+                                Tous nos artisans sont vérifiés et certifiés.
+                            </p>
+                        </div>
+                        
+                        <div style="
+                            background: rgba(15, 23, 42, 0.5);
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                            border-radius: 1rem;
+                            padding: 2rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                        ">
+                            <div style="
+                                width: 80px;
+                                height: 80px;
+                                background: linear-gradient(45deg, #10b981, #059669);
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                margin: 0 auto 1rem auto;
+                            ">
+                                <img src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643" alt="Communication icon" style="width: 40px; height: 40px; border-radius: 50%;">
+                            </div>
+                            <h3 style="
+                                color: white;
+                                font-size: 1.25rem;
+                                font-weight: 600;
+                                margin-bottom: 1rem;
+                            ">Communication</h3>
+                            <p style="
+                                color: #94a3b8;
+                                line-height: 1.6;
+                                margin: 0;
+                            ">
+                                Échangez directement avec les professionnels.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section Corps de métier -->
+            <section style="
+                background: #0f172a;
+                padding: 4rem 2rem;
+            ">
+                <div style="
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    text-align: center;
+                ">
+                    <h2 style="
+                        font-size: 2.5rem;
+                        font-weight: 800;
+                        color: white;
+                        margin-bottom: 1rem;
+                    ">Tous les corps de métier</h2>
+                    <p style="
+                        color: #94a3b8;
+                        font-size: 1.125rem;
+                        margin-bottom: 3rem;
+                    ">Plus de 50 spécialités disponibles pour tous vos projets</p>
+                    
+                    <div style="
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                        gap: 1.5rem;
+                        margin-bottom: 3rem;
+                    ">
+                        <div style="
+                            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+                            border-radius: 1rem;
+                            padding: 2rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.unsplash.com/photo-1584677191047-38f48d0db64e" alt="Électricien" style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 1rem;">
+                            <h3 style="
+                                color: white;
+                                font-size: 1.125rem;
+                                font-weight: 600;
+                                margin-bottom: 0.5rem;
+                            ">Électricien</h3>
+                            <p style="
+                                color: rgba(255, 255, 255, 0.8);
+                                font-size: 0.875rem;
+                                margin: 0;
+                            ">524 pros</p>
+                        </div>
+                        
+                        <div style="
+                            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+                            border-radius: 1rem;
+                            padding: 2rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.pexels.com/photos/7519895/pexels-photo-7519895.jpeg" alt="Plombier" style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 1rem;">
+                            <h3 style="
+                                color: white;
+                                font-size: 1.125rem;
+                                font-weight: 600;
+                                margin-bottom: 0.5rem;
+                            ">Plombier</h3>
+                            <p style="
+                                color: rgba(255, 255, 255, 0.8);
+                                font-size: 0.875rem;
+                                margin: 0;
+                            ">387 pros</p>
+                        </div>
+                        
+                        <div style="
+                            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+                            border-radius: 1rem;
+                            padding: 2rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.pexels.com/photos/8487333/pexels-photo-8487333.jpeg" alt="Menuisier" style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 1rem;">
+                            <h3 style="
+                                color: white;
+                                font-size: 1.125rem;
+                                font-weight: 600;
+                                margin-bottom: 0.5rem;
+                            ">Menuisier</h3>
+                            <p style="
+                                color: rgba(255, 255, 255, 0.8);
+                                font-size: 0.875rem;
+                                margin: 0;
+                            ">291 pros</p>
+                        </div>
+                        
+                        <div style="
+                            background: linear-gradient(135deg, #475569 0%, #334155 100%);
+                            border-radius: 1rem;
+                            padding: 2rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.pexels.com/photos/8487770/pexels-photo-8487770.jpeg" alt="Maçon" style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 1rem;">
+                            <h3 style="
+                                color: white;
+                                font-size: 1.125rem;
+                                font-weight: 600;
+                                margin-bottom: 0.5rem;
+                            ">Maçon</h3>
+                            <p style="
+                                color: rgba(255, 255, 255, 0.8);
+                                font-size: 0.875rem;
+                                margin: 0;
+                            ">213 pros</p>
+                        </div>
+                        
+                        <div style="
+                            background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+                            border-radius: 1rem;
+                            padding: 2rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643" alt="Peintre" style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 1rem;">
+                            <h3 style="
+                                color: white;
+                                font-size: 1.125rem;
+                                font-weight: 600;
+                                margin-bottom: 0.5rem;
+                            ">Peintre</h3>
+                            <p style="
+                                color: rgba(255, 255, 255, 0.8);
+                                font-size: 0.875rem;
+                                margin: 0;
+                            ">156 pros</p>
+                        </div>
+                        
+                        <div style="
+                            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                            border-radius: 1rem;
+                            padding: 2rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.pexels.com/photos/7616608/pexels-photo-7616608.jpeg" alt="Carreleur" style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 1rem;">
+                            <h3 style="
+                                color: white;
+                                font-size: 1.125rem;
+                                font-weight: 600;
+                                margin-bottom: 0.5rem;
+                            ">Carreleur</h3>
+                            <p style="
+                                color: rgba(255, 255, 255, 0.8);
+                                font-size: 0.875rem;
+                                margin: 0;
+                            ">143 pros</p>
+                        </div>
+                        
+                        <div style="
+                            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+                            border-radius: 1rem;
+                            padding: 2rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.unsplash.com/photo-1584677191047-38f48d0db64e" alt="Charpentier" style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 1rem;">
+                            <h3 style="
+                                color: white;
+                                font-size: 1.125rem;
+                                font-weight: 600;
+                                margin-bottom: 0.5rem;
+                            ">Charpentier</h3>
+                            <p style="
+                                color: rgba(255, 255, 255, 0.8);
+                                font-size: 0.875rem;
+                                margin: 0;
+                            ">98 pros</p>
+                        </div>
+                        
+                        <div style="
+                            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+                            border-radius: 1rem;
+                            padding: 2rem;
+                            text-align: center;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                        ">
+                            <img src="https://images.pexels.com/photos/7519895/pexels-photo-7519895.jpeg" alt="Couvreur" style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 1rem;">
+                            <h3 style="
+                                color: white;
+                                font-size: 1.125rem;
+                                font-weight: 600;
+                                margin-bottom: 0.5rem;
+                            ">Couvreur</h3>
+                            <p style="
+                                color: rgba(255, 255, 255, 0.8);
+                                font-size: 0.875rem;
+                                margin: 0;
+                            ">76 pros</p>
+                        </div>
+                    </div>
+                    
+                    <p style="
+                        color: #94a3b8;
+                        font-size: 1rem;
+                        margin-bottom: 2rem;
+                    ">Et bien d'autres spécialités...</p>
+                    
+                    <button style="
+                        background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+                        color: white;
+                        border: none;
+                        padding: 1rem 2rem;
+                        border-radius: 0.75rem;
+                        font-size: 1rem;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.3s;
+                        box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+                    ">
+                        Voir tous les métiers
+                    </button>
+                </div>
+            </section>
+
+            <!-- Section Formules d'abonnement -->
+            <section style="
+                background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+                padding: 4rem 2rem;
+            ">
+                <div style="
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    text-align: center;
+                ">
+                    <h2 style="
+                        font-size: 2.5rem;
+                        font-weight: 800;
+                        color: white;
+                        margin-bottom: 1rem;
+                    ">Nos formules artisans</h2>
+                    <p style="
+                        color: #94a3b8;
+                        font-size: 1.125rem;
+                        margin-bottom: 3rem;
+                    ">Des solutions adaptées à tous vos besoins et budgets</p>
+                    
+                    <div style="
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                        gap: 2rem;
+                        margin-bottom: 3rem;
+                    ">
+                        <!-- Pack 1 - Pro Starter -->
+                        <div style="
+                            background: rgba(15, 23, 42, 0.8);
+                            border: 2px solid #22c55e;
+                            border-radius: 1.5rem;
+                            padding: 2rem;
+                            text-align: center;
+                            position: relative;
+                            transition: all 0.3s;
+                        ">
+                            <div style="
+                                background: #22c55e;
+                                color: white;
+                                padding: 0.5rem 1rem;
+                                border-radius: 0.5rem;
+                                font-size: 0.875rem;
+                                font-weight: 600;
+                                margin-bottom: 1rem;
+                                display: inline-block;
+                            ">STARTER</div>
+                            
+                            <h3 style="
+                                color: white;
+                                font-size: 1.5rem;
+                                font-weight: 700;
+                                margin-bottom: 0.5rem;
+                            ">PRO STARTER</h3>
+                            
+                            <div style="
+                                color: white;
+                                font-size: 2.5rem;
+                                font-weight: 900;
+                                margin-bottom: 0.5rem;
+                            ">49€<span style="font-size: 1rem; font-weight: 500; color: #94a3b8;">/mois</span></div>
+                            
+                            <p style="
+                                color: #94a3b8;
+                                font-size: 0.875rem;
+                                margin-bottom: 2rem;
+                            ">Idéal pour débuter sur la plateforme</p>
+                            
+                            <ul style="
+                                list-style: none;
+                                padding: 0;
+                                margin: 0 0 2rem 0;
+                                text-align: left;
+                            ">
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #22c55e; margin-right: 0.5rem;">✓</span>
+                                    Profil vérifié
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #22c55e; margin-right: 0.5rem;">✓</span>
+                                    65 demandes/mois
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #22c55e; margin-right: 0.5rem;">✓</span>
+                                    Facturation devis 60€
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #22c55e; margin-right: 0.5rem;">✓</span>
+                                    Analytics basiques
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #22c55e; margin-right: 0.5rem;">✓</span>
+                                    Support email
+                                </li>
+                            </ul>
+                            
+                            <button style="
+                                background: linear-gradient(45deg, #22c55e, #16a34a);
+                                color: white;
+                                border: none;
+                                padding: 1rem 2rem;
+                                border-radius: 0.75rem;
+                                font-size: 1rem;
+                                font-weight: 600;
+                                cursor: pointer;
+                                width: 100%;
+                                transition: all 0.3s;
+                                box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
+                            ">
+                                Choisir ce plan
+                            </button>
+                        </div>
+                        
+                        <!-- Pack 2 - Pro Business -->
+                        <div style="
+                            background: rgba(15, 23, 42, 0.8);
+                            border: 2px solid #3b82f6;
+                            border-radius: 1.5rem;
+                            padding: 2rem;
+                            text-align: center;
+                            position: relative;
+                            transition: all 0.3s;
+                        ">
+                            <div style="
+                                background: #3b82f6;
+                                color: white;
+                                padding: 0.5rem 1rem;
+                                border-radius: 0.5rem;
+                                font-size: 0.875rem;
+                                font-weight: 600;
+                                margin-bottom: 1rem;
+                                display: inline-block;
+                            ">POPULAIRE</div>
+                            
+                            <h3 style="
+                                color: white;
+                                font-size: 1.5rem;
+                                font-weight: 700;
+                                margin-bottom: 0.5rem;
+                            ">PRO BUSINESS</h3>
+                            
+                            <div style="
+                                color: white;
+                                font-size: 2.5rem;
+                                font-weight: 900;
+                                margin-bottom: 0.5rem;
+                            ">99€<span style="font-size: 1rem; font-weight: 500; color: #94a3b8;">/mois</span></div>
+                            
+                            <p style="
+                                color: #94a3b8;
+                                font-size: 0.875rem;
+                                margin-bottom: 2rem;
+                            ">Pour les professionnels actifs</p>
+                            
+                            <ul style="
+                                list-style: none;
+                                padding: 0;
+                                margin: 0 0 2rem 0;
+                                text-align: left;
+                            ">
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
+                                    100 demandes incluses
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
+                                    Profil premium
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
+                                    100 demandes/mois
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
+                                    Facturation devis 60€
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
+                                    Analytics avancées
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
+                                    Support chat
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #3b82f6; margin-right: 0.5rem;">✓</span>
+                                    Badge "Pro Business"
+                                </li>
+                            </ul>
+                            
+                            <button style="
+                                background: linear-gradient(45deg, #3b82f6, #2563eb);
+                                color: white;
+                                border: none;
+                                padding: 1rem 2rem;
+                                border-radius: 0.75rem;
+                                font-size: 1rem;
+                                font-weight: 600;
+                                cursor: pointer;
+                                width: 100%;
+                                transition: all 0.3s;
+                                box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+                            ">
+                                Choisir ce plan
+                            </button>
+                        </div>
+                        
+                        <!-- Pack 3 - Pro Premium -->
+                        <div style="
+                            background: rgba(15, 23, 42, 0.8);
+                            border: 2px solid #f59e0b;
+                            border-radius: 1.5rem;
+                            padding: 2rem;
+                            text-align: center;
+                            position: relative;
+                            transition: all 0.3s;
+                        ">
+                            <div style="
+                                background: #f59e0b;
+                                color: white;
+                                padding: 0.5rem 1rem;
+                                border-radius: 0.5rem;
+                                font-size: 0.875rem;
+                                font-weight: 600;
+                                margin-bottom: 1rem;
+                                display: inline-block;
+                            ">PRO EXPERT</div>
+                            
+                            <h3 style="
+                                color: white;
+                                font-size: 1.5rem;
+                                font-weight: 700;
+                                margin-bottom: 0.5rem;
+                            ">PRO PREMIUM</h3>
+                            
+                            <div style="
+                                color: white;
+                                font-size: 2.5rem;
+                                font-weight: 900;
+                                margin-bottom: 0.5rem;
+                            ">149€<span style="font-size: 1rem; font-weight: 500; color: #94a3b8;">/mois</span></div>
+                            
+                            <p style="
+                                color: #94a3b8;
+                                font-size: 0.875rem;
+                                margin-bottom: 2rem;
+                            ">Pour les experts reconnus</p>
+                            
+                            <ul style="
+                                list-style: none;
+                                padding: 0;
+                                margin: 0 0 2rem 0;
+                                text-align: left;
+                            ">
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #f59e0b; margin-right: 0.5rem;">✓</span>
+                                    250 demandes incluses
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #f59e0b; margin-right: 0.5rem;">✓</span>
+                                    Profil premium+
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #f59e0b; margin-right: 0.5rem;">✓</span>
+                                    250 demandes/mois
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #f59e0b; margin-right: 0.5rem;">✓</span>
+                                    Facturation devis 60€
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #f59e0b; margin-right: 0.5rem;">✓</span>
+                                    Projets complexes
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #f59e0b; margin-right: 0.5rem;">✓</span>
+                                    Support chat
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #f59e0b; margin-right: 0.5rem;">✓</span>
+                                    Option "être rappelé"
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.75rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <span style="color: #f59e0b; margin-right: 0.5rem;">✓</span>
+                                    Badge "Expert"
+                                </li>
+                            </ul>
+                            
+                            <button style="
+                                background: linear-gradient(45deg, #f59e0b, #d97706);
+                                color: white;
+                                border: none;
+                                padding: 1rem 2rem;
+                                border-radius: 0.75rem;
+                                font-size: 1rem;
+                                font-weight: 600;
+                                cursor: pointer;
+                                width: 100%;
+                                transition: all 0.3s;
+                                box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+                            ">
+                                Choisir ce plan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section CTA finale -->
+            <section style="
+                background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+                padding: 4rem 2rem;
+                text-align: center;
+                position: relative;
+                overflow: hidden;
+            ">
+                <div style="
+                    max-width: 800px;
+                    margin: 0 auto;
+                    position: relative;
+                    z-index: 1;
+                ">
+                    <div style="
+                        font-size: 4rem;
+                        margin-bottom: 1rem;
+                        animation: bounce 2s ease-in-out infinite;
+                    ">⭐</div>
+                    
+                    <h2 style="
+                        font-size: 2.5rem;
+                        font-weight: 900;
+                        color: white;
+                        margin-bottom: 1rem;
+                        line-height: 1.2;
+                    ">"On swipe pour vous"</h2>
+                    
+                    <div style="
+                        font-size: 3rem;
+                        font-weight: 900;
+                        color: white;
+                        margin-bottom: 1rem;
+                        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+                    ">295€<span style="font-size: 1.5rem; font-weight: 600; opacity: 0.8;">/mois</span></div>
+                    
+                    <p style="
+                        font-size: 1.25rem;
+                        color: rgba(255, 255, 255, 0.9);
+                        margin-bottom: 2rem;
+                        line-height: 1.6;
+                    ">
+                        Notre équipe gère votre profil et swipe les clients idéaux automatiquement.
+                    </p>
+                    
+                    <div style="
+                        display: flex;
+                        gap: 1rem;
+                        justify-content: center;
+                        flex-wrap: wrap;
+                    ">
+                        <button style="
+                            background: white;
+                            color: #7c3aed;
+                            border: none;
+                            padding: 1rem 2rem;
+                            border-radius: 0.75rem;
+                            font-size: 1.125rem;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.3s;
+                            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
+                        ">
+                            Découvrir ce service
+                        </button>
+                        <button style="
+                            background: rgba(255, 255, 255, 0.1);
+                            color: white;
+                            border: 2px solid white;
+                            padding: 1rem 2rem;
+                            border-radius: 0.75rem;
+                            font-size: 1.125rem;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.3s;
+                        ">
+                            En savoir plus
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer style="
+                background: #0f172a;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 3rem 2rem 2rem 2rem;
+            ">
+                <div style="
+                    max-width: 1200px;
+                    margin: 0 auto;
+                ">
+                    <div style="
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                        gap: 2rem;
+                        margin-bottom: 2rem;
+                    ">
+                        <div>
+                            <div style="
+                                display: flex;
+                                align-items: center;
+                                margin-bottom: 1rem;
+                            ">
+                                <div style="
+                                    width: 40px;
+                                    height: 40px;
+                                    background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+                                    border-radius: 50%;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    margin-right: 12px;
+                                    color: white;
+                                    font-size: 18px;
+                                    font-weight: bold;
+                                ">♥</div>
+                                <h3 style="
+                                    color: white;
+                                    font-size: 1.25rem;
+                                    font-weight: 700;
+                                    margin: 0;
+                                ">Swipe Ton Pro</h3>
+                            </div>
+                            <p style="
+                                color: #94a3b8;
+                                line-height: 1.6;
+                                margin-bottom: 1rem;
+                            ">
+                                La première plateforme de mise en relation entre particuliers et professionnels par swipe.
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <h4 style="
+                                color: white;
+                                font-size: 1.125rem;
+                                font-weight: 600;
+                                margin-bottom: 1rem;
+                            ">Liens rapides</h4>
+                            <ul style="
+                                list-style: none;
+                                padding: 0;
+                                margin: 0;
+                            ">
+                                <li style="margin-bottom: 0.5rem;">
+                                    <a href="#" style="color: #94a3b8; text-decoration: none; transition: color 0.2s;">
+                                        Découvrir un projet
+                                    </a>
+                                </li>
+                                <li style="margin-bottom: 0.5rem;">
+                                    <a href="#" style="color: #94a3b8; text-decoration: none; transition: color 0.2s;">
+                                        Devenir professionnel
+                                    </a>
+                                </li>
+                                <li style="margin-bottom: 0.5rem;">
+                                    <a href="#" style="color: #94a3b8; text-decoration: none; transition: color 0.2s;">
+                                        Tarifs et abonnements
+                                    </a>
+                                </li>
+                                <li style="margin-bottom: 0.5rem;">
+                                    <a href="#" style="color: #94a3b8; text-decoration: none; transition: color 0.2s;">
+                                        Télécharger l'app
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h4 style="
+                                color: white;
+                                font-size: 1.125rem;
+                                font-weight: 600;
+                                margin-bottom: 1rem;
+                            ">Légal</h4>
+                            <ul style="
+                                list-style: none;
+                                padding: 0;
+                                margin: 0;
+                            ">
+                                <li style="margin-bottom: 0.5rem;">
+                                    <a href="#" style="color: #94a3b8; text-decoration: none; transition: color 0.2s;">
+                                        Mentions légales
+                                    </a>
+                                </li>
+                                <li style="margin-bottom: 0.5rem;">
+                                    <a href="#" style="color: #94a3b8; text-decoration: none; transition: color 0.2s;">
+                                        Politique de confidentialité
+                                    </a>
+                                </li>
+                                <li style="margin-bottom: 0.5rem;">
+                                    <a href="#" style="color: #94a3b8; text-decoration: none; transition: color 0.2s;">
+                                        Conditions générales
+                                    </a>
+                                </li>
+                                <li style="margin-bottom: 0.5rem;">
+                                    <a href="#" style="color: #94a3b8; text-decoration: none; transition: color 0.2s;">
+                                        CGV
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h4 style="
+                                color: white;
+                                font-size: 1.125rem;
+                                font-weight: 600;
+                                margin-bottom: 1rem;
+                            ">Contact</h4>
+                            <ul style="
+                                list-style: none;
+                                padding: 0;
+                                margin: 0;
+                            ">
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.5rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <img src="https://images.pexels.com/photos/7616608/pexels-photo-7616608.jpeg" alt="Email" style="width: 16px; height: 16px; margin-right: 0.5rem; border-radius: 50%;">
+                                    contact@swipetonpro.fr
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.5rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <img src="https://images.pexels.com/photos/8487333/pexels-photo-8487333.jpeg" alt="Phone" style="width: 16px; height: 16px; margin-right: 0.5rem; border-radius: 50%;">
+                                    +33 (0) 1 23 45 67 89
+                                </li>
+                                <li style="
+                                    color: #94a3b8;
+                                    margin-bottom: 0.5rem;
+                                    display: flex;
+                                    align-items: center;
+                                ">
+                                    <img src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643" alt="Location" style="width: 16px; height: 16px; margin-right: 0.5rem; border-radius: 50%;">
+                                    123 Avenue de la République, 75011 Paris
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div style="
+                        border-top: 1px solid rgba(255, 255, 255, 0.1);
+                        padding-top: 2rem;
+                        text-align: center;
+                    ">
+                        <p style="
+                            color: #94a3b8;
+                            font-size: 0.875rem;
+                            margin: 0;
+                        ">
+                            © 2024 Swipe Ton Pro. Tous droits réservés.
+                        </p>
+                    </div>
+                </div>
+            </footer>
         `;
-        
-        // Continuer avec les autres sections... (Corps de métier, formules, etc.)
         
         // Injecter dans la page
         const targetElement = document.querySelector('#root') || document.querySelector('.App') || document.body;
