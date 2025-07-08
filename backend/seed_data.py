@@ -199,7 +199,7 @@ async def seed_data():
         {
             "id": str(uuid.uuid4()),
             "user_id": artisan_users[1]["id"],
-            "professions": ["menuisier", "ebenisterie"],  # Multi-choix
+            "professions": ["menuisier"],  # Correction : une seule profession valide
             "description": "Menuisier passionné créant des meubles sur mesure et réalisant tous types d'aménagements intérieurs. Spécialiste en ébénisterie fine. Matériaux de qualité et finitions parfaites.",
             "experience_years": 12,
             "rating": 4.9,
