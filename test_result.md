@@ -244,17 +244,101 @@ backend:
         comment: "Get projects endpoint is now working correctly for both particulier and artisan users. The previous timeout issues appear to have been temporary."
 
 frontend:
-  - task: "Frontend Testing"
+  - task: "Page d'accueil"
     implemented: true
     working: "NA"
-    file: "/app/frontend/src/App.js"
+    file: "/app/frontend/src/pages/HomePage.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "testing"
-        comment: "Frontend testing is not part of this test scope. Only backend API testing was requested."
+        comment: "Vérification de l'interface SwipeTonPro, navigation, boutons et design professionnel."
+
+  - task: "Authentification"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/LoginPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Test de connexion avec différents types d'utilisateurs et vérification de la fonctionnalité du bouton œil pour les mots de passe."
+
+  - task: "Fonctionnalité de swipe"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/SwipePage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Vérification des cartes d'artisans, animations de swipe et boutons like/pass."
+
+  - task: "Dashboard utilisateur"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/DashboardPage.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Vérification du dashboard pour différents types d'utilisateurs et des statistiques affichées."
+
+  - task: "Pages fonctionnelles - Matches"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/MatchesPage.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Vérification de la liste des matches et des détails."
+
+  - task: "Pages fonctionnelles - Projets"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/ProjectsPage.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Test de création et d'affichage des projets."
+
+  - task: "Pages fonctionnelles - Profil"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/ProfilePage.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Vérification de l'affichage et de la création de profil artisan."
+
+  - task: "Navigation et design"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/Navbar.js"
+    stuck_count: 0
+    priority: "low"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Vérification du bouton admin caché, du responsive design et de la cohérence du design professionnel."
 
 metadata:
   created_by: "testing_agent"
