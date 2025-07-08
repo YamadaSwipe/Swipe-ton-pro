@@ -101,3 +101,161 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Test complet du backend SwipeTonPro API. Voici ce qui doit être testé : Health Check, Authentication, Artisan Profiles, Swipe System, Projects."
+
+backend:
+  - task: "Health Check API"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Health check endpoint is working correctly. Returns status 'healthy' and current timestamp."
+
+  - task: "Authentication - Register"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Registration endpoint is working correctly for both particulier and artisan user types. Successfully creates new users and returns tokens."
+
+  - task: "Authentication - Login"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "Login endpoint works for some users but fails with 504 timeout errors for others. Successfully logged in with artisan credentials but failed with particulier and admin credentials."
+
+  - task: "Authentication - Get Current User"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Get current user endpoint works correctly. Successfully retrieves user information for both particulier and artisan users."
+
+  - task: "Artisan Profiles - Create Profile"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "Create artisan profile endpoint returns 400 error with message 'Profile already exists'. This is expected behavior if the artisan already has a profile, but we need to test with a new artisan account."
+
+  - task: "Artisan Profiles - Get Profiles"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Get artisan profiles endpoint works correctly. Successfully retrieves a list of artisan profiles (4 profiles found)."
+
+  - task: "Swipe System - Swipe"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Swipe endpoint works correctly for 'like' action. Successfully creates a match. The 'pass' action failed with 'Already swiped on this profile' which is expected behavior if we've already swiped on that profile."
+
+  - task: "Swipe System - Get Matches"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Get matches endpoint works correctly for both particulier and artisan users. Successfully retrieves matches."
+
+  - task: "Projects - Create Project"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Create project endpoint works correctly. Successfully creates a new project."
+
+  - task: "Projects - Get Projects"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "Get projects endpoint works for particulier users but fails with 504 timeout for artisan users. Successfully retrieves projects for particulier but times out for artisan."
+
+frontend:
+  - task: "Frontend Testing"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Frontend testing is not part of this test scope. Only backend API testing was requested."
+
+metadata:
+  created_by: "testing_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Authentication - Login"
+    - "Artisan Profiles - Create Profile"
+    - "Projects - Get Projects"
+  stuck_tasks:
+    - "Authentication - Login"
+    - "Artisan Profiles - Create Profile"
+    - "Projects - Get Projects"
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "testing"
+    message: "I've completed the backend API testing for SwipeTonPro. Most endpoints are working correctly, but there are some issues with timeouts on certain endpoints (login for some users, get projects for artisan). The artisan profile creation failed because the test artisan already had a profile. The core swipe functionality is working correctly."
