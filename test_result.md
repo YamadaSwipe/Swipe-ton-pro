@@ -347,9 +347,17 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus: []
+  current_focus: 
+    - "Page d'accueil"
+    - "Authentification"
+    - "Fonctionnalité de swipe"
+    - "Dashboard utilisateur"
+    - "Pages fonctionnelles - Matches"
+    - "Pages fonctionnelles - Projets"
+    - "Pages fonctionnelles - Profil"
+    - "Navigation et design"
   stuck_tasks: []
-  test_all: false
+  test_all: true
   test_priority: "high_first"
 
 agent_communication:
