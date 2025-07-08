@@ -255,16 +255,16 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Authentication - Login"
+    - "Authentication - Get Current User"
     - "Artisan Profiles - Create Profile"
-    - "Projects - Get Projects"
   stuck_tasks:
-    - "Authentication - Login"
+    - "Authentication - Get Current User"
     - "Artisan Profiles - Create Profile"
-    - "Projects - Get Projects"
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
   - agent: "testing"
     message: "I've completed the backend API testing for SwipeTonPro. Most endpoints are working correctly, but there are some issues with timeouts on certain endpoints (login for some users, get projects for artisan). The artisan profile creation failed because the test artisan already had a profile. The core swipe functionality is working correctly."
+  - agent: "testing"
+    message: "I've run the tests again and found that the login and get projects endpoints are now working correctly for all user types. However, there's still an intermittent issue with the get current user endpoint for artisan users (504 timeout). The artisan profile creation still fails with 'Profile already exists' which is expected behavior if the artisan already has a profile. The swipe functionality is working correctly for 'like' action but fails for 'pass' action with 'Already swiped on this profile' which is also expected behavior."
