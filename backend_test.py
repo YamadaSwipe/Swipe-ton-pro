@@ -154,10 +154,36 @@ def test_get_current_user(user_type="particulier"):
         print(f"Response: {response.text}")
         return False
 
-def test_create_artisan_profile():
+def test_create_artisan_profile(use_new_artisan=False):
     print("Testing Create Artisan Profile Endpoint...")
     
-    headers = {"Authorization": f"Bearer {tokens['artisan']}"}
+    if use_new_artisan:
+        # Register a new artisan
+        new_artisan = {
+            "email": f"new_art_{int(time.time())}@example.com",
+            "password": "testpassword",
+            "first_name": "New",
+            "last_name": "Artisan",
+            "phone": "0123456789",
+            "user_type": "artisan"
+        }
+        
+        response = requests.post(f"{BACKEND_URL}/auth/register", json=new_artisan)
+        if response.status_code == 200:
+            data = response.json()
+            tokens["new_artisan"] = data["access_token"]
+            user_ids["new_artisan"] = data["user"]["id"]
+            print(f"✅ Registered new artisan for profile creation")
+            print(f"Token: {tokens['new_artisan'][:20]}...")
+            
+            headers = {"Authorization": f"Bearer {tokens['new_artisan']}"}
+        else:
+            print(f"❌ Failed to register new artisan for profile creation")
+            print(f"Response: {response.text}")
+            return False
+    else:
+        headers = {"Authorization": f"Bearer {tokens['artisan']}"}
+    
     response = requests.post(f"{BACKEND_URL}/artisan/profile", json=ARTISAN_PROFILE, headers=headers)
     print(f"Status Code: {response.status_code}")
     
