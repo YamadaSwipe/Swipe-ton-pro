@@ -489,15 +489,17 @@ metadata:
 
 test_plan:
   current_focus: 
-    - "Page d'accueil"
-    - "Authentification"
-    - "Fonctionnalité de swipe"
-    - "Dashboard utilisateur"
-    - "Pages fonctionnelles - Matches"
-    - "Pages fonctionnelles - Projets"
-    - "Pages fonctionnelles - Profil"
-    - "Navigation et design"
-  stuck_tasks: []
+    - "Subscription System - Get Packs"
+    - "Subscription System - Purchase Pack"
+    - "Subscription System - Get Current Subscription"
+    - "Document Upload"
+    - "Admin - Get Pending Artisans"
+    - "Admin - Validate Artisan"
+    - "Artisan - Swipe on Projects"
+    - "Multi-Profession Search"
+    - "Credit Consumption on Swipe"
+  stuck_tasks: 
+    - "Multi-Profession Search"
   test_all: true
   test_priority: "high_first"
 
