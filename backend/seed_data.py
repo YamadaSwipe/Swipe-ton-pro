@@ -150,7 +150,7 @@ async def seed_data():
         {
             "id": str(uuid.uuid4()),
             "user_id": artisan_users[0]["id"],
-            "professions": ["electricien", "domotique"],  # Multi-choix
+            "professions": ["electricien"],  # Correction : une seule profession valide
             "description": "Électricien expérimenté spécialisé dans les installations résidentielles et commerciales. Expert en domotique et systèmes intelligents. Intervention rapide et travail soigné garantis.",
             "experience_years": 8,
             "rating": 4.8,
