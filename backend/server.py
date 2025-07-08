@@ -90,6 +90,12 @@ class ProjectBudgetRange(str, Enum):
     ENTRE_5000_15000 = "5000_15000"
     PLUS_15000 = "plus_15000"
 
+class SubscriptionPack(str, Enum):
+    STARTER = "starter"      # 10 crédits - 49€
+    PROFESSIONAL = "professional"  # 50 crédits - 149€
+    PREMIUM = "premium"      # 150 crédits - 299€
+    UNLIMITED = "unlimited"  # Illimité - 499€
+
 # Pydantic Models
 class UserBase(BaseModel):
     email: EmailStr
