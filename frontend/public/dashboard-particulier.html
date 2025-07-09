@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Dashboard - SwipeTonPro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .welcome-section {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .welcome-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+        
+        .welcome-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.125rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.2s;
+        }
+        
+        .stat-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-title {
+            color: #94a3b8;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-description {
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .project-item {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #334155;
+        }
+        
+        .project-item:last-child {
+            border-bottom: none;
+        }
+        
+        .project-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .project-content {
+            flex: 1;
+        }
+        
+        .project-title {
+            color: white;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        .project-description {
+            color: #94a3b8;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .project-meta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .badge-success {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+            border: 1px solid #22c55e;
+        }
+        
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+            border: 1px solid #f59e0b;
+        }
+        
+        .badge-info {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            border: 1px solid #3b82f6;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: #3b82f6;
+            border: 1px solid #3b82f6;
+        }
+        
+        .btn-outline:hover {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #64748b;
+        }
+        
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .action-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .action-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+        
+        .action-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem auto;
+        }
+        
+        .action-title {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .action-description {
+            color: #94a3b8;
+            font-size: 0.875rem;
+        }
+        
+        .match-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #334155;
+        }
+        
+        .match-item:last-child {
+            border-bottom: none;
+        }
+        
+        .match-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: url('https://images.pexels.com/photos/7616608/pexels-photo-7616608.jpeg') center/cover;
+            flex-shrink: 0;
+        }
+        
+        .match-content {
+            flex: 1;
+        }
+        
+        .match-name {
+            color: white;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        .match-profession {
+            color: #94a3b8;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .match-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        
+        .match-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .notification {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid #3b82f6;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: start;
+            gap: 0.75rem;
+        }
+        
+        .notification-icon {
+            color: #3b82f6;
+            font-size: 1.2rem;
+            margin-top: 0.125rem;
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-title {
+            color: #3b82f6;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        .notification-text {
+            color: #94a3b8;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">♥</div>
+                <div>
+                    <div style="font-weight: 700; color: white;">SwipeTonPro</div>
+                    <div style="font-size: 0.75rem; color: #64748b;">Mon Dashboard</div>
+                </div>
+            </div>
+            
+            <div class="user-menu">
+                <div style="color: #94a3b8;">Bonjour, <span id="userName" style="color: white; font-weight: 500;">Marie</span></div>
+                <div class="user-avatar" id="userAvatar">M</div>
+                <button class="btn btn-outline" onclick="logout()">
+                    🚪 Déconnexion
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h1 class="welcome-title">Bienvenue sur SwipeTonPro !</h1>
+            <p class="welcome-subtitle">Trouvez l'artisan parfait pour vos projets en quelques swipes</p>
+        </div>
+
+        <!-- Notifications -->
+        <div id="notifications">
+            <div class="notification">
+                <div class="notification-icon">🎉</div>
+                <div class="notification-content">
+                    <div class="notification-title">Nouveau match disponible !</div>
+                    <div class="notification-text">Thomas, électricien certifié, a swipé votre projet de rénovation électrique.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <a href="#" class="action-card" onclick="startSwipe()">
+                <div class="action-icon" style="background: rgba(34, 197, 94, 0.1); color: #22c55e;">
+                    💫
+                </div>
+                <div class="action-title">Swiper des artisans</div>
+                <div class="action-description">Découvrez les professionnels près de chez vous</div>
+            </a>
+            
+            <a href="#" class="action-card" onclick="createProject()">
+                <div class="action-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">
+                    ➕
+                </div>
+                <div class="action-title">Créer un projet</div>
+                <div class="action-description">Décrivez votre projet et trouvez le bon artisan</div>
+            </a>
+            
+            <a href="#" class="action-card" onclick="viewMatches()">
+                <div class="action-icon" style="background: rgba(236, 72, 153, 0.1); color: #ec4899;">
+                    💖
+                </div>
+                <div class="action-title">Mes matches</div>
+                <div class="action-description">Consultez vos connexions avec les artisans</div>
+            </a>
+            
+            <a href="#" class="action-card" onclick="getSupport()">
+                <div class="action-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                    🎧
+                </div>
+                <div class="action-title">Support</div>
+                <div class="action-description">Besoin d'aide ? Contactez notre équipe</div>
+            </a>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Mes Projets</div>
+                    <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">📋</div>
+                </div>
+                <div class="stat-value" id="totalProjects">3</div>
+                <div class="stat-description">projets en cours</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Mes Matches</div>
+                    <div class="stat-icon" style="background: rgba(236, 72, 153, 0.1); color: #ec4899;">💖</div>
+                </div>
+                <div class="stat-value" id="totalMatches">12</div>
+                <div class="stat-description">artisans matchés</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Devis Reçus</div>
+                    <div class="stat-icon" style="background: rgba(34, 197, 94, 0.1); color: #22c55e;">💰</div>
+                </div>
+                <div class="stat-value" id="totalQuotes">8</div>
+                <div class="stat-description">devis en attente</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Budget Moyen</div>
+                    <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">📊</div>
+                </div>
+                <div class="stat-value" id="averageBudget">2,450€</div>
+                <div class="stat-description">par projet</div>
+            </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Mes Projets -->
+            <div class="card">
+                <div class="card-title">Mes Projets Récents</div>
+                <div id="projectsList">
+                    <div class="project-item">
+                        <div class="project-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                            ⚡
+                        </div>
+                        <div class="project-content">
+                            <div class="project-title">Rénovation électrique complète</div>
+                            <div class="project-description">Refaire l'installation électrique de ma maison (100m²)</div>
+                            <div class="project-meta">
+                                <span class="badge badge-warning">En cours</span>
+                                <span>5 devis reçus</span>
+                                <span>Budget: 3,000-5,000€</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-item">
+                        <div class="project-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">
+                            🚿
+                        </div>
+                        <div class="project-content">
+                            <div class="project-title">Installation salle de bain</div>
+                            <div class="project-description">Création d'une nouvelle salle de bain avec douche italienne</div>
+                            <div class="project-meta">
+                                <span class="badge badge-info">Planifié</span>
+                                <span>2 devis reçus</span>
+                                <span>Budget: 8,000-12,000€</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-item">
+                        <div class="project-icon" style="background: rgba(34, 197, 94, 0.1); color: #22c55e;">
+                            🏡
+                        </div>
+                        <div class="project-content">
+                            <div class="project-title">Peinture intérieure</div>
+                            <div class="project-description">Repeindre le salon et les chambres (4 pièces)</div>
+                            <div class="project-meta">
+                                <span class="badge badge-success">Terminé</span>
+                                <span>Artisan: Jean M.</span>
+                                <span>Coût final: 1,850€</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 1rem;">
+                    <button class="btn btn-outline" onclick="viewAllProjects()">
+                        Voir tous mes projets
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mes Matches Récents -->
+            <div class="card">
+                <div class="card-title">Matches Récents</div>
+                <div id="matchesList">
+                    <div class="match-item">
+                        <div class="match-avatar"></div>
+                        <div class="match-content">
+                            <div class="match-name">Thomas Martin</div>
+                            <div class="match-profession">Électricien • Paris 15e</div>
+                            <div class="match-rating">
+                                <span style="color: #facc15;">⭐⭐⭐⭐⭐</span>
+                                <span>5.0 (47 avis)</span>
+                            </div>
+                        </div>
+                        <div class="match-actions">
+                            <button class="btn btn-primary" style="padding: 0.25rem 0.75rem; font-size: 0.75rem;" onclick="chatWithArtisan('thomas')">
+                                💬 Chat
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="match-item">
+                        <div class="match-avatar" style="background: url('https://images.pexels.com/photos/8487333/pexels-photo-8487333.jpeg') center/cover;"></div>
+                        <div class="match-content">
+                            <div class="match-name">Sophie Durand</div>
+                            <div class="match-profession">Plombière • Paris 12e</div>
+                            <div class="match-rating">
+                                <span style="color: #facc15;">⭐⭐⭐⭐⭐</span>
+                                <span>4.8 (32 avis)</span>
+                            </div>
+                        </div>
+                        <div class="match-actions">
+                            <button class="btn btn-primary" style="padding: 0.25rem 0.75rem; font-size: 0.75rem;" onclick="chatWithArtisan('sophie')">
+                                💬 Chat
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="match-item">
+                        <div class="match-avatar" style="background: url('https://images.pexels.com/photos/7519895/pexels-photo-7519895.jpeg') center/cover;"></div>
+                        <div class="match-content">
+                            <div class="match-name">Pierre Leclerc</div>
+                            <div class="match-profession">Peintre • Paris 11e</div>
+                            <div class="match-rating">
+                                <span style="color: #facc15;">⭐⭐⭐⭐⭐</span>
+                                <span>4.9 (68 avis)</span>
+                            </div>
+                        </div>
+                        <div class="match-actions">
+                            <button class="btn btn-primary" style="padding: 0.25rem 0.75rem; font-size: 0.75rem;" onclick="chatWithArtisan('pierre')">
+                                💬 Chat
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 1rem;">
+                    <button class="btn btn-outline" onclick="viewAllMatches()">
+                        Voir tous mes matches
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mes Devis -->
+        <div class="card">
+            <div class="card-title">Devis en Attente</div>
+            <div id="quotesList">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                    <div style="background: #0f172a; border: 1px solid #334155; border-radius: 0.5rem; padding: 1rem;">
+                        <div style="display: flex; justify-content: between; align-items: start; margin-bottom: 1rem;">
+                            <div>
+                                <div style="color: white; font-weight: 500;">Thomas Martin - Électricien</div>
+                                <div style="color: #94a3b8; font-size: 0.875rem;">Rénovation électrique</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="color: #22c55e; font-weight: 600; font-size: 1.25rem;">4,200€</div>
+                                <div style="color: #64748b; font-size: 0.75rem;">TTC</div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <div style="color: #94a3b8; font-size: 0.875rem; margin-bottom: 0.5rem;">Détails:</div>
+                            <ul style="color: #94a3b8; font-size: 0.875rem; padding-left: 1rem;">
+                                <li>Remplacement tableau électrique</li>
+                                <li>Installation prises et interrupteurs</li>
+                                <li>Mise aux normes complète</li>
+                            </ul>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-primary" style="flex: 1; font-size: 0.875rem;" onclick="acceptQuote('thomas')">
+                                ✅ Accepter
+                            </button>
+                            <button class="btn btn-outline" style="flex: 1; font-size: 0.875rem;" onclick="negotiateQuote('thomas')">
+                                💬 Négocier
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #0f172a; border: 1px solid #334155; border-radius: 0.5rem; padding: 1rem;">
+                        <div style="display: flex; justify-content: between; align-items: start; margin-bottom: 1rem;">
+                            <div>
+                                <div style="color: white; font-weight: 500;">Sophie Durand - Plombière</div>
+                                <div style="color: #94a3b8; font-size: 0.875rem;">Installation salle de bain</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="color: #22c55e; font-weight: 600; font-size: 1.25rem;">9,800€</div>
+                                <div style="color: #64748b; font-size: 0.75rem;">TTC</div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <div style="color: #94a3b8; font-size: 0.875rem; margin-bottom: 0.5rem;">Détails:</div>
+                            <ul style="color: #94a3b8; font-size: 0.875rem; padding-left: 1rem;">
+                                <li>Douche italienne haut de gamme</li>
+                                <li>Carrelage premium inclus</li>
+                                <li>Évacuation et arrivées d'eau</li>
+                            </ul>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-primary" style="flex: 1; font-size: 0.875rem;" onclick="acceptQuote('sophie')">
+                                ✅ Accepter
+                            </button>
+                            <button class="btn btn-outline" style="flex: 1; font-size: 0.875rem;" onclick="negotiateQuote('sophie')">
+                                💬 Négocier
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulation des fonctions du dashboard particulier
+        function startSwipe() {
+            alert('🎯 Redirection vers l\'interface de swipe...\n\nDécouvrez les artisans près de chez vous !');
+        }
+        
+        function createProject() {
+            alert('➕ Ouverture du formulaire de création de projet...\n\nDécrivez votre projet en détail pour trouver le bon artisan !');
+        }
+        
+        function viewMatches() {
+            alert('💖 Accès à vos matches...\n\nConsultez tous vos artisans matchés et gérez vos conversations !');
+        }
+        
+        function getSupport() {
+            alert('🎧 Contact du support...\n\nNotre équipe est disponible pour vous aider !\nEmail: support@swipetonpro.fr');
+        }
+        
+        function chatWithArtisan(artisan) {
+            alert(`💬 Ouverture du chat avec ${artisan}...\n\nÉchangez directement avec votre artisan !`);
+        }
+        
+        function acceptQuote(artisan) {
+            if (confirm(`Voulez-vous vraiment accepter le devis de ${artisan} ?`)) {
+                alert(`✅ Devis accepté !\n\nVous allez être redirigé vers le paiement sécurisé.`);
+            }
+        }
+        
+        function negotiateQuote(artisan) {
+            alert(`💬 Négociation avec ${artisan}...\n\nExprimez vos remarques et demandes d'ajustement !`);
+        }
+        
+        function viewAllProjects() {
+            alert('📋 Tous vos projets...\n\nConsultez l\'historique complet de vos projets !');
+        }
+        
+        function viewAllMatches() {
+            alert('💖 Tous vos matches...\n\nDécouvrez tous vos artisans matchés !');
+        }
+        
+        function logout() {
+            if (confirm('Voulez-vous vraiment vous déconnecter ?')) {
+                alert('👋 À bientôt sur SwipeTonPro !');
+                // window.location.href = '/';
+            }
+        }
+        
+        // Simulation des données utilisateur
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ici, nous chargerions les vraies données utilisateur depuis l'API
+            console.log('Dashboard particulier chargé avec succès !');
+        });
+    </script>
+</body>
+</html>
