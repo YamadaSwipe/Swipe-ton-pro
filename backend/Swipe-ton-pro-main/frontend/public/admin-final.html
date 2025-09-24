@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - Career Tinder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-900 to-purple-900 min-h-screen text-white">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Login Section -->
+        <div id="loginSection" class="max-w-md mx-auto bg-white/10 backdrop-blur-sm rounded-2xl p-8 shadow-2xl">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-3xl">⚙️</span>
+                </div>
+                <h1 class="text-3xl font-bold mb-2">Administration</h1>
+                <p class="text-blue-200">Career Tinder - Swipe Ton Pro</p>
+            </div>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Email</label>
+                    <input type="email" id="email" value="admin@careertinder.com"
+                           class="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">Mot de passe</label>
+                    <input type="password" id="password" value="admin123"
+                           class="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                </div>
+                
+                <button onclick="login()" id="loginBtn"
+                        class="w-full bg-blue-500 hover:bg-blue-600 py-3 px-4 rounded-lg font-semibold transition duration-200">
+                    Se connecter
+                </button>
+            </div>
+            
+            <div id="loginError" class="hidden mt-4 p-3 bg-red-500/20 border border-red-500/50 text-red-200 rounded-lg text-sm">
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboardSection" class="hidden">
+            <div class="max-w-6xl mx-auto">
+                <!-- Header -->
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 mb-8">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="text-3xl font-bold">Dashboard Admin</h2>
+                            <p id="adminInfo" class="text-blue-200 mt-1"></p>
+                        </div>
+                        <button onclick="logout()" 
+                                class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg transition duration-200">
+                            Déconnexion
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center">
+                        <div class="text-4xl mb-2">👥</div>
+                        <p class="text-3xl font-bold" id="totalUsers">0</p>
+                        <p class="text-blue-200">Utilisateurs</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center">
+                        <div class="text-4xl mb-2">🔧</div>
+                        <p class="text-3xl font-bold" id="totalProfessionals">0</p>
+                        <p class="text-blue-200">Professionnels</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center">
+                        <div class="text-4xl mb-2">⚙️</div>
+                        <p class="text-3xl font-bold" id="totalAdmins">0</p>
+                        <p class="text-blue-200">Admins</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center">
+                        <div class="text-4xl mb-2">🚨</div>
+                        <p class="text-3xl font-bold" id="totalReports">0</p>
+                        <p class="text-blue-200">Signalements</p>
+                    </div>
+                </div>
+
+                <!-- Management Sections -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Users Management -->
+                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6">
+                        <h3 class="text-xl font-bold mb-4">👥 Gestion des Utilisateurs</h3>
+                        <div id="usersList" class="space-y-3 max-h-96 overflow-y-auto">
+                            <!-- Users will be loaded here -->
+                        </div>
+                        <button onclick="loadUsers()" 
+                                class="mt-4 w-full bg-blue-500 hover:bg-blue-600 py-2 px-4 rounded-lg transition duration-200">
+                            Actualiser la liste
+                        </button>
+                    </div>
+
+                    <!-- Admins Management -->
+                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6">
+                        <h3 class="text-xl font-bold mb-4">⚙️ Gestion des Admins</h3>
+                        <div id="adminsList" class="space-y-3 max-h-96 overflow-y-auto">
+                            <!-- Admins will be loaded here -->
+                        </div>
+                        <div class="mt-4 space-y-2">
+                            <button onclick="loadAdmins()" 
+                                    class="w-full bg-purple-500 hover:bg-purple-600 py-2 px-4 rounded-lg transition duration-200">
+                                Actualiser la liste
+                            </button>
+                            <button onclick="inviteAdmin()" 
+                                    class="w-full bg-green-500 hover:bg-green-600 py-2 px-4 rounded-lg transition duration-200">
+                                Inviter un Admin
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- API Documentation -->
+                <div class="mt-8 bg-white/10 backdrop-blur-sm rounded-xl p-6">
+                    <h3 class="text-xl font-bold mb-4">📚 Documentation API</h3>
+                    <p class="text-blue-200 mb-4">Accédez à la documentation complète de l'API d'administration :</p>
+                    <button onclick="openAPIDocs()" 
+                            class="bg-indigo-500 hover:bg-indigo-600 px-6 py-3 rounded-lg font-medium transition duration-200">
+                        Ouvrir la Documentation API
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let authToken = null;
+        let currentAdmin = null;
+
+        // API configuration - test both local and remote
+        const API_ENDPOINTS = [
+            'http://localhost:8002',
+            window.location.origin + '/api/admin',
+            'https://career-tinder.preview.emergentagent.com:8002'
+        ];
+        let API_BASE = null;
+
+        async function findWorkingAPI() {
+            for (const endpoint of API_ENDPOINTS) {
+                try {
+                    const response = await fetch(endpoint + '/', { mode: 'cors' });
+                    if (response.ok) {
+                        API_BASE = endpoint;
+                        console.log('API trouvée:', API_BASE);
+                        return true;
+                    }
+                } catch (e) {
+                    console.log('Échec pour:', endpoint);
+                }
+            }
+            return false;
+        }
+
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const loginError = document.getElementById('loginError');
+            
+            loginBtn.textContent = 'Connexion...';
+            loginBtn.disabled = true;
+            loginError.classList.add('hidden');
+
+            // Find working API first
+            if (!API_BASE && !(await findWorkingAPI())) {
+                loginError.textContent = 'Impossible de se connecter au serveur admin';
+                loginError.classList.remove('hidden');
+                loginBtn.textContent = 'Se connecter';
+                loginBtn.disabled = false;
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    authToken = data.access_token;
+                    currentAdmin = data.admin;
+                    showDashboard();
+                } else {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Erreur de connexion');
+                }
+            } catch (error) {
+                loginError.textContent = error.message;
+                loginError.classList.remove('hidden');
+            } finally {
+                loginBtn.textContent = 'Se connecter';
+                loginBtn.disabled = false;
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('dashboardSection').classList.remove('hidden');
+            document.getElementById('adminInfo').textContent = 
+                `Connecté en tant que ${currentAdmin.name} (${currentAdmin.role})`;
+            loadStats();
+            loadUsers();
+            loadAdmins();
+        }
+
+        function logout() {
+            authToken = null;
+            currentAdmin = null;
+            document.getElementById('dashboardSection').classList.add('hidden');
+            document.getElementById('loginSection').classList.remove('hidden');
+        }
+
+        async function apiRequest(endpoint, options = {}) {
+            if (!API_BASE) await findWorkingAPI();
+            
+            const response = await fetch(`${API_BASE}${endpoint}`, {
+                ...options,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`,
+                    ...options.headers
+                }
+            });
+            
+            if (!response.ok) throw new Error(`Erreur API: ${response.status}`);
+            return response.json();
+        }
+
+        async function loadStats() {
+            try {
+                const stats = await apiRequest('/stats');
+                document.getElementById('totalUsers').textContent = stats.total_users || 0;
+                document.getElementById('totalProfessionals').textContent = stats.total_professionals || 0;
+                document.getElementById('totalAdmins').textContent = stats.total_admins || 0;
+                document.getElementById('totalReports').textContent = stats.total_reports || 0;
+            } catch (error) {
+                console.error('Erreur stats:', error);
+            }
+        }
+
+        async function loadUsers() {
+            try {
+                const data = await apiRequest('/users');
+                const usersList = document.getElementById('usersList');
+                usersList.innerHTML = data.users.map(user => `
+                    <div class="bg-white/10 p-3 rounded-lg flex justify-between items-center">
+                        <div>
+                            <p class="font-medium">${user.name}</p>
+                            <p class="text-sm text-blue-200">${user.email}</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs px-2 py-1 rounded ${user.is_professional ? 'bg-green-500' : 'bg-blue-500'}">
+                                ${user.is_professional ? 'Pro' : 'User'}
+                            </span>
+                            <p class="text-xs text-blue-200 mt-1">${user.status}</p>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Erreur users:', error);
+                document.getElementById('usersList').innerHTML = 
+                    '<p class="text-center text-blue-200">Aucun utilisateur trouvé</p>';
+            }
+        }
+
+        async function loadAdmins() {
+            try {
+                const admins = await apiRequest('/admins');
+                const adminsList = document.getElementById('adminsList');
+                adminsList.innerHTML = admins.map(admin => `
+                    <div class="bg-white/10 p-3 rounded-lg flex justify-between items-center">
+                        <div>
+                            <p class="font-medium">${admin.name}</p>
+                            <p class="text-sm text-blue-200">${admin.email}</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs px-2 py-1 rounded ${
+                                admin.role === 'super_admin' ? 'bg-red-500' :
+                                admin.role === 'admin' ? 'bg-purple-500' : 'bg-green-500'
+                            }">
+                                ${admin.role}
+                            </span>
+                            <p class="text-xs text-blue-200 mt-1">${admin.is_active ? 'Actif' : 'Inactif'}</p>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Erreur admins:', error);
+            }
+        }
+
+        function inviteAdmin() {
+            const email = prompt('Email de l\'admin à inviter:');
+            if (email) {
+                const role = prompt('Rôle (moderator/admin/super_admin):') || 'moderator';
+                
+                apiRequest('/invite', {
+                    method: 'POST',
+                    body: JSON.stringify({ email, role })
+                })
+                .then(() => {
+                    alert('Invitation envoyée avec succès !');
+                    loadAdmins();
+                })
+                .catch(error => alert('Erreur: ' + error.message));
+            }
+        }
+
+        function openAPIDocs() {
+            if (API_BASE) {
+                window.open(`${API_BASE}/docs`, '_blank');
+            }
+        }
+
+        // Auto-login for demo
+        setTimeout(() => {
+            if (!authToken) {
+                login();
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

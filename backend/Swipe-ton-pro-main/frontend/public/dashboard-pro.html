@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Professionnel - SwipeTonPro</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:400,600,700&display=swap">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background: rgba(30, 41, 59, 0.9);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .main-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.2s;
+        }
+        .stat-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+        .stat-title {
+            color: #94a3b8;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        .section {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .badge-success {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+            border: 1px solid #22c55e;
+        }
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+            border: 1px solid #f59e0b;
+        }
+        .badge-info {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            border: 1px solid #3b82f6;
+        }
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+        .btn-outline {
+            background: transparent;
+            color: #3b82f6;
+            border: 1px solid #3b82f6;
+        }
+        .btn-outline:hover {
+            background: #3b82f6;
+            color: white;
+        }
+        .doc-status {
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+        .doc-list {
+            list-style: none;
+            padding: 0;
+        }
+        .doc-list li {
+            margin-bottom: 0.5rem;
+        }
+        .pack-info {
+            background: #334155;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .msg-list {
+            list-style: none;
+            padding: 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .msg-list li {
+            margin-bottom: 0.75rem;
+            background: #334155;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div style="font-weight: 700; color: white; font-size: 1.3rem;">SwipeTonPro</div>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <span id="proName">Nom Pro</span>
+            <button class="btn btn-outline" onclick="logout()">Déconnexion</button>
+        </div>
+    </div>
+    <div class="main-container">
+        <!-- Encart état du compte -->
+        <div class="section" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; background: #22304a;">
+            <div>
+                <div style="font-size: 1.1rem; font-weight: 600; color: #3b82f6;">État du compte :</div>
+                <span class="badge badge-success" id="accountStatus">Actif</span>
+                <span class="badge badge-warning" id="docStatus">Documents à valider</span>
+            </div>
+            <div style="margin-top: 0.5rem;">
+                <button class="btn btn-primary" onclick="window.location.href='#metiers'">Gérer mes métiers</button>
+                <button class="btn btn-outline" onclick="window.location.href='#credits'">Renouveler mes crédits</button>
+            </div>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-title">Likes émis</div>
+                <div class="stat-value" id="likesSent">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Likes reçus</div>
+                <div class="stat-value" id="likesReceived">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Crush</div>
+                <div class="stat-value" id="crushCount">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Crédits restants</div>
+                <div class="stat-value" id="creditsLeft">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Projets remportés</div>
+                <div class="stat-value" id="projectsWon">0</div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-title">Documents & Identité</div>
+            <ul class="doc-list" id="docList">
+                <li>Carte d'identité <span class="doc-status badge badge-info">En attente</span></li>
+                <li>Kbis <span class="doc-status badge badge-warning">À valider</span></li>
+                <li>Assurance décennale <span class="doc-status badge badge-success">Validé</span></li>
+            </ul>
+            <button class="btn btn-primary">Ajouter/Mettre à jour un document</button>
+        </div>
+        <div class="section">
+            <div class="section-title">Mon Pack d'abonnement</div>
+            <div class="pack-info">
+                <strong>Pack actuel :</strong> <span id="packName">Starter</span><br>
+                <strong>Crédits :</strong> <span id="packCredits">10</span><br>
+                <strong>Expiration :</strong> <span id="packExpiry">31/12/2025</span>
+            </div>
+            <button class="btn btn-outline">Changer de pack</button>
+        </div>
+        <div class="section">
+            <div class="section-title">Messagerie (Crush)</div>
+            <ul class="msg-list" id="msgList">
+                <li><strong>Marie P.</strong> : Bonjour, pouvez-vous me rappeler pour le devis ?</li>
+                <li><strong>Lucas T.</strong> : Merci pour votre retour, à bientôt !</li>
+            </ul>
+            <button class="btn btn-primary">Accéder à la messagerie</button>
+        </div>
+    </div>
+    <script>
+                // Chargement dynamique des données du backend (démo, sans auth)
+                const API_BASE = "http://localhost:8002";
+                async function loadProDashboard() {
+                        try {
+                                const res = await fetch(`${API_BASE}/pro/dashboard`);
+                                const data = await res.json();
+                                // Stats
+                                document.getElementById('likesSent').textContent = data.stats.likes_sent;
+                                document.getElementById('likesReceived').textContent = data.stats.likes_received;
+                                document.getElementById('crushCount').textContent = data.stats.crush_count;
+                                document.getElementById('creditsLeft').textContent = data.stats.credits_left;
+                                document.getElementById('projectsWon').textContent = data.stats.projects_won;
+                                // Pack
+                                if(data.pack) {
+                                    document.getElementById('packName').textContent = data.pack.name || '-';
+                                    document.getElementById('packCredits').textContent = data.pack.credits || '-';
+                                    document.getElementById('packExpiry').textContent = data.pack.expiry || '-';
+                                }
+                                // Documents
+                                const docList = document.getElementById('docList');
+                                docList.innerHTML = '';
+                                (data.documents || []).forEach(doc => {
+                                    docList.innerHTML += `<li>${doc.type || doc.name} <span class="doc-status badge badge-info">${doc.status}</span></li>`;
+                                });
+                                // Messages
+                                const msgList = document.getElementById('msgList');
+                                msgList.innerHTML = '';
+                                (data.messages || []).forEach(msg => {
+                                    msgList.innerHTML += `<li><strong>${msg.from_name || 'Client'}</strong> : ${msg.text}</li>`;
+                                });
+                                // État du compte
+                                document.getElementById('accountStatus').textContent = data.account_status === 'active' ? 'Actif' : data.account_status;
+                                document.getElementById('accountStatus').className = 'badge ' + (data.account_status === 'active' ? 'badge-success' : 'badge-warning');
+                        } catch (e) {
+                                console.error('Erreur chargement dashboard pro', e);
+                        }
+                }
+                window.onload = loadProDashboard;
+                function logout() {
+                        alert('Déconnexion...');
+                }
+    </script>
+</body>
+</html>

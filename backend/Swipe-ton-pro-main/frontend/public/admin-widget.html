@@ -1,0 +1,410 @@
+<!-- Modal d'administration à injecter dans la page existante -->
+<div id="adminModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); z-index: 10000;">
+    <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;">
+        <div style="background: white; border-radius: 8px; width: 100%; max-width: 1200px; max-height: 90vh; overflow-y: auto;">
+            <!-- Login Section -->
+            <div id="adminLoginSection" style="padding: 40px;">
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h2 style="font-size: 2rem; font-weight: bold; color: #1f2937; margin-bottom: 10px;">Administration</h2>
+                    <p style="color: #6b7280;">Career Tinder - Panneau d'administration</p>
+                    <button onclick="closeAdminModal()" style="position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer;">×</button>
+                </div>
+                
+                <form id="adminLoginForm" style="max-width: 400px; margin: 0 auto;">
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-weight: 500; margin-bottom: 5px;">Email</label>
+                        <input type="email" id="adminEmail" required 
+                               style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 16px;">
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-weight: 500; margin-bottom: 5px;">Mot de passe</label>
+                        <input type="password" id="adminPassword" required 
+                               style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 16px;">
+                    </div>
+                    
+                    <button type="submit" id="adminLoginBtn"
+                            style="width: 100%; background: #2563eb; color: white; padding: 12px; border: none; border-radius: 6px; font-size: 16px; cursor: pointer;">
+                        Se connecter
+                    </button>
+                </form>
+                
+                <div id="adminLoginError" style="display: none; margin-top: 15px; padding: 12px; background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; border-radius: 6px;">
+                </div>
+                
+                <div style="margin-top: 20px; text-align: center; color: #6b7280; font-size: 14px;">
+                    <p>Compte de test :</p>
+                    <p>Email: admin@careertinder.com | Mot de passe: admin123</p>
+                </div>
+            </div>
+
+            <!-- Dashboard Section -->
+            <div id="adminDashboardSection" style="display: none; padding: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #e5e7eb;">
+                    <h2 style="font-size: 1.5rem; font-weight: bold;">Dashboard Admin</h2>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span id="adminUserInfo" style="color: #6b7280; font-size: 14px;"></span>
+                        <button onclick="logoutAdmin()" style="background: #dc2626; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">
+                            Déconnexion
+                        </button>
+                        <button onclick="closeAdminModal()" style="background: #6b7280; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">
+                            Fermer
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div style="margin-bottom: 20px;">
+                    <div style="display: flex; gap: 10px; border-bottom: 1px solid #e5e7eb;">
+                        <button onclick="showAdminTab('stats')" class="admin-tab-btn" data-tab="stats" 
+                                style="padding: 10px 20px; border: none; background: none; border-bottom: 2px solid #2563eb; color: #2563eb; cursor: pointer;">
+                            Statistiques
+                        </button>
+                        <button onclick="showAdminTab('users')" class="admin-tab-btn" data-tab="users"
+                                style="padding: 10px 20px; border: none; background: none; border-bottom: 2px solid transparent; color: #6b7280; cursor: pointer;">
+                            Utilisateurs
+                        </button>
+                        <button onclick="showAdminTab('admins')" class="admin-tab-btn" data-tab="admins"
+                                style="padding: 10px 20px; border: none; background: none; border-bottom: 2px solid transparent; color: #6b7280; cursor: pointer;">
+                            Admins
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div id="adminStatsTab" class="admin-tab-content">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px;">
+                        <div style="background: #f9fafb; padding: 20px; border-radius: 8px; text-align: center;">
+                            <h3 style="color: #374151; margin-bottom: 10px;">Utilisateurs Total</h3>
+                            <p id="adminTotalUsers" style="font-size: 2rem; font-weight: bold; color: #2563eb; margin: 0;">-</p>
+                        </div>
+                        <div style="background: #f9fafb; padding: 20px; border-radius: 8px; text-align: center;">
+                            <h3 style="color: #374151; margin-bottom: 10px;">Professionnels</h3>
+                            <p id="adminTotalProfessionals" style="font-size: 2rem; font-weight: bold; color: #059669; margin: 0;">-</p>
+                        </div>
+                        <div style="background: #f9fafb; padding: 20px; border-radius: 8px; text-align: center;">
+                            <h3 style="color: #374151; margin-bottom: 10px;">Admins</h3>
+                            <p id="adminTotalAdmins" style="font-size: 2rem; font-weight: bold; color: #7c3aed; margin: 0;">-</p>
+                        </div>
+                        <div style="background: #f9fafb; padding: 20px; border-radius: 8px; text-align: center;">
+                            <h3 style="color: #374151; margin-bottom: 10px;">Signalements</h3>
+                            <p id="adminTotalReports" style="font-size: 2rem; font-weight: bold; color: #dc2626; margin: 0;">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="adminUsersTab" class="admin-tab-content" style="display: none;">
+                    <div style="background: #f9fafb; padding: 20px; border-radius: 8px;">
+                        <h3 style="margin-bottom: 15px;">Gestion des utilisateurs</h3>
+                        <div id="adminUsersList" style="max-height: 400px; overflow-y: auto;">
+                            <!-- Users will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div id="adminAdminsTab" class="admin-tab-content" style="display: none;">
+                    <div style="background: #f9fafb; padding: 20px; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h3 style="margin: 0;">Administrateurs</h3>
+                            <button onclick="showAdminInviteForm()" 
+                                    style="background: #059669; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">
+                                Inviter Admin
+                            </button>
+                        </div>
+                        <div id="adminAdminsList" style="max-height: 400px; overflow-y: auto;">
+                            <!-- Admins will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Administration functionality
+let adminAuthToken = null;
+let currentAdminUser = null;
+
+// Show admin modal
+function showAdminModal() {
+    document.getElementById('adminModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+// Close admin modal
+function closeAdminModal() {
+    document.getElementById('adminModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Admin login
+document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const email = document.getElementById('adminEmail').value;
+    const password = document.getElementById('adminPassword').value;
+    const loginBtn = document.getElementById('adminLoginBtn');
+    const loginError = document.getElementById('adminLoginError');
+    
+    loginBtn.textContent = 'Connexion...';
+    loginBtn.disabled = true;
+    loginError.style.display = 'none';
+    
+    try {
+        const response = await fetch(window.location.origin + '/api/admin/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        });
+        
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'Erreur de connexion');
+        }
+        
+        const data = await response.json();
+        adminAuthToken = data.access_token;
+        currentAdminUser = data.admin;
+        
+        showAdminDashboard();
+        
+    } catch (error) {
+        loginError.textContent = error.message;
+        loginError.style.display = 'block';
+    } finally {
+        loginBtn.textContent = 'Se connecter';
+        loginBtn.disabled = false;
+    }
+});
+
+// Show admin dashboard
+function showAdminDashboard() {
+    document.getElementById('adminLoginSection').style.display = 'none';
+    document.getElementById('adminDashboardSection').style.display = 'block';
+    document.getElementById('adminUserInfo').textContent = 
+        `Connecté en tant que ${currentAdminUser.name} (${currentAdminUser.role})`;
+    
+    loadAdminStats();
+}
+
+// Logout admin
+function logoutAdmin() {
+    adminAuthToken = null;
+    currentAdminUser = null;
+    
+    document.getElementById('adminDashboardSection').style.display = 'none';
+    document.getElementById('adminLoginSection').style.display = 'block';
+    
+    // Reset form
+    document.getElementById('adminLoginForm').reset();
+}
+
+// API request helper for admin
+async function adminApiRequest(url, options = {}) {
+    const config = {
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${adminAuthToken}`,
+            ...options.headers
+        }
+    };
+    
+    const response = await fetch(url, config);
+    
+    if (!response.ok) {
+        if (response.status === 401) {
+            logoutAdmin();
+            throw new Error('Session expirée');
+        }
+        const error = await response.json();
+        throw new Error(error.detail || 'Erreur API');
+    }
+    
+    return response.json();
+}
+
+// Load admin statistics
+async function loadAdminStats() {
+    try {
+        const stats = await adminApiRequest(window.location.origin + '/api/admin/stats');
+        
+        document.getElementById('adminTotalUsers').textContent = stats.total_users || 0;
+        document.getElementById('adminTotalProfessionals').textContent = stats.total_professionals || 0;
+        document.getElementById('adminTotalAdmins').textContent = stats.total_admins || 0;
+        document.getElementById('adminTotalReports').textContent = stats.total_reports || 0;
+    } catch (error) {
+        console.error('Erreur lors du chargement des statistiques:', error);
+    }
+}
+
+// Show admin tab
+function showAdminTab(tabName) {
+    // Hide all tabs
+    document.querySelectorAll('.admin-tab-content').forEach(tab => {
+        tab.style.display = 'none';
+    });
+    
+    // Update tab buttons
+    document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+        btn.style.borderBottomColor = 'transparent';
+        btn.style.color = '#6b7280';
+    });
+    
+    // Show selected tab
+    document.getElementById('admin' + tabName.charAt(0).toUpperCase() + tabName.slice(1) + 'Tab').style.display = 'block';
+    
+    // Update selected button
+    const selectedBtn = document.querySelector(`[data-tab="${tabName}"]`);
+    selectedBtn.style.borderBottomColor = '#2563eb';
+    selectedBtn.style.color = '#2563eb';
+    
+    // Load data for the tab
+    if (tabName === 'stats') {
+        loadAdminStats();
+    } else if (tabName === 'users') {
+        loadAdminUsers();
+    } else if (tabName === 'admins') {
+        loadAdminAdmins();
+    }
+}
+
+// Load users
+async function loadAdminUsers() {
+    try {
+        const data = await adminApiRequest(window.location.origin + '/api/admin/users');
+        const users = data.users || [];
+        
+        const usersList = document.getElementById('adminUsersList');
+        usersList.innerHTML = users.map(user => `
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #e5e7eb;">
+                <div>
+                    <strong>${user.name}</strong><br>
+                    <small style="color: #6b7280;">${user.email}</small>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="padding: 2px 8px; border-radius: 12px; font-size: 12px; ${user.is_professional ? 'background: #d1fae5; color: #065f46;' : 'background: #dbeafe; color: #1e40af;'}">
+                        ${user.is_professional ? 'Professionnel' : 'Utilisateur'}
+                    </span>
+                    <select onchange="updateUserStatus('${user.id}', this.value)" style="padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 12px;">
+                        <option value="active" ${user.status === 'active' ? 'selected' : ''}>Actif</option>
+                        <option value="suspended" ${user.status === 'suspended' ? 'selected' : ''}>Suspendu</option>
+                        <option value="banned" ${user.status === 'banned' ? 'selected' : ''}>Banni</option>
+                    </select>
+                </div>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Erreur lors du chargement des utilisateurs:', error);
+    }
+}
+
+// Load admins
+async function loadAdminAdmins() {
+    try {
+        const admins = await adminApiRequest(window.location.origin + '/api/admin/list');
+        
+        const adminsList = document.getElementById('adminAdminsList');
+        adminsList.innerHTML = admins.map(admin => `
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #e5e7eb;">
+                <div>
+                    <strong>${admin.name}</strong><br>
+                    <small style="color: #6b7280;">${admin.email}</small>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="padding: 2px 8px; border-radius: 12px; font-size: 12px; ${
+                        admin.role === 'super_admin' ? 'background: #fee2e2; color: #991b1b;' :
+                        admin.role === 'admin' ? 'background: #dbeafe; color: #1e40af;' :
+                        'background: #d1fae5; color: #065f46;'
+                    }">
+                        ${admin.role === 'super_admin' ? 'Super Admin' :
+                          admin.role === 'admin' ? 'Admin' : 'Modérateur'}
+                    </span>
+                    <span style="padding: 2px 8px; border-radius: 12px; font-size: 12px; ${admin.is_active ? 'background: #d1fae5; color: #065f46;' : 'background: #fee2e2; color: #991b1b;'}">
+                        ${admin.is_active ? 'Actif' : 'Inactif'}
+                    </span>
+                </div>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Erreur lors du chargement des admins:', error);
+    }
+}
+
+// Update user status
+async function updateUserStatus(userId, newStatus) {
+    try {
+        await adminApiRequest(window.location.origin + `/api/admin/users/${userId}`, {
+            method: 'PUT',
+            body: JSON.stringify({ status: newStatus })
+        });
+        console.log('Statut utilisateur mis à jour');
+    } catch (error) {
+        console.error('Erreur lors de la mise à jour du statut:', error);
+        alert('Erreur lors de la mise à jour du statut');
+    }
+}
+
+// Show invite form (simplified)
+function showAdminInviteForm() {
+    const email = prompt('Email de l\'admin à inviter:');
+    if (email) {
+        const role = prompt('Rôle (moderator/admin/super_admin):') || 'moderator';
+        inviteAdmin(email, role);
+    }
+}
+
+// Invite admin
+async function inviteAdmin(email, role) {
+    try {
+        await adminApiRequest(window.location.origin + '/api/admin/invite', {
+            method: 'POST',
+            body: JSON.stringify({
+                email: email,
+                role: role,
+                permissions: role === 'super_admin' ? 
+                    ["invite_admins", "view_admins", "view_invitations", "view_users", "modify_users", "delete_users", "view_stats", "view_reports", "resolve_reports"] :
+                    role === 'admin' ? 
+                    ["view_users", "modify_users", "view_stats", "view_reports", "resolve_reports"] :
+                    ["view_reports", "resolve_reports"]
+            })
+        });
+        
+        alert('Invitation envoyée avec succès !');
+        loadAdminAdmins();
+    } catch (error) {
+        console.error('Erreur lors de l\'invitation:', error);
+        alert('Erreur lors de l\'invitation: ' + error.message);
+    }
+}
+
+// Add admin access button (hidden by default, can be shown with a secret key combination)
+let adminKeySequence = '';
+document.addEventListener('keydown', (e) => {
+    adminKeySequence += e.key.toLowerCase();
+    if (adminKeySequence.includes('admin')) {
+        adminKeySequence = '';
+        showAdminModal();
+    }
+    if (adminKeySequence.length > 10) {
+        adminKeySequence = adminKeySequence.slice(-5);
+    }
+});
+
+// Also add a discrete admin link in the footer or header if needed
+setTimeout(() => {
+    // Look for a place to add the admin link discretely
+    const footer = document.querySelector('footer') || document.querySelector('.footer') || document.body;
+    if (footer) {
+        const adminLink = document.createElement('div');
+        adminLink.innerHTML = '<a href="#" onclick="showAdminModal(); return false;" style="color: transparent; position: fixed; bottom: 0; left: 0; width: 50px; height: 50px; z-index: 1000;" title="Administration">⚙️</a>';
+        footer.appendChild(adminLink);
+    }
+}, 2000);
+</script>
